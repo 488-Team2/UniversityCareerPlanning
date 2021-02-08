@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\CareerSurveyResponse;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class CareerSurveyResponseSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class CareerSurveyResponseSeeder extends Seeder
      */
     public function run()
     {
-        CareerSurveyResponse::factory(400)->create();
+        User::factory(10)->create();
     }
 }

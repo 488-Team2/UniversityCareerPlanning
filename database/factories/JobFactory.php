@@ -24,9 +24,9 @@ class JobFactory extends Factory
     {
         return [
             'job_name' => $this->faker->company,
-            'job_description' => $this->faker->sentences(3),
+            'job_description' => implode(". ", $this->faker->sentences(3)),
             'job_link' => $this->faker->url,
-            'degree_id' => Degree::factory()
+            'degree_id' => Degree::all()->random()
         ];
     }
 }

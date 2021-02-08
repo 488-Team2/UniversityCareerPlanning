@@ -22,11 +22,7 @@ class DepartmentFactory extends Factory
      */
     public function definition()
     {
-        /*
-         *             $table->id();
-            $table->string('department_name');
-            $table->timestamps();
-         */
+
         return [
             'department_name' => $this->faker->name
         ];

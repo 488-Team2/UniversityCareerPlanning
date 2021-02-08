@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Degree;
 use Illuminate\Database\Seeder;
 
 class DegreeSeeder extends Seeder
@@ -13,6 +14,6 @@ class DegreeSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Degree::factory(30)->create();
     }
 }
