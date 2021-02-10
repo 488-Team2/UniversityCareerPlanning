@@ -22,13 +22,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('degrees', 'App\Http\Controllers\DegreeController@index');
 
 // show detailed degree
-Route::get('degree/{id}', 'DegreeController@show');
+Route::get('degree/{id}', 'App\Http\Controllers\DegreeController@show');
 
 // create new degree
-Route::post('degree', 'DegreeController@store');
+Route::post('degree', 'App\Http\Controllers\DegreeController@store');
 
 // update degree
-Route::put('degree', 'DegreeController@store');
+Route::put('degree', 'App\Http\Controllers\DegreeController@store');
 
 // delete degree
-Route::delete('degree', 'DegreeController@destroy');
+Route::delete('degree', 'App\Http\Controllers\DegreeController@destroy');

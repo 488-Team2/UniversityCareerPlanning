@@ -41,7 +41,18 @@ class DegreeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $degree = $request->isMethod('put') ? Degree::findOrFail($request->degree_id) : new Degree;
+
+        $degree->id = $request ->input('degree_id');
+        $degree->degree_name = $request ->input('degree_name');
+        $degree->degree_description = $request ->input('degree_description');
+        $degree->department_id = $request ->input('department_id');
+        $degree->graduation_rate = $request ->input('graduation_rate');
+        $degree->job_demand = $request ->input('job_demand');
+
+        if($degree->save()) {
+            return new DegreeResource($degree);
+        }
     }
 
     /**
@@ -52,7 +63,11 @@ class DegreeController extends Controller
      */
     public function show($id)
     {
-        //
+        //get degree
+        $degree = Degree::findOrFail($id);
+
+        //return single degree as a resouce
+        return new DegreeResource($degree);
     }
 
     /**
@@ -87,8 +102,12 @@ class DegreeController extends Controller
      */
     public function destroy($id)
     {
-       
-       //
+        //get degree
+        $degree = Degree::findOrFail($id);
+
+        if($degree->delete()){
+            return new DegreeResource($degree);
+        }
     }
 
 
