@@ -17,3 +17,18 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// list degrees
+Route::get('degrees', 'App\Http\Controllers\DegreeController@index');
+
+// show detailed degree
+Route::get('degree/{id}', 'DegreeController@show');
+
+// create new degree
+Route::post('degree', 'DegreeController@store');
+
+// update degree
+Route::put('degree', 'DegreeController@store');
+
+// delete degree
+Route::delete('degree', 'DegreeController@destroy');
