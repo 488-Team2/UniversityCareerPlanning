@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -17,12 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'full_name',
-        'email',
-        'password',
-        'department_id',
-        'username',
-        'account_type'
+        'name', 'email', 'password',
     ];
 
     /**
@@ -31,8 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password', 'remember_token',
     ];
 
     /**
@@ -43,21 +36,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public function department()
-    {
-        return $this->belongsTo(Department::class);
-    }
-
-    public function sessions()
-    {
-        return $this->hasMany(Session::class);
-    }
-
-    public function careerSurveyResponses()
-    {
-        return $this->hasMany(CareerSurveyResponse::class);
-    }
-
-
 }

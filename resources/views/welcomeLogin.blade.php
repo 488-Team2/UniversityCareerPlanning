@@ -19,11 +19,8 @@
                 <a class="nav-link" href="#">Contact Us</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Login</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Register</a>
-            </li>
+                <a class="nav-link" href="#">Logout</a>
+           
         </ul>       
   </div>
 </nav>
@@ -52,6 +49,8 @@ Search your interests and we will match you with degrees
    
     <button type="button" class="btn btn-outline-danger">SEARCH BY INTERESTS</button>
     <button type="button" class="btn btn-outline-danger">   TAKE SERVEY   </button>
+    <button type="button" class="btn btn-outline-danger">   LOAD SAVED SESSION  </button>
+
 </div>
 <br> 
 
