@@ -26,7 +26,12 @@ export default {
     },
     methods: {
         handleLogin() {
-            axios.post('/login', this.formData).then(response => {
+            axios({
+                method: "post",
+                Accept: "application/json", //Make sure to set this in request, otherwise you will get weird redirect behavior from Laravel
+                url: '/login',
+                data: this.formData,
+            }).then(response => {
                 console.log(response.data);
             }).catch(error => console.log(error));
         }
