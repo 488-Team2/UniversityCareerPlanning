@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use\Http\Requests;
+use \Http\Requests;
 use App\Models\Degree;
 use App\Http\Resources\Degree as DegreeResource;
 
