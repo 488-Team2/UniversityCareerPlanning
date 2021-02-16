@@ -18,8 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// list degrees
+// list of all degrees
 Route::get('degrees', 'App\Http\Controllers\DegreeController@index');
+
+// search degrees
+Route::get('search/{keyword}', 'App\Http\Controllers\DegreeController@search');
 
 // show detailed degree
 Route::get('degree/{id}', 'App\Http\Controllers\DegreeController@show');
