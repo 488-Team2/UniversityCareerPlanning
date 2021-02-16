@@ -1,5 +1,6 @@
 <template>
     <div>
+        <error-message :errors="errors"></error-message>
         <h1>Registration</h1>
         <form @submit.prevent="handleRegister">
             <label>Full name
@@ -14,12 +15,17 @@
             <label>Password
                 <input type="password" name="password" v-model="formData.password">
             </label>
+            <label>Confirm Password
+                <input type="password" name="confirm_password" v-model="formData.password_confirmation">
+            </label>
             <button type="submit">Register</button>
         </form>
     </div>
 </template>
 
 <script>
+import ErrorMessage from "./ErrorMessage";
+
 export default {
     name: "Register",
     data() {
@@ -28,8 +34,10 @@ export default {
                 full_name: '',
                 email: '',
                 username: '',
-                password: ''
-            }
+                password: '',
+                password_confirmation: ''
+            },
+            errors: []
         }
     },
     methods: {
@@ -40,9 +48,19 @@ export default {
                 url: '/register',
                 data: this.formData
             }).then(response => {
+                console.log("response: " + response);
                 console.log("we did it!");
-            }).catch(error => console.log(error));
+            }).catch(error => this.handleErrors(error));
+        },
+        handleErrors(error) {
+            Object.entries(error.response.data.errors).forEach(([key, value]) => {
+                this.errors.push(value[0]);
+            });
         }
+    },
+    components: {
+        errorMessage: ErrorMessage
+
     }
 }
 </script>
