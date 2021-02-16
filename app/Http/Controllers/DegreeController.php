@@ -23,6 +23,15 @@ class DegreeController extends Controller
        return DegreeResource::collection($degrees);
     }
 
+    public function search($keyword)
+    {
+
+        $degrees = Degree::where("degree_name", "like", "%".$keyword."%")
+                    ->orwhere("degree_description", "like", "%".$keyword."%")->get();
+
+        return DegreeResource::collection($degrees);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -106,7 +115,7 @@ class DegreeController extends Controller
         $degree = Degree::findOrFail($id);
 
         if($degree->delete()){
-            return new DegreeResource($degree);
+             return new DegreeResource($degree);
         }
     }
 
