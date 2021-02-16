@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use\Http\Requests;
+use \Http\Requests;
 use App\Models\Degree;
 use App\Http\Resources\Degree as DegreeResource;
 
@@ -25,7 +25,7 @@ class DegreeController extends Controller
 
     public function search($keyword)
     {
-        
+
         $degrees = Degree::where("degree_name", "like", "%".$keyword."%")
                     ->orwhere("degree_description", "like", "%".$keyword."%")->get();
 
