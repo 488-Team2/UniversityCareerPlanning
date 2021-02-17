@@ -2115,15 +2115,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var _this2 = this;
 
       this.alerts = [];
-      Object.entries(error.response.data.errors).forEach(function (_ref) {
-        var _ref2 = _slicedToArray(_ref, 2),
-            key = _ref2[0],
-            value = _ref2[1];
 
-        _this2.alertType = "alert-danger";
+      if (error.response.data.errors != null) {
+        Object.entries(error.response.data.errors).forEach(function (_ref) {
+          var _ref2 = _slicedToArray(_ref, 2),
+              key = _ref2[0],
+              value = _ref2[1];
 
-        _this2.alerts.push(value[0]);
-      });
+          _this2.alertType = "alert-danger";
+
+          _this2.alerts.push(value[0]);
+        });
+      }
     }
   },
   components: {
