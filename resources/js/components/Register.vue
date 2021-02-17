@@ -78,10 +78,12 @@ export default {
         },
         handleErrors(error) {
             this.alerts = [];
-            Object.entries(error.response.data.errors).forEach(([key, value]) => {
-                this.alertType = "alert-danger";
-                this.alerts.push(value[0]);
-            });
+            if (error.response.data.errors != null) {
+                Object.entries(error.response.data.errors).forEach(([key, value]) => {
+                    this.alertType = "alert-danger";
+                    this.alerts.push(value[0]);
+                });
+            }
         }
     },
     components: {
