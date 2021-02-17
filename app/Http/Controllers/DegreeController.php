@@ -25,7 +25,7 @@ class DegreeController extends Controller
 
     public function search($keyword)
     {
-        
+
         $degrees = Degree::where("degree_name", "like", "%".$keyword."%")
                     ->orwhere("degree_description", "like", "%".$keyword."%")->get();
 
