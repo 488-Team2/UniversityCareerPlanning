@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CareerSurveyQuestionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,3 +36,9 @@ Route::put('degree', 'App\Http\Controllers\DegreeController@store');
 
 // delete degree
 Route::delete('degree', 'App\Http\Controllers\DegreeController@destroy');
+
+//Get collection of survey questions
+Route::get('/survey/questions', [CareerSurveyQuestionController::class, 'index']);
+
+//Get specific survey question
+Route::get('/survey/question/{id}', [CareerSurveyQuestionController::class, 'show']);

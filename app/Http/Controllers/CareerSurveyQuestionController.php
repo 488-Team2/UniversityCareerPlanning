@@ -14,7 +14,7 @@ class CareerSurveyQuestionController extends Controller
      */
     public function index()
     {
-        //
+        return \App\Http\Resources\CareerSurveyQuestion::collection(\App\Models\CareerSurveyQuestion::all());
     }
 
     /**
@@ -41,12 +41,12 @@ class CareerSurveyQuestionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\CareerSurveyQuestion $careerSurveyQuestion
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \App\Http\Resources\CareerSurveyQuestion
      */
-    public function show(CareerSurveyQuestion $careerSurveyQuestion)
+    public function show($id): \App\Http\Resources\CareerSurveyQuestion
     {
-        //
+        return new \App\Http\Resources\CareerSurveyQuestion(\App\Models\CareerSurveyQuestion::findOrFail($id));
     }
 
     /**
