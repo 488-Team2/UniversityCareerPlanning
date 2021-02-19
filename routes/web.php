@@ -22,4 +22,6 @@ Route::get('/login', function () {
 Route::get('/register', function () {
     return view('register');
 });
-
+Route::get('/degree/{id}', function () {
+    return view('degreeDetails');
+});
