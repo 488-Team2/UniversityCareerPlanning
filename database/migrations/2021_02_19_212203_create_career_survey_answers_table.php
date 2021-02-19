@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCareerSurveyResponsesTable extends Migration
+class CreateCareerSurveyAnswersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateCareerSurveyResponsesTable extends Migration
      */
     public function up()
     {
-        Schema::create('career_survey_responses', function (Blueprint $table) {
+        Schema::create('career_survey_answers', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->integer('session_id');
+            $table->string('answer_text');
             $table->integer('career_survey_question_id');
             $table->foreign('career_survey_question_id')->references('id')->on('career_survey_questions');
-            $table->integer('response_code');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateCareerSurveyResponsesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('career_survey_responses');
+        Schema::dropIfExists('career_survey_answers');
     }
 }

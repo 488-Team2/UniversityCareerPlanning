@@ -2117,7 +2117,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.alerts = [];
       Object.entries(error.response.data.errors).forEach(function (_ref) {
         var _ref2 = _slicedToArray(_ref, 2),
-            key = _ref2[0],
             value = _ref2[1];
 
         _this2.alertType = "alert-danger";
@@ -2127,7 +2126,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     }
   },
   components: {
-    errorMessage: _Alert__WEBPACK_IMPORTED_MODULE_0__.default
+    alertMessage: _Alert__WEBPACK_IMPORTED_MODULE_0__.default
   }
 });
 
@@ -38341,157 +38340,162 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "mb-3" }, [
-                _c("label", [_vm._v("Full name\n                    ")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.formData.full_name,
-                      expression: "formData.full_name"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "text",
-                    name: "full_name",
-                    placeholder: "full name"
-                  },
-                  domProps: { value: _vm.formData.full_name },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+                _c("label", [
+                  _vm._v("Full name\n                        "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formData.full_name,
+                        expression: "formData.full_name"
                       }
-                      _vm.$set(_vm.formData, "full_name", $event.target.value)
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "text",
+                      name: "full_name",
+                      placeholder: "full name"
+                    },
+                    domProps: { value: _vm.formData.full_name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.formData, "full_name", $event.target.value)
+                      }
                     }
-                  }
-                })
+                  })
+                ])
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "mb-3" }, [
-                _c("label", [_vm._v("Email address\n                    ")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.formData.email,
-                      expression: "formData.email"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "email",
-                    placeholder: "Email address",
-                    name: "email"
-                  },
-                  domProps: { value: _vm.formData.email },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+                _c("label", [
+                  _vm._v("Email address\n                    "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formData.email,
+                        expression: "formData.email"
                       }
-                      _vm.$set(_vm.formData, "email", $event.target.value)
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "email",
+                      placeholder: "Email address",
+                      name: "email"
+                    },
+                    domProps: { value: _vm.formData.email },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.formData, "email", $event.target.value)
+                      }
                     }
-                  }
-                })
+                  })
+                ])
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "mb-3" }, [
-                _c("label", [_vm._v("Username\n                    ")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.formData.username,
-                      expression: "formData.username"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "text",
-                    placeholder: "Username",
-                    name: "username"
-                  },
-                  domProps: { value: _vm.formData.username },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+                _c("label", [
+                  _vm._v("Username\n                        "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formData.username,
+                        expression: "formData.username"
                       }
-                      _vm.$set(_vm.formData, "username", $event.target.value)
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "text",
+                      placeholder: "Username",
+                      name: "username"
+                    },
+                    domProps: { value: _vm.formData.username },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.formData, "username", $event.target.value)
+                      }
                     }
-                  }
-                })
+                  })
+                ])
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "mb-3" }, [
-                _c("label", [_vm._v("Password\n                    ")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.formData.password,
-                      expression: "formData.password"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "password",
-                    placeholder: "Password",
-                    name: "password"
-                  },
-                  domProps: { value: _vm.formData.password },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+                _c("label", [
+                  _vm._v("Password\n                        "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formData.password,
+                        expression: "formData.password"
                       }
-                      _vm.$set(_vm.formData, "password", $event.target.value)
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "password",
+                      placeholder: "Password",
+                      name: "password"
+                    },
+                    domProps: { value: _vm.formData.password },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.formData, "password", $event.target.value)
+                      }
                     }
-                  }
-                })
+                  })
+                ])
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "mb-3" }, [
-                _c("label", [_vm._v("Confirm Password\n                    ")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.formData.password_confirmation,
-                      expression: "formData.password_confirmation"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "password",
-                    placeholder: "Confirm password",
-                    name: "confirm_password"
-                  },
-                  domProps: { value: _vm.formData.password_confirmation },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+                _c("label", [
+                  _vm._v("Confirm Password\n                        "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formData.password_confirmation,
+                        expression: "formData.password_confirmation"
                       }
-                      _vm.$set(
-                        _vm.formData,
-                        "password_confirmation",
-                        $event.target.value
-                      )
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "password",
+                      placeholder: "Confirm password",
+                      name: "confirm_password"
+                    },
+                    domProps: { value: _vm.formData.password_confirmation },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.formData,
+                          "password_confirmation",
+                          $event.target.value
+                        )
+                      }
                     }
-                  }
-                })
+                  })
+                ])
               ]),
               _vm._v(" "),
               _c(

@@ -23,7 +23,7 @@ Vue.component('degrees', require('./components/Degrees.vue').default);
 Vue.component('login', require('./components/Login.vue').default);
 Vue.component('navbar', require('./components/Navbar.vue').default);
 Vue.component('register', require('./components/Register.vue').default);
-Vue.component('error-message', require('./components/Alert.vue').default);
+Vue.component('alert', require('./components/Alert.vue').default);
 Vue.component('survey', require('./components/Survey.vue').default);
 
 /**

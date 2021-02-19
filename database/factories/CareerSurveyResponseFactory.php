@@ -27,7 +27,6 @@ class CareerSurveyResponseFactory extends Factory
         return [
             'user_id' => User::all()->random(),
             'session_id' => Session::factory(),
-            'question_id' => CareerSurveyQuestion::all()->random(),
             'response_code' => $this->faker->numberBetween(1, 4)
         ];
     }
