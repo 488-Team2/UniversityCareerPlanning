@@ -9,6 +9,7 @@
 
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item"><a class="nav-link" href="/degrees">Degrees</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/survey">Career Survey</a></li>
                         <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
                         <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
                     </ul>
