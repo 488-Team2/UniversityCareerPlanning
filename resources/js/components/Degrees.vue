@@ -17,9 +17,11 @@
         </ul>
     </nav>
 
-        <div class="card card-body mb-2" v-for="degree in degrees" v-bind:key="degree.id">
-            <h3> {{degree.degree_name}} </h3>
-            <p> {{degree.degree_description}} </p>
+        <div id="grow" class="card card-body mb-2" v-for="degree in degrees" v-bind:key="degree.id">
+            <a class="degree" :href="'degree/' + degree.id" >
+                <h3> {{degree.degree_name}} </h3>
+                <p> {{degree.degree_description}} </p>
+            </a>
         </div>
     </div>
 </template>
@@ -76,3 +78,19 @@ export default{
 }
 
 </script>
+
+<style>
+
+.degree, .degree:hover{
+    color: black;
+    text-decoration: none;
+}
+
+#grow { 
+    transition: all .2s ease-in-out; 
+}
+#grow:hover { 
+    transform: scale(1.03); 
+}
+
+</style>

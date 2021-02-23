@@ -34,4 +34,4 @@ Route::post('degree', 'App\Http\Controllers\DegreeController@store');
 Route::put('degree', 'App\Http\Controllers\DegreeController@store');
 
 // delete degree
-Route::delete('degree', 'App\Http\Controllers\DegreeController@destroy');
+Route::delete('degree/{id}', 'App\Http\Controllers\DegreeController@destroy');

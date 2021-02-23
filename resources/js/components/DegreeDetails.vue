@@ -6,6 +6,10 @@
         <scale class="mb-4" :rate='degree.graduation_rate' :name="'Graduation Rate'"></scale>
         <scale class="mb-4" :rate='degree.job_demand' :name="'Job Demand'"></scale>
        </div>
+
+       <div>
+       
+       </div>
     </div>
 </template>
 
@@ -22,12 +26,14 @@ export default{
                 graduation_rate: '',
                 job_demand: ''
             },
-            edit: false
+            edit: false,
+            value: ''
         }
     },
 
     created() {
         this.fetchDegree();
+        this.calcSalary();
     },
 
     methods: {
@@ -41,6 +47,29 @@ export default{
                     this.degree = res.data;
                 })
                 .catch(err => console.log(err));
+        },
+        calcSalary() {
+            const URL = 'https://api.bls.gov/publicAPI/v2/timeseries/data/';
+            const API_KEY = '?key=d99cc000b0ef4e9dac845bbb2fb0269d';
+            const DATASET = 'OE';
+            const NOT_SEASONAL = 'U';
+            const STATE = 'S';
+            const INDUSTRY_CODE = '000000';
+            const AVERAGE_SALARY = '04';
+
+            var stateCode = '5300000';
+            var occupationalCode = '172071';
+
+            var query = URL + DATASET + NOT_SEASONAL + STATE + stateCode + INDUSTRY_CODE + occupationalCode + AVERAGE_SALARY + API_KEY;
+            var value;
+            fetch(query)
+                .then(res => res.json())
+                .then(res => {
+                    this.value = res.Results.series[0].data[0].value;
+                })
+                .catch(err => console.log(err));
+
+
         }
     },
 
