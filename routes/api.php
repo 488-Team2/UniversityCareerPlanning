@@ -40,5 +40,8 @@ Route::delete('degree', 'App\Http\Controllers\DegreeController@destroy');
 //Get collection of survey questions
 Route::get('/survey/questions', [CareerSurveyQuestionController::class, 'index']);
 
+//Submit question responses to
+Route::get('/survey/questions', [CareerSurveyQuestionController::class, 'index']);
+
 //Get specific survey question
 Route::get('/survey/question/{id}', [CareerSurveyQuestionController::class, 'show']);

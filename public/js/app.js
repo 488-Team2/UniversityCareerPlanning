@@ -2147,13 +2147,88 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Survey",
   data: function data() {
-    return {};
+    return {
+      questions: Array,
+      currentQuestion: Object,
+      currentQuestionIndex: 0,
+      selectedAnswer: null,
+      responses: [],
+      alerts: [],
+      alertType: ""
+    };
   },
-  methods: {},
-  computed: {}
+  created: function created() {
+    this.fetchQuestions();
+  },
+  methods: {
+    fetchQuestions: function fetchQuestions() {
+      var self = this;
+      axios({
+        method: "get",
+        Accept: "application/json",
+        url: 'api/survey/questions'
+      }).then(function (response) {
+        self.questions = response.data.data;
+        self.currentQuestion = self.questions[0];
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    goToNextQuestion: function goToNextQuestion() {
+      if (this.questions.length > 0 && this.currentQuestionIndex !== this.questions.length - 1) {
+        this.responses.push(this.selectedAnswer);
+        this.currentQuestion = this.questions[++this.currentQuestionIndex];
+        this.selectedAnswer = null;
+      } else {
+        this.sendQuestionResponses();
+      }
+    },
+    sendQuestionResponses: function sendQuestionResponses() {
+      var self = this;
+      axios({
+        method: "post",
+        Accept: "application/json",
+        url: 'api/survey',
+        data: this.responses
+      }).then(function (response) {
+        if (response.status === 201) {
+          this.alerts = [];
+          this.alerts.push('Successfully submitted career survey!');
+          this.alertType = "alert-success";
+        }
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    }
+  },
+  computed: {
+    isDisabled: function isDisabled() {
+      return this.selectedAnswer === null;
+    },
+    buttonText: function buttonText() {
+      if (this.currentQuestionIndex < this.questions.length - 1) {
+        return "Next question";
+      } else {
+        return "Complete survey";
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -2186,7 +2261,7 @@ Vue.component('degrees', __webpack_require__(/*! ./components/Degrees.vue */ "./
 Vue.component('login', __webpack_require__(/*! ./components/Login.vue */ "./resources/js/components/Login.vue").default);
 Vue.component('navbar', __webpack_require__(/*! ./components/Navbar.vue */ "./resources/js/components/Navbar.vue").default);
 Vue.component('register', __webpack_require__(/*! ./components/Register.vue */ "./resources/js/components/Register.vue").default);
-Vue.component('error-message', __webpack_require__(/*! ./components/Alert.vue */ "./resources/js/components/Alert.vue").default);
+Vue.component('alert', __webpack_require__(/*! ./components/Alert.vue */ "./resources/js/components/Alert.vue").default);
 Vue.component('survey', __webpack_require__(/*! ./components/Survey.vue */ "./resources/js/components/Survey.vue").default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -38320,7 +38395,7 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("error-message", {
+      _c("alert", {
         attrs: { "alert-array": _vm.alerts, alertType: _vm.alertType }
       }),
       _vm._v(" "),
@@ -38534,7 +38609,58 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c(
+    "div",
+    [
+      _c("alert", {
+        attrs: { "alert-array": _vm.alerts, alertType: _vm.alertType }
+      }),
+      _vm._v(" "),
+      _c("h2", [_vm._v(_vm._s(_vm.currentQuestion.question_text))]),
+      _vm._v(" "),
+      _vm._l(_vm.currentQuestion.career_survey_answers, function(answer) {
+        return _c("div", [
+          _c("label", { attrs: { for: answer.answer_text } }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.selectedAnswer,
+                  expression: "selectedAnswer"
+                }
+              ],
+              attrs: { name: "answer", type: "radio" },
+              domProps: {
+                value: answer.answer_text,
+                checked: _vm._q(_vm.selectedAnswer, answer.answer_text)
+              },
+              on: {
+                change: function($event) {
+                  _vm.selectedAnswer = answer.answer_text
+                }
+              }
+            }),
+            _vm._v("\n            " + _vm._s(answer.answer_text) + "\n        ")
+          ])
+        ])
+      }),
+      _vm._v(" "),
+      _c("p", [
+        _vm._v("Current question: " + _vm._s(this.currentQuestionIndex + 1))
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          attrs: { disabled: _vm.isDisabled },
+          on: { click: _vm.goToNextQuestion }
+        },
+        [_vm._v(_vm._s(_vm.buttonText))]
+      )
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
