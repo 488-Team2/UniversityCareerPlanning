@@ -1,13 +1,22 @@
 <template>
     <div>
         <alert :alert-array="alerts" :alertType="alertType"></alert>
-        <h2>{{ currentQuestion.question_text }}</h2>
-        <div v-for="answer in currentQuestion.career_survey_answers">
-            <label :for="answer.answer_text">
-                <input v-model="selectedAnswer" name="answer" type="radio"
-                       :value="answer.answer_text">
-                {{ answer.answer_text }}
-            </label>
+        <h2 :class="currentQuestion.question_code">{{ currentQuestion.question_text }}</h2>
+        <div>
+            <div>
+                <label>
+                    <input v-model="selectedAnswer" name="answer" type="radio"
+                           value="yes">
+                    Yes
+                </label>
+            </div>
+            <div>
+                <label>
+                    <input v-model="selectedAnswer" name="answer" type="radio"
+                           value="no">
+                    No
+                </label>
+            </div>
         </div>
 
         <p>Current question: {{ this.currentQuestionIndex + 1 }}</p>
@@ -21,12 +30,13 @@ export default {
     data() {
         return {
             questions: Array,
-            currentQuestion: Object,
+            currentQuestion: {},
             currentQuestionIndex: 0,
             selectedAnswer: null,
             responses: [],
             alerts: [],
-            alertType: ""
+            alertType: "",
+            responseArray: {"R": 0, "I": 0, "A": 0, "S": 0, "E": 0, "C": 0}
         }
     },
     created() {
@@ -42,31 +52,23 @@ export default {
             }).then(function (response) {
                 self.questions = response.data.data;
                 self.currentQuestion = self.questions[0];
+                console.log(self.currentQuestion);
             }).catch(error => console.log(error));
         },
         goToNextQuestion() {
             if (this.questions.length > 0 && this.currentQuestionIndex !== this.questions.length - 1) {
+                if (this.selectedAnswer === "yes")
+                    this.responseArray[this.currentQuestion.question_code]++;
+
                 this.responses.push(this.selectedAnswer);
                 this.currentQuestion = this.questions[++this.currentQuestionIndex];
                 this.selectedAnswer = null;
             } else {
-                this.sendQuestionResponses();
+                //Grade the responses and give a recommendation for the types of degrees
+                this.alerts = [];
+                this.alerts.push('Successfully submitted career survey!');
+                this.alertType = "alert-success";
             }
-        },
-        sendQuestionResponses() {
-            let self = this;
-            axios({
-                method: "post",
-                Accept: "application/json",
-                url: 'api/survey',
-                data: this.responses
-            }).then(function (response) {
-                if (response.status === 201) {
-                    this.alerts = [];
-                    this.alerts.push('Successfully submitted career survey!');
-                    this.alertType = "alert-success";
-                }
-            }).catch(error => console.log(error));
         }
     },
     computed: {

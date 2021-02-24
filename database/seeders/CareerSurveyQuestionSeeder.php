@@ -20,10 +20,6 @@ class CareerSurveyQuestionSeeder extends Seeder
             //Make responses for each question
             $responses = CareerSurveyResponse::factory(20)->make();
             $question->careerSurveyResponses()->saveMany($responses);
-
-            //Make answer options for each question
-            $answers = CareerSurveyAnswer::factory(4)->make();
-            $question->careerSurveyAnswers()->saveMany($answers);
         });
     }
 }

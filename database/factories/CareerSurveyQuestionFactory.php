@@ -22,7 +22,8 @@ class CareerSurveyQuestionFactory extends Factory
     public function definition()
     {
         return [
-            'question_text' => $this->faker->sentence . "?"
+            'question_text' => $this->faker->sentence . "?",
+            'question_code' => ['R', 'I', 'A', 'S', 'E', 'C'][array_rand(['R', 'I', 'A', 'S', 'E', 'C'])]
         ];
     }
 }

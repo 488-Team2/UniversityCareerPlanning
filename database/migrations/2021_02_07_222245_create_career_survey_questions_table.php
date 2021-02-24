@@ -16,6 +16,7 @@ class CreateCareerSurveyQuestionsTable extends Migration
         Schema::create('career_survey_questions', function (Blueprint $table) {
             $table->id();
             $table->string('question_text');
+            $table->string('question_code');
             $table->timestamps();
         });
     }

@@ -16,7 +16,8 @@ class CareerSurveyQuestion extends Model
      * @var array
      */
     protected $fillable = [
-        'question_text'
+        'question_text',
+        'question_code'
     ];
 
     public function careerSurveyResponses(): HasMany

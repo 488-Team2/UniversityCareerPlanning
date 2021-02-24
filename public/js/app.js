@@ -2160,17 +2160,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Survey",
   data: function data() {
     return {
       questions: Array,
-      currentQuestion: Object,
+      currentQuestion: {},
       currentQuestionIndex: 0,
       selectedAnswer: null,
       responses: [],
       alerts: [],
-      alertType: ""
+      alertType: "",
+      responseArray: {
+        "R": 0,
+        "I": 0,
+        "A": 0,
+        "S": 0,
+        "E": 0,
+        "C": 0
+      }
     };
   },
   created: function created() {
@@ -2186,35 +2203,23 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         self.questions = response.data.data;
         self.currentQuestion = self.questions[0];
+        console.log(self.currentQuestion);
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     goToNextQuestion: function goToNextQuestion() {
       if (this.questions.length > 0 && this.currentQuestionIndex !== this.questions.length - 1) {
+        if (this.selectedAnswer === "yes") this.responseArray[this.currentQuestion.question_code]++;
         this.responses.push(this.selectedAnswer);
         this.currentQuestion = this.questions[++this.currentQuestionIndex];
         this.selectedAnswer = null;
       } else {
-        this.sendQuestionResponses();
+        //Grade the responses and give a recommendation for the types of degrees
+        this.alerts = [];
+        this.alerts.push('Successfully submitted career survey!');
+        this.alertType = "alert-success";
       }
-    },
-    sendQuestionResponses: function sendQuestionResponses() {
-      var self = this;
-      axios({
-        method: "post",
-        Accept: "application/json",
-        url: 'api/survey',
-        data: this.responses
-      }).then(function (response) {
-        if (response.status === 201) {
-          this.alerts = [];
-          this.alerts.push('Successfully submitted career survey!');
-          this.alertType = "alert-success";
-        }
-      })["catch"](function (error) {
-        return console.log(error);
-      });
     }
   },
   computed: {
@@ -38616,11 +38621,13 @@ var render = function() {
         attrs: { "alert-array": _vm.alerts, alertType: _vm.alertType }
       }),
       _vm._v(" "),
-      _c("h2", [_vm._v(_vm._s(_vm.currentQuestion.question_text))]),
+      _c("h2", { class: _vm.currentQuestion.question_code }, [
+        _vm._v(_vm._s(_vm.currentQuestion.question_text))
+      ]),
       _vm._v(" "),
-      _vm._l(_vm.currentQuestion.career_survey_answers, function(answer) {
-        return _c("div", [
-          _c("label", { attrs: { for: answer.answer_text } }, [
+      _c("div", [
+        _c("div", [
+          _c("label", [
             _c("input", {
               directives: [
                 {
@@ -38630,21 +38637,41 @@ var render = function() {
                   expression: "selectedAnswer"
                 }
               ],
-              attrs: { name: "answer", type: "radio" },
-              domProps: {
-                value: answer.answer_text,
-                checked: _vm._q(_vm.selectedAnswer, answer.answer_text)
-              },
+              attrs: { name: "answer", type: "radio", value: "yes" },
+              domProps: { checked: _vm._q(_vm.selectedAnswer, "yes") },
               on: {
                 change: function($event) {
-                  _vm.selectedAnswer = answer.answer_text
+                  _vm.selectedAnswer = "yes"
                 }
               }
             }),
-            _vm._v("\n            " + _vm._s(answer.answer_text) + "\n        ")
+            _vm._v("\n                Yes\n            ")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c("label", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.selectedAnswer,
+                  expression: "selectedAnswer"
+                }
+              ],
+              attrs: { name: "answer", type: "radio", value: "no" },
+              domProps: { checked: _vm._q(_vm.selectedAnswer, "no") },
+              on: {
+                change: function($event) {
+                  _vm.selectedAnswer = "no"
+                }
+              }
+            }),
+            _vm._v("\n                No\n            ")
           ])
         ])
-      }),
+      ]),
       _vm._v(" "),
       _c("p", [
         _vm._v("Current question: " + _vm._s(this.currentQuestionIndex + 1))
@@ -38659,7 +38686,7 @@ var render = function() {
         [_vm._v(_vm._s(_vm.buttonText))]
       )
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []

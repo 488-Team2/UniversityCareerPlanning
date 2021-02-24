@@ -9,7 +9,7 @@ class CareerSurveyQuestion extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request): array
@@ -17,7 +17,7 @@ class CareerSurveyQuestion extends JsonResource
         return [
             'id' => $this->id,
             'question_text' => $this->question_text,
-            'career_survey_answers' => $this->careerSurveyAnswers
+            'question_code' => $this->question_code
         ];
     }
 }
