@@ -4,6 +4,6 @@
 @section('content')
 
     <div class="container">
-        <survey></survey>
+        <survey-app></survey-app>
     </div>
 @endsection

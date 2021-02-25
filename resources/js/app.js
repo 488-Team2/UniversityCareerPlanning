@@ -5,8 +5,9 @@
  */
 
 require('./bootstrap');
+import {createApp} from 'vue';
 
-window.Vue = require('vue').default;
+let app = createApp({});
 
 /**
  * The following block of code may be used to automatically register your
@@ -19,12 +20,14 @@ window.Vue = require('vue').default;
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('degrees', require('./components/Degrees.vue').default);
-Vue.component('login', require('./components/Login.vue').default);
-Vue.component('navbar', require('./components/Navbar.vue').default);
-Vue.component('register', require('./components/Register.vue').default);
-Vue.component('alert', require('./components/Alert.vue').default);
-Vue.component('survey', require('./components/Survey.vue').default);
+app.component('degrees', require('./components/Degrees').default);
+app.component('login', require('./components/Login').default);
+app.component('navbar', require('./components/Navbar').default);
+app.component('register', require('./components/Register').default);
+app.component('alert', require('./components/Alert').default);
+app.component('survey', require('./components/Survey').default);
+app.component('survey-app', require('./components/SurveyApp').default);
+app.component('survey-grader', require('./components/SurveyGrader').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -32,6 +35,4 @@ Vue.component('survey', require('./components/Survey.vue').default);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: '#app',
-});
+app.mount('#app');

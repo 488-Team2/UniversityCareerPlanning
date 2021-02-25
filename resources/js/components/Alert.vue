@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div :class="alertType" class='alert' role="alert" v-for="alert in this.alertArray">
+        <div :class="alertType" class='alert' role="alert" v-for="alert in alertArray">
             {{ alert }}
         </div>
     </div>
@@ -8,7 +8,7 @@
 
 <script>
 export default {
-    name: "ErrorMessage",
+    name: "Alert",
     props: {
         alertArray: Array,
         alertType: String

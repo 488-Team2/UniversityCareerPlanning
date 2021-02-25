@@ -19,8 +19,8 @@
             </div>
         </div>
 
-        <p>Current question: {{ this.currentQuestionIndex + 1 }}</p>
-        <button v-on:click="goToNextQuestion" :disabled="isDisabled">{{ buttonText }}</button>
+        <p>Current question: {{ currentQuestionIndex + 1 }}</p>
+        <button class="btn btn-primary" v-on:click="goToNextQuestion" :disabled="isDisabled">{{ buttonText }}</button>
     </div>
 </template>
 
@@ -52,7 +52,6 @@ export default {
             }).then(function (response) {
                 self.questions = response.data.data;
                 self.currentQuestion = self.questions[0];
-                console.log(self.currentQuestion);
             }).catch(error => console.log(error));
         },
         goToNextQuestion() {
@@ -64,10 +63,8 @@ export default {
                 this.currentQuestion = this.questions[++this.currentQuestionIndex];
                 this.selectedAnswer = null;
             } else {
-                //Grade the responses and give a recommendation for the types of degrees
-                this.alerts = [];
-                this.alerts.push('Successfully submitted career survey!');
-                this.alertType = "alert-success";
+                //Send responses to parent component so they can be graded
+                this.$emit('submitSurvey', this.responseArray);
             }
         }
     },
