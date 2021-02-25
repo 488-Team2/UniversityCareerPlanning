@@ -1,21 +1,19 @@
 <template>
     <div>
-       <h2 class="mt-3">{{degree.degree_name}}</h2>
-       <p>{{degree.degree_description}}</p>
-       <div id="stats">
-        <scale class="mb-4" :rate='degree.graduation_rate' :name="'Graduation Rate'"></scale>
-        <scale class="mb-4" :rate='degree.job_demand' :name="'Job Demand'"></scale>
-       </div>
+        <h2 class="mt-3">{{degree.degree_name}}</h2>
+        <p>{{degree.degree_description}}</p>
+        <div id="stats">
+            <scale class="mb-4" :rate='degree.graduation_rate' :name="'Graduation Rate'"></scale>
+            <scale class="mb-4" :rate='degree.job_demand' :name="'Job Demand'"></scale>
+        </div>
 
-       <div>
-       
-       </div>
+        <salary :jobArr="degree.job_prospects.split(', ')"></salary>
+        
     </div>
 </template>
 
 <script>
-
-export default{
+export default {
     data() {
         return {
             degree: {
@@ -24,7 +22,8 @@ export default{
                 degree_description: '',
                 department_id: '',
                 graduation_rate: '',
-                job_demand: ''
+                job_demand: '',
+                job_prospects: '',
             },
             edit: false,
             value: ''
@@ -75,17 +74,13 @@ export default{
 
 
 }
-
 </script>
 
 <style>
-
 #stats {
-  padding: 20px;
-  border-radius: 25px;
-  background-color: #ECECEC;
-  width: 50%;
+    padding: 20px;
+    border-radius: 25px;
+    background-color: #ECECEC;
+    width: 50%;
 }
-
-
 </style>

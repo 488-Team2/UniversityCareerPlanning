@@ -30,7 +30,7 @@ class StateController extends Controller
      */
     public function show($stateName)
     {
-        $state = State::find($stateName);
+        $state = State::where('state_name', $stateName)->first();
 
         return new StateResource($state);
     }

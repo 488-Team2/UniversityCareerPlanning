@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class State extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'state_name',
+        'state_code'
+    ];
 }
