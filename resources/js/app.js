@@ -27,7 +27,7 @@ app.component('register', require('./components/Register').default);
 app.component('alert', require('./components/Alert').default);
 app.component('survey', require('./components/Survey').default);
 app.component('survey-app', require('./components/SurveyApp').default);
-app.component('survey-grader', require('./components/SurveyGrader').default);
+app.component('survey-results', require('./components/SurveyResults').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
