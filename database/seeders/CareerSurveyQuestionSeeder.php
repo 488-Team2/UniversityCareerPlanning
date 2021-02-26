@@ -16,7 +16,7 @@ class CareerSurveyQuestionSeeder extends Seeder
      */
     public function run()
     {
-        CareerSurveyQuestion::factory(10)->create()->each(function ($question) {
+        CareerSurveyQuestion::factory(48)->create()->each(function ($question) {
             //Make responses for each question
             $responses = CareerSurveyResponse::factory(20)->make();
             $question->careerSurveyResponses()->saveMany($responses);

@@ -15,14 +15,14 @@ export default {
     },
     methods: {
         changeSurveyView(responses) {
-            this.currentComponent = 'survey-grader';
+            this.currentComponent = 'survey-results';
             this.responses = responses;
             confetti();
         }
     },
     computed: {
         currentProperties() {
-            if (this.currentComponent === 'survey-grader') {
+            if (this.currentComponent === 'survey-results') {
                 return {responses: this.responses}
             }
         }

@@ -2,7 +2,7 @@
     <div>
         <alert :alert-array="alerts" :alertType="alertType"></alert>
         <h2 :class="currentQuestion.question_code">{{ currentQuestion.question_text }}</h2>
-        <div>
+        <div class="answer-inputs">
             <div>
                 <label>
                     <input v-model="selectedAnswer" name="answer" type="radio"
