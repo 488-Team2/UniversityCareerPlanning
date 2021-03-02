@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Degrees')
+@section('title', 'Home')
 @section('content')
 
     <div class="container">
         <navbar></navbar>
-        <degrees></degrees>
+        <home></home>
     </div>
 @endsection
