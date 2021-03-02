@@ -17,3 +17,24 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('submit', 'App\Http\Controllers\ContactFormController@submit');
+Route::get('contacts', 'App\Http\Controllers\ContactFormController@index');
+
+
+// list of all degrees
+Route::get('degrees', 'App\Http\Controllers\DegreeController@index');
+
+// search degrees
+Route::get('search/{keyword}', 'App\Http\Controllers\DegreeController@search');
+
+// show detailed degree
+Route::get('degree/{id}', 'App\Http\Controllers\DegreeController@show');
+
+// create new degree
+Route::post('degree', 'App\Http\Controllers\DegreeController@store');
+
+// update degree
+Route::put('degree', 'App\Http\Controllers\DegreeController@store');
+
+// delete degree
+Route::delete('degree', 'App\Http\Controllers\DegreeController@destroy');
