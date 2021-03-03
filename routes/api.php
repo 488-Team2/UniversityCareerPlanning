@@ -46,4 +46,4 @@ Route::get('state/{stateName}', 'App\Http\Controllers\StateController@show');
 Route::get('jobs', 'App\Http\Controllers\jobController@index');
 
 // return job_code
-Route::get('job/{jobName', 'App\Http\Controllers\JobController@show');
+Route::get('job/{jobName}', 'App\Http\Controllers\JobController@show');

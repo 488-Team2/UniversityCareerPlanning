@@ -31,9 +31,8 @@ class JobController extends Controller
      */
     public function show($jobName)
     {
-        $job = Job::where('job_name', $stateName)->first();
-
-        return new JobResouce($job);
+        $job = Job::where('job_name', $jobName)->first();
+        return new JobResource($job);
     }
 
 }

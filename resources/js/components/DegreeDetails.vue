@@ -5,9 +5,16 @@
         <div id="stats">
             <scale class="mb-4" :rate='degree.graduation_rate' :name="'Graduation Rate'"></scale>
             <scale class="mb-4" :rate='degree.job_demand' :name="'Job Demand'"></scale>
+        </div class="mb-8">
+            <h4 class="mt-4" >Job Prospects</h4>
+            <li class="mb-2" v-for="job in degree.job_prospects.split(',')" :key="degree.id">
+            {{job}}
+            </li>
+        <div>
+         
         </div>
 
-        <salary :jobArr="degree.job_prospects.split(', ')"></salary>
+        <salary  class="mt-4" :jobArr="degree.job_prospects.split(', ')"></salary>
         
     </div>
 </template>
@@ -32,7 +39,6 @@ export default {
 
     created() {
         this.fetchDegree();
-        this.calcSalary();
     },
 
     methods: {
@@ -47,29 +53,6 @@ export default {
                 })
                 .catch(err => console.log(err));
         },
-        calcSalary() {
-            const URL = 'https://api.bls.gov/publicAPI/v2/timeseries/data/';
-            const API_KEY = '?key=d99cc000b0ef4e9dac845bbb2fb0269d';
-            const DATASET = 'OE';
-            const NOT_SEASONAL = 'U';
-            const STATE = 'S';
-            const INDUSTRY_CODE = '000000';
-            const AVERAGE_SALARY = '04';
-
-            var stateCode = '5300000';
-            var occupationalCode = '172071';
-
-            var query = URL + DATASET + NOT_SEASONAL + STATE + stateCode + INDUSTRY_CODE + occupationalCode + AVERAGE_SALARY + API_KEY;
-            var value;
-            fetch(query)
-                .then(res => res.json())
-                .then(res => {
-                    this.value = res.Results.series[0].data[0].value;
-                })
-                .catch(err => console.log(err));
-
-
-        }
     },
 
 
