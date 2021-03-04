@@ -23,6 +23,16 @@ class DegreeController extends Controller
        return DegreeResource::collection($degrees);
     }
 
+    public function set($ids)
+    {
+        $idArr = explode(" ", $ids);
+        
+        $degrees = Degree::whereIn("id", $idArr)->paginate(10);
+
+        //return collection of degrees as a resource
+        return DegreeResource::collection($degrees);
+    }
+
     public function search($keyword)
     {
 

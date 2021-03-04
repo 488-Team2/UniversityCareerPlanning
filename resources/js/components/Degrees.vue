@@ -49,11 +49,15 @@ export default{
     created() {
         this.fetchDegrees();
     },
-
     methods: {
         fetchDegrees(page_url) {
+            const url = window.location.href;
+            var ids = url.split("/").slice(-1)[0]; // gets the ids from the url
+            ids == 'degrees' ? ids = "" : ids = "/" + ids;
+
             let vm = this;
-            page_url = page_url || 'api/degrees'
+
+            page_url = page_url || '/api/degrees' + ids;
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {

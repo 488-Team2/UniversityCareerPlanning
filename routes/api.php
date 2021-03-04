@@ -21,6 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // list of all degrees
 Route::get('degrees', 'App\Http\Controllers\DegreeController@index');
 
+// set of degrees from ID
+Route::get('degrees/{ids}', 'App\Http\Controllers\DegreeController@set');
 // search degrees
 Route::get('search/{keyword}', 'App\Http\Controllers\DegreeController@search');
 
