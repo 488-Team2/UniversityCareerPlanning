@@ -29,7 +29,9 @@ class DegreeFactory extends Factory
             'degree_description' => $this->faker->sentence,
             'department_id' => Department::all()->random(),
             'graduation_rate' => $this->faker->numberBetween(0, 100),
-            'job_demand' => $this->faker->numberBetween(0, 100)
+            'job_demand' => $this->faker->numberBetween(0, 100),
+            'job_prospects' => $this->faker->jobTitle,
+            'keywords' => $this->faker->sentence
         ];
     }
 }

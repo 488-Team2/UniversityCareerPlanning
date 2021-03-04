@@ -11,12 +11,6 @@ class Job extends Model
 
     protected $fillable = [
         'job_name',
-        'job_description',
-        'job_link',
-        'degree_id'
+        'job_code'
     ];
-
-    public function degrees() {
-        return $this->belongsToMany(Degree::class);
-    }
 }

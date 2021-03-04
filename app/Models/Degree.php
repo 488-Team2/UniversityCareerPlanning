@@ -14,7 +14,9 @@ class Degree extends Model
         'degree_description',
         'department_id',
         'graduation_rate',
-        'job_demand'
+        'job_demand',
+        'job_prospects',
+        'keywords'
     ];
 
     public function department()
