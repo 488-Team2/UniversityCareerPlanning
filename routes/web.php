@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,20 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/degrees/{ids}', function () {
-    return view('degrees');
-});
+Route::get('/', function () {
+    return view('welcome');
+ })->middleware('auth');
+ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/degrees', function () {
-    return view('degrees');
-});
+Auth::routes();
 
-Route::get('/login', function () {
-    return view('login');
-});
-Route::get('/register', function () {
-    return view('register');
-});
-Route::get('/degree/{id}', function () {
-    return view('degreeDetails');
-});
+
+Route::get('/getCurrentUser', function() {
+    return Auth::user()->load('roles');
+ });
+
+Route::match(['get', 'post'], '/logout', 'Auth\LoginController@logout')->name('logout');
+

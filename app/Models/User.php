@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Role;
 
 class User extends Authenticatable
 {
@@ -17,12 +18,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'full_name',
+        'name',
         'email',
         'password',
-        'department_id',
-        'username',
-        'account_type'
     ];
 
     /**
@@ -44,20 +42,39 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function department()
+//--------------------------------------------------------------------
+    public function roles()
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsToMany(Role::class);
     }
 
-    public function sessions()
+    /**
+    * @param string|array $roles
+    */
+    public function authorizeRoles($roles)
     {
-        return $this->hasMany(Session::class);
+    if (is_array($roles)) {
+        return $this->hasAnyRole($roles) || 
+                abort(401, 'This action is unauthorized.');
     }
-
-    public function careerSurveyResponses()
+    return $this->hasRole($roles) || 
+            abort(401, 'This action is unauthorized.');
+    }
+    /**
+    * Check multiple roles
+    * @param array $roles
+    */
+    public function hasAnyRole($roles)
     {
-        return $this->hasMany(CareerSurveyResponse::class);
+    return null !== $this->roles()->whereIn('name', $roles)->first();
     }
-
+    /**
+    * Check one role
+    * @param string $role
+    */
+    public function hasRole($role)
+    {
+    return null !== $this->roles()->where('name', $role)->first();
+    }
 
 }
