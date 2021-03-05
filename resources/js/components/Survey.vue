@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import ax from 'axios';
+
 export default {
     name: "Survey",
     data() {
@@ -45,14 +47,14 @@ export default {
     methods: {
         fetchQuestions() {
             let self = this;
-            axios({
+            ax({
                 method: "get",
                 Accept: "application/json",
-                url: 'api/survey/questions',
+                url: '/api/survey/questions',
             }).then(function (response) {
                 self.questions = response.data.data;
                 self.currentQuestion = self.questions[0];
-            }).catch(error => console.log(error));
+            }).catch(error => console.error(error));
         },
         goToNextQuestion() {
             if (this.questions.length > 0 && this.currentQuestionIndex !== this.questions.length - 1) {

@@ -4,10 +4,11 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
-import {createApp} from 'vue';
+import Vue from "vue";
 
-let app = createApp({});
+require('./bootstrap');
+
+window.Vue = require('vue').default;
 
 /**
  * The following block of code may be used to automatically register your
@@ -20,14 +21,14 @@ let app = createApp({});
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-app.component('degrees', require('./components/Degrees').default);
-app.component('login', require('./components/Login').default);
-app.component('navbar', require('./components/Navbar').default);
-app.component('register', require('./components/Register').default);
-app.component('alert', require('./components/Alert').default);
-app.component('survey', require('./components/Survey').default);
-app.component('survey-app', require('./components/SurveyApp').default);
-app.component('survey-results', require('./components/SurveyResults').default);
+Vue.component('degrees', require('./components/Degrees').default);
+Vue.component('login', require('./components/Login').default);
+Vue.component('navbar', require('./components/Navbar').default);
+Vue.component('register', require('./components/Register').default);
+Vue.component('alert', require('./components/Alert').default);
+Vue.component('survey', require('./components/Survey').default);
+Vue.component('survey-app', require('./components/SurveyApp').default);
+Vue.component('survey-results', require('./components/SurveyResults').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -35,4 +36,6 @@ app.component('survey-results', require('./components/SurveyResults').default);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-app.mount('#app');
+const app = new Vue({
+    el: '#app',
+});
