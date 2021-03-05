@@ -23,6 +23,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // list of all degrees
 Route::get('degrees', 'App\Http\Controllers\DegreeController@index');
 
+// set of degrees from ID
+Route::get('degrees/{ids}', 'App\Http\Controllers\DegreeController@set');
 // search degrees
 Route::get('search/{keyword}', 'App\Http\Controllers\DegreeController@search');
 
@@ -36,8 +38,19 @@ Route::post('degree', 'App\Http\Controllers\DegreeController@store');
 Route::put('degree', 'App\Http\Controllers\DegreeController@store');
 
 // delete degree
-Route::delete('degree', 'App\Http\Controllers\DegreeController@destroy');
+Route::delete('degree/{id}', 'App\Http\Controllers\DegreeController@destroy');
 
+// list the states
+Route::get('states', 'App\Http\Controllers\StateController@index');
+
+// return state_code
+Route::get('state/{stateName}', 'App\Http\Controllers\StateController@show');
+
+// list the jobs
+Route::get('jobs', 'App\Http\Controllers\jobController@index');
+
+// return job_code
+Route::get('job/{jobName}', 'App\Http\Controllers\JobController@show');
 //Get collection of survey questions
 Route::get('/survey/questions', [CareerSurveyQuestionController::class, 'index']);
 

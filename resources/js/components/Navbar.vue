@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-sm navbar-dark bg-info">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar=brand" href="/">University Career Planning</a>
+                <a class="nav-link" id="header" href="/degrees" >University Career Planning</a>
             </div>
             <div class="row">
                 <div class="col">
@@ -25,3 +25,12 @@ export default {
     name: "navbar"
 }
 </script>
+
+<style>
+#header {
+    color: white;
+}
+
+
+
+</style>
