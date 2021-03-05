@@ -1,7 +1,7 @@
 <template>
     <div>
     <h2>Degrees</h2>
-    <nav aria-label="Page navigation example">
+    <nav
         <ul class="pagination">
             <li v-bind:class="[{disabled: !pagination.prev_page_url}]" 
             class="page-item"><a class="page-link" href="#" 
