@@ -36,7 +36,6 @@ export default {
             value: ''
         }
     },
-
     created() {
         this.fetchDegree();
     },

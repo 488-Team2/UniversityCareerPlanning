@@ -45,7 +45,6 @@ export default{
             edit: false
         }
     },
-
     created() {
         this.fetchDegrees();
     },
