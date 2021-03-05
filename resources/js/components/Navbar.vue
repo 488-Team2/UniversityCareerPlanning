@@ -24,3 +24,12 @@
     </nav>
 
 </template>
+
+<style>
+#header {
+    color: white;
+}
+
+
+
+</style>

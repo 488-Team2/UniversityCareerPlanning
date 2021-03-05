@@ -22,9 +22,8 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
-
-Route::get('/degrees', function () {
-    return view('welcome');
+Route::get('/degrees/{ids}', function () {
+    return view('degrees');
 });
 Route::get('/login', function () {
     return view('login');
@@ -33,3 +32,16 @@ Route::get('/register', function () {
     return view('register');
 });
 
+Route::get('/degrees', function () {
+    return view('degrees');
+});
+
+Route::get('/login', function () {
+    return view('login');
+});
+Route::get('/register', function () {
+    return view('register');
+});
+Route::get('/degree/{id}', function () {
+    return view('degreeDetails');
+});

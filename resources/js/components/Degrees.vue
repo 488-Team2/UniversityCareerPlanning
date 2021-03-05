@@ -1,7 +1,7 @@
 <template>
     <div>
     <h2>Degrees</h2>
-    <nav
+    <nav aria-label="Page navigation example">
         <ul class="pagination">
             <li v-bind:class="[{disabled: !pagination.prev_page_url}]" 
             class="page-item"><a class="page-link" href="#" 
@@ -17,9 +17,11 @@
         </ul>
     </nav>
 
-        <div class="card card-body mb-2" v-for="degree in degrees" v-bind:key="degree.id">
-            <h3> {{degree.degree_name}} </h3>
-            <p> {{degree.degree_description}} </p>
+        <div id="grow" class="card card-body mb-2" v-for="degree in degrees" v-bind:key="degree.id">
+            <a class="degree" :href="'degree/' + degree.id" >
+                <h3> {{degree.degree_name}} </h3>
+                <p> {{degree.degree_description}} </p>
+            </a>
         </div>
     </div>
 </template>
@@ -47,11 +49,15 @@ export default{
     created() {
         this.fetchDegrees();
     },
-
     methods: {
         fetchDegrees(page_url) {
+            const url = window.location.href;
+            var ids = url.split("/").slice(-1)[0]; // gets the ids from the url
+            ids == 'degrees' ? ids = "" : ids = "/" + ids;
+
             let vm = this;
-            page_url = page_url || 'api/degrees'
+
+            page_url = page_url || '/api/degrees' + ids;
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {
@@ -76,3 +82,19 @@ export default{
 }
 
 </script>
+
+<style>
+
+.degree, .degree:hover{
+    color: black;
+    text-decoration: none;
+}
+
+#grow { 
+    transition: all .2s ease-in-out; 
+}
+#grow:hover { 
+    transform: scale(1.03); 
+}
+
+</style>

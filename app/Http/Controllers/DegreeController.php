@@ -23,11 +23,23 @@ class DegreeController extends Controller
        return DegreeResource::collection($degrees);
     }
 
+    public function set($ids)
+    {
+        $idArr = explode(" ", $ids);
+        
+        $degrees = Degree::whereIn("id", $idArr)->paginate(10);
+
+        //return collection of degrees as a resource
+        return DegreeResource::collection($degrees);
+    }
+
     public function search($keyword)
     {
 
         $degrees = Degree::where("degree_name", "like", "%".$keyword."%")
-                    ->orwhere("degree_description", "like", "%".$keyword."%")->get();
+                    ->orwhere("degree_description", "like", "%".$keyword."%")
+                    ->orwhere("keywords", "like", "%".$keyword."%")
+                    ->orwhere("job_prospects", "like", "%".$keyword."%")->get();
 
         return DegreeResource::collection($degrees);
     }
@@ -58,6 +70,8 @@ class DegreeController extends Controller
         $degree->department_id = $request ->input('department_id');
         $degree->graduation_rate = $request ->input('graduation_rate');
         $degree->job_demand = $request ->input('job_demand');
+        $degree->job_prospects = $request ->input('job_prospects');
+        $degree->keywords = $request ->input('keywords');
 
         if($degree->save()) {
             return new DegreeResource($degree);
@@ -77,6 +91,7 @@ class DegreeController extends Controller
 
         //return single degree as a resouce
         return new DegreeResource($degree);
+        
     }
 
     /**
@@ -117,6 +132,7 @@ class DegreeController extends Controller
         if($degree->delete()){
              return new DegreeResource($degree);
         }
+        
     }
 
 
