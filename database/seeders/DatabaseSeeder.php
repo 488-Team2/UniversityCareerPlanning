@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
                 CareerSurveyQuestionSeeder::class,
                 DepartmentSeeder::class,
                 DegreeSeeder::class,
-                JobSeeder::class,
                 SessionSeeder::class
             ]
         );
