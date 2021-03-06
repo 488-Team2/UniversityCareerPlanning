@@ -36,11 +36,10 @@ export default {
             for (let topLettersKey in this.topLetters) {
                 degreeUrl += topLettersKey + " ";
             }
-            console.log(degreeUrl);
+
             axios.get(degreeUrl)
                 .then(function (response) {
                     self.degreeOptions = response.data.data;
-                    console.log(self.degreeOptions);
                 });
         }
     }
