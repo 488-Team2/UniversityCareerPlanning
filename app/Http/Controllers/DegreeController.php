@@ -127,7 +127,6 @@ class DegreeController extends Controller
     public function destroy($id)
     {
         //get degree
-
         $degree = Degree::findOrFail($id);
 
         if($degree->delete()){
