@@ -19,7 +19,7 @@ class CreateDegreesTable extends Migration
             $table->string('degree_description');
             $table->string('degree_code');
             $table->integer('department_id');
-            $table->foreign('department_id')->references('departments')->on('id');
+            $table->foreign('department_id')->references('id')->on('departments');
             $table->integer('graduation_rate');
             $table->integer('job_demand');
             $table->timestamps();

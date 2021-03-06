@@ -2,8 +2,8 @@
     <div>
         <h2>Your career survey results</h2>
         <ul>
-            <li v-for="(score, letter) in topLetters">
-                {{ letter }} - {{ score }}
+            <li v-for="degree in this.degreeOptions">
+                {{ degree.degree_name }} - {{ degree.degree_description }}
             </li>
         </ul>
     </div>
@@ -17,7 +17,8 @@ export default {
     },
     data() {
         return {
-            topLetters: Object
+            topLetters: Object,
+            degreeOptions: Array
         }
     },
     created() {
@@ -26,6 +27,21 @@ export default {
     methods: {
         gradeSurvey() {
             this.topLetters = Object.fromEntries(Object.entries(this.responses).sort(([, a], [, b]) => b - a).slice(0, 3));
+            console.log(this.topLetters);
+            this.showDegreeOptions();
+        },
+        showDegreeOptions() {
+            let self = this;
+            let degreeUrl = "/api/degrees/codes/";
+            for (let topLettersKey in this.topLetters) {
+                degreeUrl += topLettersKey + " ";
+            }
+            console.log(degreeUrl);
+            axios.get(degreeUrl)
+                .then(function (response) {
+                    self.degreeOptions = response.data.data;
+                    console.log(self.degreeOptions);
+                });
         }
     }
 }
