@@ -1,6 +1,6 @@
 <template>
     <div>
-        <component v-bind:is="currentComponent" @submitSurvey="changeSurveyView" v-bind="currentProperties"></component>
+        <component v-bind:is="currentComponent" @submitSurvey="changeSurveyView" @beginSurvey="beginSurveyQuiz" v-bind="currentProperties"></component>
     </div>
 </template>
 
@@ -9,7 +9,7 @@ export default {
     name: "SurveyApp",
     data() {
         return {
-            currentComponent: 'survey',
+            currentComponent: 'survey-start',
             responses: []
         }
     },
@@ -18,6 +18,9 @@ export default {
             this.currentComponent = 'survey-results';
             this.responses = responses;
             confetti();
+        },
+        beginSurveyQuiz() {
+            this.currentComponent = 'survey';
         }
     },
     computed: {

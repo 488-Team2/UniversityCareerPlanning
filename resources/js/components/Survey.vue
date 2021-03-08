@@ -1,7 +1,7 @@
 <template>
     <div>
         <alert :alert-array="alerts" :alertType="alertType"></alert>
-        <h2 :class="currentQuestion.question_code">{{ currentQuestion.question_text }}</h2>
+        <h2 :class="currentQuestion.question_code">Question: {{ currentQuestion.question_text }}</h2>
         <div class="answer-inputs">
             <div>
                 <label>
@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <p>Current question: {{ currentQuestionIndex + 1 }}</p>
+        <p>Current question: {{ currentQuestionIndex + 1 }} / {{ questions.length }}</p>
         <button class="btn btn-primary" v-on:click="goToNextQuestion" :disabled="isDisabled">{{ buttonText }}</button>
     </div>
 </template>

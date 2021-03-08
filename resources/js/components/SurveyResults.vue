@@ -1,6 +1,7 @@
 <template>
     <div>
         <h2>Your career survey results</h2>
+        <p>Based on your responses to the quesions in the survey, we recommend the following degree paths. You can click on each degree option to find out more information about them.</p>
         <ul>
             <li v-for="degree in this.degreeOptions">
                 {{ degree.degree_name }} - {{ degree.degree_description }}

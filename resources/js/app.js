@@ -24,6 +24,7 @@ window.Vue = require('vue').default;
 Vue.component('alert', require('./components/Alert').default);
 Vue.component('survey', require('./components/Survey').default);
 Vue.component('survey-app', require('./components/SurveyApp').default);
+Vue.component('survey-start', require('./components/SurveyStart').default);
 Vue.component('survey-results', require('./components/SurveyResults').default);
 Vue.component('degrees', require('./components/Degrees.vue').default);
 Vue.component('login', require('./components/Login.vue').default);
