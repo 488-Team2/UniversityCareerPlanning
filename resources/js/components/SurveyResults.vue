@@ -1,10 +1,12 @@
 <template>
     <div>
         <h2>Your career survey results</h2>
-        <p>Based on your responses to the quesions in the survey, we recommend the following degree paths. You can click on each degree option to find out more information about them.</p>
+        <p>Based on your responses to the questions in the survey, we recommend the following degree paths. You can
+            click
+            on each degree option to find out more information about them.</p>
         <ul>
             <li v-for="degree in this.degreeOptions">
-                {{ degree.degree_name }} - {{ degree.degree_description }}
+                <a v-bind:href="'/degree/${degree.id}'">{{ degree.degree_name }}</a>
             </li>
         </ul>
     </div>
@@ -28,7 +30,6 @@ export default {
     methods: {
         gradeSurvey() {
             this.topLetters = Object.fromEntries(Object.entries(this.responses).sort(([, a], [, b]) => b - a).slice(0, 3));
-            console.log(this.topLetters);
             this.showDegreeOptions();
         },
         showDegreeOptions() {
