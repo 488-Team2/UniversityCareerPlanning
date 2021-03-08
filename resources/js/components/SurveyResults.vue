@@ -6,7 +6,7 @@
             on each degree option to find out more information about them.</p>
         <ul>
             <li v-for="degree in this.degreeOptions">
-                <a v-bind:href="'/degree/${degree.id}'">{{ degree.degree_name }}</a>
+                <a v-bind:href="'/degree/'+degree.id" target="_blank">{{ degree.degree_name }}</a>
             </li>
         </ul>
     </div>
