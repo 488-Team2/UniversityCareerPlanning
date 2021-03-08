@@ -22,8 +22,8 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::get('/degrees/{ids}', function () {
-    return view('degrees');
+Route::get('/degrees/{ids}', function ($ids) {
+    return view('degreeIDs', ['ids'=>$ids]);
 });
 Route::get('/login', function () {
     return view('login');
@@ -36,12 +36,10 @@ Route::get('/degrees', function () {
     return view('degrees');
 });
 
-Route::get('/login', function () {
-    return view('login');
-});
-Route::get('/register', function () {
-    return view('register');
-});
 Route::get('/degree/{id}', function () {
     return view('degreeDetails');
+});
+
+Route::get('/degreeSearch/{keywords}', function ($keywords) {
+    return view('degreeSearch', ['keywords'=>$keywords]);
 });

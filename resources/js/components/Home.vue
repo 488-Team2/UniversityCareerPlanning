@@ -5,12 +5,12 @@
         Explore our undergraduate, master's, doctoral, and certificate programs.
         Search your interests and we will match you with degrees
         </p>
-        <div class="input-group mb-3">
-            <input class="form-control mr-sm-2" type="search" placeholder="career or degree keywords" aria-label="Search">
+        <form action="degrees/'search'" class="input-group mb-3">
+            <input class="form-control mr-sm-2" name="search" placeholder="career or degree keywords" aria-label="Search">
             <div class="input-group-append">
             <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
         </div>
-        </div>
+        </form>
         <div class="d-flex justify-content-center">
             <button type="button" class="btn btn-outline-danger">SEARCH BY INTERESTS</button>
             <button type="button" class="btn btn-outline-danger">   TAKE SERVEY   </button>
