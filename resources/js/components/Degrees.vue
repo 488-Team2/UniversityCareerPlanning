@@ -49,7 +49,7 @@
             },
             degree_id: '', //how it will know which degree to update
             pagination: {},
-            url: "",
+            url: null,
 
         }
     },
@@ -70,16 +70,10 @@
             }
         },
         fetchDegrees(page_url) {
-           // const url = window.location.href;
-            //var ids = url.split("/").slice(-1)[0]; // gets the ids from the url
-           // ids == 'degrees' ? ids = "" : ids = "/" + ids;
-
-            console.log(this.keywords);
-
 
             let vm = this;
 
-            page_url = page_url || this.url  //'/api/degrees' + ids;
+            page_url = page_url || this.url
             fetch(page_url)
                 .then(res => res.json())
                 .then(res => {

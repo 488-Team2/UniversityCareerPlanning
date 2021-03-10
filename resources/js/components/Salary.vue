@@ -3,7 +3,7 @@
         <h1>Salary</h1>
     
         <div>
-            <select class="mb-4" v-model="currentJob" name="jobSelect">
+            <select class="mb-4" v-model="currentJobName" name="jobSelect">
                             <option value="0">Please select a job</option>
                             <option v-for="job in jobArr" @click="fetchJobCode()" :value="job">{{ job }}</option>
                          </select>
@@ -17,7 +17,7 @@
         </div>
     
         <div>
-            <h2 v-model="salary" :key="[currentJob, currentState]">{{salary}}</h2>
+            <h2 v-model="salary" :key="[currentJobCode, currentState]">{{salary}}</h2>
         </div>
     </div>
 </template>
@@ -27,7 +27,7 @@ export default {
     data() {
         return {
             jobs: [],
-            currentJob: '',
+            currentJobName: '',
             currentJobCode: '',
             stateArr: [],
             currentState: null,
@@ -92,8 +92,8 @@ export default {
     },
     computed: {
         fetchJobCode() {
-            console.log(this.currentJob);
-            fetch('/api/job/' + this.currentJob)
+            
+            fetch('/api/job/' + this.currentJobName)
                 .then(res => res.json())
                 .then(res => {
                     this.currentJobCode = res.data.job_code;

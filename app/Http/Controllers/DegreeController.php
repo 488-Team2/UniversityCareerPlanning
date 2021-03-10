@@ -39,7 +39,7 @@ class DegreeController extends Controller
         $degrees = Degree::where("degree_name", "like", "%".$keyword."%")
                     ->orwhere("degree_description", "like", "%".$keyword."%")
                     ->orwhere("keywords", "like", "%".$keyword."%")
-                    ->orwhere("job_prospects", "like", "%".$keyword."%")->get();
+                    ->orwhere("job_prospects", "like", "%".$keyword."%")->paginate(10);
 
         return DegreeResource::collection($degrees);
     }

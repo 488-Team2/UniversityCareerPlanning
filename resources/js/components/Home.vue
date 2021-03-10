@@ -5,12 +5,12 @@
         Explore our undergraduate, master's, doctoral, and certificate programs.
         Search your interests and we will match you with degrees
         </p>
-        <form action="degrees/'search'" class="input-group mb-3">
-            <input class="form-control mr-sm-2" name="search" placeholder="career or degree keywords" aria-label="Search">
-            <div class="input-group-append">
-            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
+        <div class="input-group mb-3">
+            <input v-model="keywords" class="form-control mr-sm-2" placeholder="career or degree keywords">
+            <a :href="'/degreeSearch/' + this.keywords">
+                <button class="btn btn-outline-secondary my-2 my-sm-0" @ >Search</button>
+            </a>
         </div>
-        </form>
         <div class="d-flex justify-content-center">
             <button type="button" class="btn btn-outline-danger">SEARCH BY INTERESTS</button>
             <button type="button" class="btn btn-outline-danger">   TAKE SERVEY   </button>
@@ -30,7 +30,13 @@
 </template>    
 
 <script>
-
+    export default {
+        data: function () {
+            return {
+                keywords: ""
+            }
+        },
+    }
 
 </script>
 
