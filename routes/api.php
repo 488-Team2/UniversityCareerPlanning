@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CareerSurveyQuestionController;
+use App\Http\Controllers\CareerSurveyResponseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +27,8 @@ Route::get('degrees', 'App\Http\Controllers\DegreeController@index');
 
 // set of degrees from ID
 Route::get('degrees/{ids}', 'App\Http\Controllers\DegreeController@set');
+// set of degrees from Holland codes
+Route::get('degrees/codes/{codes}', 'App\Http\Controllers\DegreeController@hollandCodeDegrees');
 // search degrees
 Route::get('search/{keyword}', 'App\Http\Controllers\DegreeController@search');
 
@@ -52,3 +56,12 @@ Route::delete('degree/delete/{id}', 'App\Http\Controllers\DegreeController@destr
 Route::get('degreeDisplay', 'App\Http\Controllers\DegreeController@display');
 
 
+
+//Get collection of survey questions
+Route::get('/survey/questions', [CareerSurveyQuestionController::class, 'index']);
+
+//Submit question responses to
+Route::post('/survey', [CareerSurveyResponseController::class, 'store']);
+
+//Get specific survey question
+Route::get('/survey/question/{id}', [CareerSurveyQuestionController::class, 'show']);
