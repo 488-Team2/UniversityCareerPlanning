@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+//use App\Http\Controllers\DegreeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +26,15 @@ Route::get('/contact', function () {
 
 Route::get('/degrees/{ids}', function () {
     return view('degrees');
-});
+//Add Degree page routes
+
+// Home page routes 
+Route::get('/home', function () {    return view('home'); });
+Route::get('/homeLogin', function () {  return view('homeLogin'); });
+
+//Add Degree page
+Route::get('/apiDegree', function () {    return view('apiDegree'); });
+
 Route::get('/login', function () {
     return view('login');
 });
@@ -35,12 +45,6 @@ Route::get('/register', function () {
 Route::get('/degrees', function () {
     return view('degrees');
 });
-
-Route::get('/login', function () {
-    return view('login');
-});
-Route::get('/register', function () {
-    return view('register');
 });
 Route::get('/degree/{id}', function () {
     return view('degreeDetails');

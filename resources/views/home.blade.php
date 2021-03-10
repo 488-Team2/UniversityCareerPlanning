@@ -4,6 +4,7 @@
 @section('content')
 
     <div class="container">
+        <navbar></navbar>
         <home></home>
     </div>
 @endsection

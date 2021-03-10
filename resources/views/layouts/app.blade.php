@@ -16,7 +16,7 @@
 </head>
 <body>
 <div id="app">
-    <navbar></navbar>
+    <!-- <navbar></navbar>  -->
     @yield('content')
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
@@ -25,3 +25,5 @@
 <script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>
+
+
