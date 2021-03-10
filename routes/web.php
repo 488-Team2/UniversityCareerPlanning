@@ -26,6 +26,7 @@ Route::get('/contact', function () {
 
 Route::get('/degrees/{ids}', function () {
     return view('degrees');
+});
 //Add Degree page routes
 
 // Home page routes 
@@ -41,10 +42,8 @@ Route::get('/login', function () {
 Route::get('/register', function () {
     return view('register');
 });
-
 Route::get('/degrees', function () {
     return view('degrees');
-});
 });
 Route::get('/degree/{id}', function () {
     return view('degreeDetails');

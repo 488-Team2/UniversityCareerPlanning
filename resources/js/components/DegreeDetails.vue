@@ -44,7 +44,7 @@ export default {
     methods: {
         fetchDegree() {
             const url = window.location.href;
-            const id = url.split("/").slice(-1)[0]; // gets the id from the url
+            const id = url.split("/").slice(-1)[0]; // gets the id
 
             fetch('/api/degree/' + id)
                 .then(res => res.json())
