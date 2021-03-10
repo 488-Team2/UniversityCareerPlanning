@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-sm navbar-dark bg-info">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar=brand" href="/home">University Career Planning</a>
+                <a id="header" class="navbar=brand" href="/home">University Career Planning</a>
             </div>
             <div class="row">
                 <div class="col">
@@ -27,6 +27,7 @@
 <style>
 #header {
     color: white;
+    text-decoration: none;
 }
 
 
