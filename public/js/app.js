@@ -2113,7 +2113,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 page = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : 1;
                 _context2.prev = 1;
                 _context2.next = 4;
-                return axios.get('http://localhost:8000/api/degreeDisplay?page=' + page);
+                return axios.get('/api/degreeDisplay?page=' + page);
 
               case 4:
                 response = _context2.sent;
@@ -2154,7 +2154,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context3.prev = 0;
                 _context3.next = 3;
-                return axios.put('http://localhost:8000/api/degree/update/' + _this3.selectedDegree.id, {
+                return axios.put('api/degree/update/' + _this3.selectedDegree.id, {
                   degree_name: _this3.selectedDegree.degree_name,
                   degree_description: _this3.selectedDegree.degree_description,
                   department_id: _this3.selectedDegree.department_id,
@@ -2196,7 +2196,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context4.prev = 0;
                 _context4.next = 3;
-                return axios["delete"]('http://localhost:8000/api/degree/delete/' + degree.id);
+                return axios["delete"]('/api/degree/delete/' + degree.id);
 
               case 3:
                 _this4.listDegrees.data.splice(index, 1);

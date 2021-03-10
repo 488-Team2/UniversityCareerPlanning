@@ -179,7 +179,7 @@
             },
             async getListDegrees(page = 1) {
                try {
-                   const response = await axios.get('http://localhost:8000/api/degreeDisplay?page=' + page)
+                   const response = await axios.get('/api/degreeDisplay?page=' + page)
                    this.listDegrees = response.data
                    this.listDegrees.data.forEach(item => {
                         Vue.set(item, 'isEdit', false)
@@ -194,7 +194,7 @@
           },
           async updateDegree(index) {
                 try {
-                    const response = await axios.put('http://localhost:8000/api/degree/update/' + this.selectedDegree.id, {
+                    const response = await axios.put('api/degree/update/' + this.selectedDegree.id, {
                         degree_name: this.selectedDegree.degree_name,
                         degree_description: this.selectedDegree.degree_description,
                         department_id: this.selectedDegree.department_id,
@@ -215,7 +215,7 @@
             },
             async deleteDegree(degree, index) {
                 try {
-                    await axios.delete('http://localhost:8000/api/degree/delete/' + degree.id)
+                    await axios.delete('/api/degree/delete/' + degree.id)
                     this.listDegrees.data.splice(index, 1)
                 } catch (error) {
                     this.error = error.response.data
