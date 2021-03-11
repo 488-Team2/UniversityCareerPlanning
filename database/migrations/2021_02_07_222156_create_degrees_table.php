@@ -20,6 +20,7 @@ class CreateDegreesTable extends Migration
             $table->string('department_id');
             $table->integer('graduation_rate');
             $table->integer('job_demand');
+            $table->string('degree_type');
             $table->timestamps();
         });
     }

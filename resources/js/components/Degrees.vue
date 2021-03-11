@@ -1,26 +1,28 @@
 <template>
     <div>
-    <h2>Degrees</h2>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li v-bind:class="[{disabled: !pagination.prev_page_url}]" 
-            class="page-item"><a class="page-link" href="#" 
-            @click="fetchDegrees(pagination.prev_page_url)">Previous</a></li>
+        <h2>Degrees</h2>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li v-bind:class="[{disabled: !pagination.prev_page_url}]"
+                    class="page-item"><a class="page-link" href="#"
+                                         @click="fetchDegrees(pagination.prev_page_url)">Previous</a></li>
 
-            <li class="page-item disabled"><a class="page-link dark-text"
-             href="#">Page {{ pagination.current_page }} of {{ pagination.last_page }}</a></li>
+                <li class="page-item disabled"><a class="page-link dark-text"
+                                                  href="#">Page {{ pagination.current_page }} of {{
+                        pagination.last_page
+                    }}</a></li>
 
 
-            <li v-bind:class="[{disabled: !pagination.next_page_url}]" 
-            class="page-item"><a class="page-link" href="#"
-             @click="fetchDegrees(pagination.next_page_url)">Next</a></li>
-        </ul>
-    </nav>
+                <li v-bind:class="[{disabled: !pagination.next_page_url}]"
+                    class="page-item"><a class="page-link" href="#"
+                                         @click="fetchDegrees(pagination.next_page_url)">Next</a></li>
+            </ul>
+        </nav>
 
         <div id="grow" class="card card-body mb-2" v-for="degree in degrees" v-bind:key="degree.id">
-            <a class="degree" :href="'degree/' + degree.id" >
-                <h3> {{degree.degree_name}} </h3>
-                <p> {{degree.degree_description}} </p>
+            <a class="degree" :href="'degree/' + degree.id">
+                <h3> {{ degree.degree_type }} in {{ degree.degree_name }} </h3>
+                <p> {{ degree.degree_description }} </p>
             </a>
         </div>
     </div>
@@ -28,7 +30,7 @@
 
 <script>
 
-export default{
+export default {
     data() {
         return {
             degrees: [],
@@ -38,7 +40,8 @@ export default{
                 degree_description: '',
                 department_id: '',
                 graduation_rate: '',
-                job_demand: ''
+                job_demand: '',
+                degree_type: ''
             },
             degree_id: '', //how it will know which degree to update
             pagination: {},
@@ -85,16 +88,17 @@ export default{
 
 <style>
 
-.degree, .degree:hover{
+.degree, .degree:hover {
     color: black;
     text-decoration: none;
 }
 
-#grow { 
-    transition: all .2s ease-in-out; 
+#grow {
+    transition: all .2s ease-in-out;
 }
-#grow:hover { 
-    transform: scale(1.03); 
+
+#grow:hover {
+    transform: scale(1.03);
 }
 
 </style>

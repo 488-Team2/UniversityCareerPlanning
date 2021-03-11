@@ -13,6 +13,7 @@ class Degree extends Model
         'degree_name',
         'degree_description',
         'department_id',
+        'degree_type',
         'graduation_rate',
         'job_demand',
         'job_prospects',

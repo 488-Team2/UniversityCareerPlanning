@@ -3,9 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Degree;
+use App\Models\Department;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Http;
-use  Illuminate\Http\Client\Response;
 
 class DegreeSeeder extends Seeder
 {
@@ -20,7 +21,19 @@ class DegreeSeeder extends Seeder
         $decoded = json_decode($response->body(), true);
         $degreeCollection = collect($decoded['data']);
         $degreeCollection->each(function ($item) {
-            echo $item['name'] . " | ";
+            $faker = Faker::create();
+            Degree::create([
+                'degree_name' => $item['name'],
+                'department_id' => Department::firstOrCreate([
+                    'department_name' => $item['disciplines'][0]['name'],
+                ]),
+                'degree_description' => $faker->sentence,
+                'degree_type' => $item['classification']['name'],
+                'graduation_rate' => $faker->numberBetween(0, 100),
+                'job_demand' => $faker->numberBetween(0, 100),
+                'job_prospects' => $faker->jobTitle,
+                'keywords' => $item['disciplines'][0]['name']
+            ]);
         });
     }
 }
