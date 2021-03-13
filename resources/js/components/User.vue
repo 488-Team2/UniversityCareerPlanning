@@ -1,69 +1,60 @@
 <template>
    <div class="user-management">
-   	<nav class="navbar navbar-default navbar-static-top">
-           <div class="container">
-               <div class="navbar-header">
-                   <!-- Collapsed Hamburger -->
-                   <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
-                       <span class="sr-only">Toggle Navigation</span>
-                       <span class="icon-bar"></span>
-                       <span class="icon-bar"></span>
-                       <span class="icon-bar"></span>
-                   </button>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-info">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar=brand" href="#">University Career Planning</a>
+            </div>
+            <div class="row">
+                <div class="col">
 
-                   <!-- Branding Image -->
-                   <a class="navbar-brand" href="/">
-                       Laravel
-                   </a>
-               </div>
-
-               <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                   <!-- Left Side Of Navbar -->
-                   <ul class="nav navbar-nav">
-                       &nbsp;
-                   </ul>
-
-                   <!-- Right Side Of Navbar -->
-                   <ul class="nav navbar-nav navbar-right">
-                           <li class="dropdown">
-                               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-                                   {{ currentUser.name }} <span class="caret"></span>
-                               </a>
-
-                               <ul class="dropdown-menu">
-                                   <li>
-                                       <a href="/logout">Logout</a>
-                                   </li>
-                               </ul>
-                           </li>
-                   </ul>
-               </div>
-           </div>
-       </nav>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item" v-if="checkIsAdmin"><a class="nav-link" href="/admin/dashboard"> {{ currentUser.name }}</a></li>
+						<li class="nav-item" v-else-if="!checkIsAdmin"><a class="nav-link" href="/student/dashboard"> {{ currentUser.name }}</a></li>
+                        <li class="nav-item"><a class="nav-link" >|</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        </nav>
    </div>
 </template>
 
 <script>
    export default {
        data() {
-           return {
-               currentUser: {}
-           }
-       },
-       created() {
-           this.getCurrentUser()
-       },
-       methods: {
-           getCurrentUser() {
-               axios.get('/getCurrentUser')
-               .then(response => {
-                   this.currentUser = response.data
-               })
-               .catch(error => {
-                   console.log(error)
-               })
-           }
-       }
+			return {
+				currentUser: {}		
+				}
+		},
+		created() {
+			this.getCurrentUser()
+		},
+		methods: {
+			async getCurrentUser() {
+	    		axios.get('http://localhost:8000/getCurrentUser')
+				.then(response => {
+					this.currentUser = response.data
+				})
+				.catch(error => {
+					console.log(error)
+				})
+	    	},
+		},
+		computed: {
+			checkIsAdmin() {
+				if(this.currentUser.roles) {
+					let check = false
+					this.currentUser.roles.forEach(role => {
+						if(role.name === 'admin') {
+							check = true
+						}
+					})
+					return check
+				}
+			}
+		}
    }
 </script>
 

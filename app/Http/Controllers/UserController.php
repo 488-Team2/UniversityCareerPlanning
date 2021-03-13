@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Role;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -13,7 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::get()->load('roles');
+        return $users;
     }
 
     /**
@@ -34,7 +37,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->input('user');
+        $user = new User();
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = bcrypt('123456');
+        $role  = Role::where('name', $data['role'])->first();
+        
+        $user->save();
+
+        $user->roles()->attach($role);
+        return response('success');
     }
 
     /**
