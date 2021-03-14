@@ -36,8 +36,8 @@ Route::get('/degrees', function () {
     return view('degrees');
 });
 
-Route::get('/degree/{id}', function () {
-    return view('degreeDetails');
+Route::get('/degree/{id}', function ($id) {
+    return view('degreeDetails', ['id'=>$id]);
 });
 
 Route::get('/degreeSearch/{keywords}', function ($keywords) {

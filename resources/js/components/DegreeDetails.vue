@@ -28,6 +28,9 @@ export default {
         prev_page_url: {
             type: String
         },
+        degree_id: {
+            type: String
+        }
     },
     data() {
         return {
@@ -52,7 +55,7 @@ export default {
     methods: {
         fetchDegree() {
             const url = window.location.href;
-            const id = url.split("/").slice(-1)[0]; // gets the id from the url
+            const id = this.degree_id;
 
             fetch('/api/degree/' + id)
                 .then(res => res.json())
