@@ -5,7 +5,7 @@
         <div>
             <select class="mb-4" v-model="currentJobName" name="jobSelect">
                             <option value="0">Please select a job</option>
-                            <option v-for="job in jobArr" @click="fetchJobCode()" :value="job">{{ job }}</option>
+                            <option v-for="job in jobArr" :value="job">{{ job }}</option>
                          </select>
         </div>
     
@@ -17,7 +17,7 @@
         </div>
     
         <div>
-            <h2 v-model="salary" :key="[currentJobCode, currentState]">{{salary}}</h2>
+            <h2 v-model="salary" :key="[currentJobCode, currentState.state_code]">{{salary}}</h2>
         </div>
     </div>
 </template>
@@ -30,7 +30,10 @@ export default {
             currentJobName: '',
             currentJobCode: '',
             stateArr: [],
-            currentState: null,
+            currentState: {
+                state_code: '',
+                state_name: ''
+            },
             salary: '',
         }
     },
@@ -79,30 +82,25 @@ export default {
         } //some states don't track all jobs like "Software and Web Developers Programmers and Testers"
     },
     watch: {
-        'currentJobCode': function() {
-            if (this.currentJobCode != '' && this.currentState != null) {
+        'currentJobName': function() {
+
+        fetch('/api/job/' + this.currentJobName)
+            .then(res => res.json())
+            .then(res => {
+                this.currentJobCode = res.data.job_code;
+            })
+            .catch(err => console.log(err));
+
+            if (this.currentJobCode != '' && this.currentState.state_code != null) {
                 this.calcSalary();
             }
         },
-        'currentState': function() {
+        'currentState.state_code': function() {
             if (this.currentJobCode != '' && this.currentState != null) {
                 this.calcSalary();
             }
         }
     },
-    computed: {
-        fetchJobCode() {
-            
-            fetch('/api/job/' + this.currentJobName)
-                .then(res => res.json())
-                .then(res => {
-                    this.currentJobCode = res.data.job_code;
-                })
-                .catch(err => console.log(err));
-
-        },
-    }
-
 }
 </script>
 
