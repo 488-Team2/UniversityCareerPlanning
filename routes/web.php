@@ -19,7 +19,25 @@ Route::get('/degrees', function () {
 Route::get('/login', function () {
     return view('login');
 });
+Route::get('/adminlogin', function () {
+    return view('adminlogin');
+});
 Route::get('/register', function () {
     return view('register');
 });
+<<<<<<< Updated upstream
 
+=======
+Route::get('/degrees', function () {
+    return view('degrees');
+});
+Route::get('/degree/{id}', function () {
+    return view('degreeDetails');
+});
+Route::get('/uniadmindash', function () {
+    return view('uniadmindash');
+});
+Route::get('/depadmindash', function () {
+    return view('depadmindash');
+});
+>>>>>>> Stashed changes
