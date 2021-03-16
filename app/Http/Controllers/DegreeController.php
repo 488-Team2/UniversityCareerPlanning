@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use \Http\Requests;
 use App\Models\Degree;
 use App\Http\Resources\Degree as DegreeResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class DegreeController extends Controller
 {
@@ -16,8 +17,8 @@ class DegreeController extends Controller
      */
     public function index(Request $request)
     {
-       //get degress
-       $degrees = Degree::orderBy('created_at', 'desc')->paginate(10);
+        //get degress
+        $degrees = Degree::orderBy('created_at', 'desc')->paginate(10);
 
        //return collection of degrees as a resource
        return DegreeResource::collection($degrees);
@@ -29,10 +30,20 @@ class DegreeController extends Controller
        return Degree::orderBy('created_at', 'desc')->paginate(10);
     }
 
+    public function hollandCodeDegrees($codes)
+    {
+        $codeArray = explode(" ", $codes);
+
+        $degrees = Degree::whereIn("degree_code", $codeArray)->paginate(10);
+
+        //return collection of degrees as a resource
+        return DegreeResource::collection($degrees);
+    }
+
     public function set($ids)
     {
         $idArr = explode(" ", $ids);
-        
+
         $degrees = Degree::whereIn("id", $idArr)->paginate(10);
 
         //return collection of degrees as a resource
@@ -42,10 +53,10 @@ class DegreeController extends Controller
     public function search($keyword)
     {
 
-        $degrees = Degree::where("degree_name", "like", "%".$keyword."%")
-                    ->orwhere("degree_description", "like", "%".$keyword."%")
-                    ->orwhere("keywords", "like", "%".$keyword."%")
-                    ->orwhere("job_prospects", "like", "%".$keyword."%")->get();
+        $degrees = Degree::where("degree_name", "like", "%" . $keyword . "%")
+            ->orwhere("degree_description", "like", "%" . $keyword . "%")
+            ->orwhere("keywords", "like", "%" . $keyword . "%")
+            ->orwhere("job_prospects", "like", "%" . $keyword . "%")->get();
 
         return DegreeResource::collection($degrees);
     }
@@ -88,7 +99,7 @@ class DegreeController extends Controller
 
         //return single degree as a resouce
         return new DegreeResource($degree);
-        
+
     }
     public function showAll()
     {

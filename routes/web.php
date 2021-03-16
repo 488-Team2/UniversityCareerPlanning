@@ -45,6 +45,9 @@ Route::get('/register', function () {
 Route::get('/degrees', function () {
     return view('degrees');
 });
+Route::get('/survey', function () {
+    return view('survey');
+});
 Route::get('/degree/{id}', function () {
     return view('degreeDetails');
 });
