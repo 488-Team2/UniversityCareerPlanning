@@ -19,9 +19,12 @@ class Degree extends JsonResource
            'id' => $this->id,
            'degree_name' => $this->degree_name,
            'degree_description' => $this->degree_description,
+           'degree_code' => $this->degree_code,
            'department_id' => $this->department_id,
            'graduation_rate' => $this->graduation_rate,
            'job_demand' => $this->job_demand,
+           'job_prospects' => $this->job_prospects,
+           'keywords' => $this->keywords
        ];
     }
 

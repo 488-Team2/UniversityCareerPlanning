@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+//use App\Http\Controllers\DegreeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -12,10 +14,28 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/degrees', function () {
-    return view('welcome');
+Route::get('/home', function () {
+    return view('home');
 });
+Route::get('/homeLogin', function () {
+    return view('homeLogin');
+});
+Route::get('/contact', function () {
+    return view('contact');
+});
+
+Route::get('/degrees/{ids}', function () {
+    return view('degrees');
+});
+//Add Degree page routes
+
+// Home page routes 
+Route::get('/home', function () {    return view('home'); });
+Route::get('/homeLogin', function () {  return view('homeLogin'); });
+
+//Add Degree page
+Route::get('/apiDegree', function () {    return view('apiDegree'); });
+
 Route::get('/login', function () {
     return view('login');
 });
@@ -25,9 +45,16 @@ Route::get('/adminlogin', function () {
 Route::get('/register', function () {
     return view('register');
 });
-<<<<<<< Updated upstream
+Route::get('/degrees', function () {
+    return view('degrees');
+});
+Route::get('/survey', function () {
+    return view('survey');
+});
+Route::get('/degree/{id}', function () {
+    return view('degreeDetails');
+});
 
-=======
 Route::get('/degrees', function () {
     return view('degrees');
 });
@@ -40,4 +67,3 @@ Route::get('/uniadmindash', function () {
 Route::get('/depadmindash', function () {
     return view('depadmindash');
 });
->>>>>>> Stashed changes
