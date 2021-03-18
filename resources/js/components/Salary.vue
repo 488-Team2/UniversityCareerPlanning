@@ -82,9 +82,9 @@ export default {
         } //some states don't track all jobs like "Software and Web Developers Programmers and Testers"
     },
     watch: {
-        'currentJobName': function() {
+        'currentJobName': async function() {
 
-        fetch('/api/job/' + this.currentJobName)
+        await fetch('/api/job/' + this.currentJobName)
             .then(res => res.json())
             .then(res => {
                 this.currentJobCode = res.data.job_code;
