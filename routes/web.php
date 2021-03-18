@@ -24,8 +24,8 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::get('/degrees/{ids}', function () {
-    return view('degrees');
+Route::get('/degrees/{ids}', function ($ids) {
+    return view('degreeIDs', ['ids'=>$ids]);
 });
 //Add Degree page routes
 
@@ -48,6 +48,11 @@ Route::get('/degrees', function () {
 Route::get('/survey', function () {
     return view('survey');
 });
-Route::get('/degree/{id}', function () {
-    return view('degreeDetails');
+
+Route::get('/degree/{id}', function ($id) {
+    return view('degreeDetails', ['id'=>$id]);
+});
+
+Route::get('/degreeSearch/{keywords}', function ($keywords) {
+    return view('degreeSearch', ['keywords'=>$keywords]);
 });

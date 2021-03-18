@@ -5,6 +5,6 @@
 
     <div class="container">
         <navbar></navbar>
-        <degree-details></degree-details>
+        <degree-details :prev_page_url="'{{ URL::previous() }}'" :degree_id="'{{ $id }}'"></degree-details>
     </div>
 @endsection

@@ -1,6 +1,9 @@
 <template>
     <div>
-        <h2 class="mt-3">{{degree.degree_name}}</h2>
+        <a :href="prev_page_url">
+            <button id="back" class="btn btn-danger">Back</button>
+        </a>
+        <h2 class="mt-3" >{{degree.degree_name}}</h2>
         <p>{{degree.degree_description}}</p>
         <div id="stats">
             <scale class="mb-4" :rate='degree.graduation_rate' :name="'Graduation Rate'"></scale>
@@ -21,6 +24,14 @@
 
 <script>
 export default {
+    props: {
+        prev_page_url: {
+            type: String
+        },
+        degree_id: {
+            type: String
+        }
+    },
     data() {
         return {
             degree: {
@@ -44,7 +55,7 @@ export default {
     methods: {
         fetchDegree() {
             const url = window.location.href;
-            const id = url.split("/").slice(-1)[0]; // gets the id
+            const id = this.degree_id;
 
             fetch('/api/degree/' + id)
                 .then(res => res.json())
@@ -66,4 +77,11 @@ export default {
     background-color: #ECECEC;
     width: 50%;
 }
+
+#back {
+    position: absolute;
+    right: 2%;
+}
+
+
 </style>
