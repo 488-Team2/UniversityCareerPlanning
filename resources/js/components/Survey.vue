@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import ax from 'axios';
+import axios from 'axios';
 
 export default {
     name: "Survey",
@@ -41,21 +41,12 @@ export default {
             responseArray: {"R": 0, "I": 0, "A": 0, "S": 0, "E": 0, "C": 0}
         }
     },
-    created() {
-        this.fetchQuestions();
+    created: async function () {
+        const response = await axios.get('/api/survey/questions');
+        this.questions = response.data.data;
+        this.currentQuestion = this.questions[0];
     },
     methods: {
-        fetchQuestions() {
-            let self = this;
-            ax({
-                method: "get",
-                Accept: "application/json",
-                url: '/api/survey/questions',
-            }).then(function (response) {
-                self.questions = response.data.data;
-                self.currentQuestion = self.questions[0];
-            }).catch(error => console.error(error));
-        },
         goToNextQuestion() {
             if (this.questions.length > 0 && this.currentQuestionIndex !== this.questions.length - 1) {
                 if (this.selectedAnswer === "yes")
