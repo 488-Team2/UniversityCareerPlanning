@@ -2,7 +2,7 @@
     <div class="api-degree container mt-5">
         <h1>Create Degree</h1>
         <transition name="fade">
-            <div class="alert alert-danger alert-dismissible" role="alert" v-if="error">
+            <div id="errors" class="alert alert-danger alert-dismissible" role="alert" v-if="error">
                 <b>{{ error.message }}</b>
                 <ul>
                     <li v-for="(errorName, index) in error.errors" :key="index">
@@ -255,6 +255,8 @@ export default {
         },
         async updateDegree(index) {
             try {
+                this.error = null;
+                
                 const response = await axios.put('api/degree/update/' + this.selectedDegree.id, {
                     degree_name: this.selectedDegree.degree_name,
                     degree_description: this.selectedDegree.degree_description,
@@ -272,10 +274,11 @@ export default {
                 this.listDegrees.data[index].job_prospects = response.data.degree.job_prospects
                 this.listDegrees.data[index].isEdit = false
 
+                this.updateSelectedJobNames = [];
+
             } catch (error) {
                 this.error = error.response.data
             }
-            this.updateSelectedJobNames = [];
         },
         async deleteDegree(degree, index) {
             try {
@@ -329,5 +332,9 @@ export default {
 
 li {
     list-style-type: none;
+}
+
+#errors {
+    position: fixed;
 }
 </style>
