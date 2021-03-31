@@ -9,7 +9,7 @@
                         {{ errorName[0] }}
                     </li>
                 </ul>
-                <button type="button" class="close" @click="error = null">
+                <button type="button" class="btn btn-light" @click="error = null">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
             </div>
@@ -256,7 +256,7 @@ export default {
         async updateDegree(index) {
             try {
                 this.error = null;
-                
+
                 const response = await axios.put('api/degree/update/' + this.selectedDegree.id, {
                     degree_name: this.selectedDegree.degree_name,
                     degree_description: this.selectedDegree.degree_description,
