@@ -3,8 +3,8 @@
 @section('title', 'Degrees')
 @section('content')
 
+<navbar></navbar>
     <div class="container">
-        <navbar></navbar>
         <degrees></degrees>
     </div>
 @endsection

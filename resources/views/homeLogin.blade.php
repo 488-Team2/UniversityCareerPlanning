@@ -3,8 +3,8 @@
 @section('title', 'Home')
 @section('content')
 
+<navbarLogin></navbarLogin>
     <div class="container">
-        <navbarLogin></navbarLogin>
         <home-login></home-login>
     </div>
 @endsection
