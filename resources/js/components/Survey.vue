@@ -41,10 +41,12 @@ export default {
             responseArray: {"R": 0, "I": 0, "A": 0, "S": 0, "E": 0, "C": 0}
         }
     },
-    created: async function () {
-        const response = await axios.get('/api/survey/questions');
-        this.questions = response.data.data;
-        this.currentQuestion = this.questions[0];
+    mounted: () => {
+        const self = this;
+        return axios.get('/api/survey/questions').then((response) => {
+            self.questions = response.data.data;
+            self.currentQuestion = self.questions[0];
+        });
     },
     methods: {
         goToNextQuestion() {

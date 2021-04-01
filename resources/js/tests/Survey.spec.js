@@ -7,10 +7,9 @@ test('uses mounts', async () => {
     shallowMount(Survey);
 });
 
-test('has question text', async () => {
+test('has question text', () => {
     const wrapper = shallowMount(Survey);
-    const response = await axios.get('/api/survey/questions');
-    await flushPromises();
-    expect(wrapper.vm.$data.questions[0].question_text).toEqual(response.data.data[0].question_text);
-    console.log(response.data.data[0].question_text);
+    return axios.get('/api/survey/questions').then((response) => {
+        expect(wrapper.vm.$data.questions[0].question_text).toEqual(response.data.data[0].question_text);
+    });
 });
