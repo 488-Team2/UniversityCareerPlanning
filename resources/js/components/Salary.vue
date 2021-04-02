@@ -91,30 +91,33 @@ export default {
 
             await this.fetchStateJob();
 
-            console.log("here");
             if(!this.salaryUpdated){
-                console.log("not here");
+                console.log("BLS API call");
+
                 const URL = 'https://api.bls.gov/publicAPI/v2/timeseries/data/';
                 const API_KEY = '?registrationkey=d99cc000b0ef4e9dac845bbb2fb0269d';
                 const DATASET = 'OE';
                 const NOT_SEASONAL = 'U';
                 const STATE = 'S';
                 const INDUSTRY_CODE = '000000';
-                const AVERAGE_SALARY = '04';
+                const AVERAGE_SALARY = '04';  // 03 -> average hourly rate
 
                 var query = URL + DATASET + NOT_SEASONAL + STATE + this.currentState.state_code + INDUSTRY_CODE + this.currentJobCode + AVERAGE_SALARY + API_KEY;
                 console.log(query);
                 await fetch(query)
                     .then(res => res.json())
                     .then(res => {
-                        if(typeof res.Results.series[0].data[0] !== 'undefined'){
+                        if(typeof res.Results.series[0].data[0] !== 'undefined' && res.Results.series[0].data[0].value !== "-"){
                             this.salary = parseInt(res.Results.series[0].data[0].value);
                             this.formatedSalary = "$ " + this.salary.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            this.storeStateJob();
+                        }
+                        else
+                        {
+                            this.formatedSalary = "No Data Available";
                         }
                     })
                     .catch(err => console.log(err));
-
-                this.storeStateJob();
             }
 
         }
