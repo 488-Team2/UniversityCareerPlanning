@@ -17,7 +17,7 @@
          
         </div>
 
-        <salary  class="mt-4" :jobArr="degree.job_prospects.split(',')"></salary>
+        <salary  class="mt-4" :jobArr="degree.job_prospects.split(', ')"></salary>
         
     </div>
 </template>

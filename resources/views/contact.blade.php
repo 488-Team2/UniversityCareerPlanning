@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <div id="app"> <!-- ID: 'app' -->
+    <div id="app"> 
+        <navbar></navbar>
+
         <br>
         <div class="row">
             <div class="col-6 mx-auto">

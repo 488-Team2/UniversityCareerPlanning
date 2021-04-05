@@ -27,12 +27,9 @@ class DegreeFactory extends Factory
         return [
             'degree_name' => $this->faker->name,
             'degree_description' => $this->faker->sentence,
-            'degree_code' => ['R', 'I', 'A', 'S', 'E', 'C'][array_rand(['R', 'I', 'A', 'S', 'E', 'C'])],
             'department_id' => Department::all()->random(),
             'graduation_rate' => $this->faker->numberBetween(0, 100),
-            'job_demand' => $this->faker->numberBetween(0, 100),
-            'job_prospects' => $this->faker->jobTitle,
-            'keywords' => $this->faker->sentence
+            'job_demand' => $this->faker->numberBetween(0, 100)
         ];
     }
 }
