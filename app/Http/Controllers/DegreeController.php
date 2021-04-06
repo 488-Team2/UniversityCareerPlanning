@@ -87,8 +87,6 @@ class DegreeController extends Controller
         return response([
             'degree' => $degree
         ], 200);
-       
-
     }
 
 
