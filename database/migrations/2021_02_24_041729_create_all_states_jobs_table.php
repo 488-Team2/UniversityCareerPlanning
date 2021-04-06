@@ -18,7 +18,7 @@ class CreateAllStatesJobsTable extends Migration
             $table->string('state_code');
             $table->string('job_name');
             $table->string('job_code');
-            $table->integer('salary');
+            $table->integer('salary')->default(0);
             $table->primary(['state_code', 'job_code']);
             $table->unique(['state_name', 'job_name']);
         });
