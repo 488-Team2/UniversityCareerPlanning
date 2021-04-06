@@ -13,9 +13,9 @@ class AddSalaryToAllStatesJobs extends Migration
      */
     public function up()
     {
-/*        Schema::table('allStatesJobs', function (Blueprint $table) {
+        Schema::table('allStatesJobs', function (Blueprint $table) {
             $table->integer('salary')->default(0);
-        });*/
+        });
     }
 
     /**
