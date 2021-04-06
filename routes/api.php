@@ -49,6 +49,12 @@ Route::get('jobs', 'App\Http\Controllers\jobController@index');
 // return job_code
 Route::get('job/{jobName}', 'App\Http\Controllers\JobController@show');
 
+// return StateJob
+Route::get('StateJob/{stateName}_{jobName}', 'App\Http\Controllers\AllStateJobController@show');
+
+// create new state job
+Route::post('StateJob/create', 'App\Http\Controllers\AllStateJobController@store');
+
 Route::post('degree/create', 'App\Http\Controllers\DegreeController@store');
 Route::get('degree/edit/{id}', 'App\Http\Controllers\DegreeController@edit');
 Route::put('degree/update/{id}', 'App\Http\Controllers\DegreeController@update');
