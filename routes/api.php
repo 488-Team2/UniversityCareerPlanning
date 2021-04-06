@@ -3,6 +3,7 @@
 use App\Http\Controllers\CareerSurveyQuestionController;
 use App\Http\Controllers\CareerSurveyResponseController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('submit', 'App\Http\Controllers\ContactFormController@submit');
 Route::get('contacts', 'App\Http\Controllers\ContactFormController@index');
+
+Route::get('/getCurrentUser', function () {
+    return Auth::user()->load('roles');
+});
 
 // list of all degrees
 Route::get('degrees', 'App\Http\Controllers\DegreeController@index');

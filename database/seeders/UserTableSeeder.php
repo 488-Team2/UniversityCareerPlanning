@@ -25,7 +25,7 @@ class UserTableSeeder extends Seeder
         $student->password = bcrypt('123456');
         $student->email_verified_at = now();
         $student->department_id = 1;
-        $student->username = 'student';
+        //$student->username = 'student';
         $student->account_type = 'student';
         $student->save();
         $student->roles()->attach($role_student);
@@ -36,7 +36,7 @@ class UserTableSeeder extends Seeder
         $user->password = bcrypt('123456');
         $user->email_verified_at = now();
         $user->department_id = 1;
-        $user->username = 'user';
+        //$user->username = 'user';
         $user->account_type = 'user';
         $user->save();
         $user->roles()->attach($role_user);
@@ -47,7 +47,7 @@ class UserTableSeeder extends Seeder
         $manager->password = bcrypt('123456');
         $manager->email_verified_at = now();
         $manager->department_id = 3;
-        $manager->username = 'admin';
+        //$manager->username = 'admin';
         $manager->account_type = 'admin';
         $manager->save();
         $manager->roles()->attach($role_manager);
