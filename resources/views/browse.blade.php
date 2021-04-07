@@ -1,9 +1,12 @@
+
 @extends('layouts.app')
 
-@section('title', 'Home')
+@section('title', 'Welcome')
 @section('content')
 
     <div class="container">
+        <User></User>
+        <br>
         <home-login></home-login>
     </div>
-@endsection
+@endsection 
