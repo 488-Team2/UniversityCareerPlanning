@@ -20,4 +20,5 @@ public/css/
 
 public/js/
 package-lock.json
-cover/**/*
+
+coverage/
