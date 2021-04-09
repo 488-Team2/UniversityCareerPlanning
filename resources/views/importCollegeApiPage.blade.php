@@ -5,6 +5,6 @@
 
     <div class="container">
         <navbar></navbar>
-        <degrees></degrees>
+        <import-college-api></import-college-api>
     </div>
 @endsection

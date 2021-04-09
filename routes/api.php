@@ -34,6 +34,10 @@ Route::get('degrees', 'App\Http\Controllers\DegreeController@index');
 Route::get('degrees/{ids}', 'App\Http\Controllers\DegreeController@set');
 // set of degrees from Holland codes
 Route::get('degrees/codes/{codes}', 'App\Http\Controllers\DegreeController@hollandCodeDegrees');
+
+// Set of degree table columns
+Route::get('degreetags', 'App\Http\Controllers\DegreeController@getDegreeColumnNames');
+
 // search degrees
 Route::get('search/{keyword}', 'App\Http\Controllers\DegreeController@search');
 

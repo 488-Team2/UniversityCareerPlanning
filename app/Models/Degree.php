@@ -30,4 +30,10 @@ class Degree extends Model
     {
         return $this->belongsToMany(Job::class);
     }
+
+    public function getColumns(): array
+    {
+        $columns = $this->getFillable();
+        return $columns;
+    }
 }
