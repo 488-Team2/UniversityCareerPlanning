@@ -100,7 +100,7 @@ export default {
                 const NOT_SEASONAL = 'U';
                 const STATE = 'S';
                 const INDUSTRY_CODE = '000000';
-                const AVERAGE_SALARY = '04';  // 03 -> average hourly rate
+                const AVERAGE_SALARY = '04';              
 
                 var query = URL + DATASET + NOT_SEASONAL + STATE + this.currentState.state_code + INDUSTRY_CODE + this.currentJobCode + AVERAGE_SALARY + API_KEY;
                 console.log(query);
@@ -132,12 +132,12 @@ export default {
             })
             .catch(err => console.log(err));
 
-            if (this.currentJobCode != '' && this.currentState.state_code != null) {
+            if (this.currentJobCode != '' && this.currentState.state_code != "") {
                 this.calcSalary();
             }
         },
         'currentState.state_code': function() {
-            if (this.currentJobCode != '' && this.currentState != null) {
+            if (this.currentJobCode != '' && this.currentState.state_code != "") {
                 this.calcSalary();
             }
         }
