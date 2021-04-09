@@ -15,9 +15,10 @@ class CreateCareerSurveyResponsesTable extends Migration
     {
         Schema::create('career_survey_responses', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id');
-            $table->string('session_id');
-            $table->string('question_id');
+            $table->integer('user_id');
+            $table->integer('session_id');
+            $table->integer('career_survey_question_id');
+            $table->foreign('career_survey_question_id')->references('id')->on('career_survey_questions');
             $table->integer('response_code');
             $table->timestamps();
         });

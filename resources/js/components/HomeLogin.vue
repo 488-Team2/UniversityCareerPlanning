@@ -1,6 +1,6 @@
 <template>
     <div>     
-        <navbarLogin></navbarLogin>
+        <!-- <navbarLogin></navbarLogin> -->
         <h1 class="text-center">  University Career Planning </h1>
         <p class="text-md-center">
         Explore our undergraduate, master's, doctoral, and certificate programs.

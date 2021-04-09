@@ -12,6 +12,7 @@ class Degree extends Model
     protected $fillable = [
         'degree_name',
         'degree_description',
+        'degree_code',
         'department_id',
         'degree_type',
         'graduation_rate',
