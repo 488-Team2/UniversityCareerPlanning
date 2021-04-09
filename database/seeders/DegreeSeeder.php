@@ -27,6 +27,7 @@ class DegreeSeeder extends Seeder
                 'department_id' => Department::firstOrCreate([
                     'department_name' => $item['disciplines'][0]['name'],
                 ]),
+                'degree_code' => ['R', 'I', 'A', 'S', 'E', 'C'][array_rand(['R', 'I', 'A', 'S', 'E', 'C'])],
                 'degree_description' => $faker->sentence,
                 'degree_type' => $item['classification']['name'],
                 'graduation_rate' => $faker->numberBetween(0, 100),
