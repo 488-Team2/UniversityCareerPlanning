@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p v-for="tag in tags">{{tag}}</p>
+        <div class="attributeBox border border-primary rounded text-center fs-4 shadow-sm" v-for="tag in tableAttributes" v-on:click="selectAttribute">{{tag}}</div>
     </div>
 </template>
 
@@ -9,23 +9,24 @@ import axios from "axios";
 export default {
     name: "ImportCollegeAPI",
     async created() {
-        await this.fetchTags();
+        await this.fetchAttributes();
     },
     methods: {
-        async fetchTags() {
+        async fetchAttributes() {
             return axios.get('/api/degreetags').then(response => {
-                this.tags = response.data;
+                this.tableAttributes = response.data;
             });
+        },
+        selectAttribute() {
         }
     },
     data() {
         return {
-            tags: {}
+            tableAttributes: {}
         }
     }
 }
 </script>
 
 <style scoped>
-
 </style>
