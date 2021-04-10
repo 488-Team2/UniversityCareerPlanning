@@ -13,12 +13,11 @@
     <title>@yield('title', 'Career Planning') | Career Planning</title>
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
 </head>
 <body>
 <div id="app">
-    <!-- <navbar></navbar> -->
+     <navbar></navbar>
     @yield('content')
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
