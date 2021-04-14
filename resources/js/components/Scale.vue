@@ -12,27 +12,45 @@
 <script>
 
 export default {
+  data() {
+        return {
+            range: 0,
+            midRange: 0
+        }
+    },
     props: {
         rate: {
-            type: String
+            type: Number
         },
         name: {
           type: String
+        },
+        max: {
+          type: Number
+        },
+        min: {
+          type: Number
         }
-
+    },
+    created() {
+        this.range = (this.max - this.min)
+        this.midRange = this.range/2;
     },
     computed: {
     calcRate() {
+        console.log((100/this.range)*this.min*-1);
+        console.log(this.rate*(100/this.range));
+        console.log(100-(100/this.range)*this.min*-1-(this.rate*(100/this.range)));
       return {
         "background-color": `#2A2A2A`,
         width: `2%`,
-        "margin-left": `${100-parseInt(this.rate)}%`
+        "margin-left": `${100-(100/this.range)*this.min*-1-(this.rate*(100/this.range))}%` 
 
       };
     },
     calcLocation() {
       return {
-        "margin-left": `${(100-parseInt(this.rate))}%`
+        "margin-left": `${100-(100/this.range)*this.min*-1-(this.rate*(100/this.range))}%`
 
       };
     }
