@@ -7,6 +7,7 @@ use \Http\Requests;
 use App\Models\Degree;
 use App\Http\Resources\Degree as DegreeResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Log;
 
 class DegreeController extends Controller
 {
@@ -46,7 +47,7 @@ class DegreeController extends Controller
      *
      * @return array
      */
-    public function getDegreeColumnNames()
+    public function getDegreeColumnNames(): array
     {
         $degree = new Degree();
         return $degree->getColumns();

@@ -36,7 +36,9 @@ Route::get('degrees/{ids}', 'App\Http\Controllers\DegreeController@set');
 Route::get('degrees/codes/{codes}', 'App\Http\Controllers\DegreeController@hollandCodeDegrees');
 
 // Set of degree table columns
-Route::get('degreetags', 'App\Http\Controllers\DegreeController@getDegreeColumnNames');
+Route::get('/degreetags', 'App\Http\Controllers\DegreeController@getDegreeColumnNames');
+// Handles post from /api/degreetags, Saving API import information in database
+Route::post('/degreetags', 'App\Http\Controllers\DegreeApiImportInfoController@store');
 
 // search degrees
 Route::get('search/{keyword}', 'App\Http\Controllers\DegreeController@search');
