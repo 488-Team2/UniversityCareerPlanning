@@ -44,13 +44,13 @@ export default {
       return {
         "background-color": `#2A2A2A`,
         width: `2%`,
-        "margin-left": `${100-(100/this.range)*this.min*-1-(this.rate*(100/this.range))}%` 
+        "margin-left": `${(100/this.range)*this.min*-1+(this.rate*(100/this.range))}%` 
 
       };
     },
     calcLocation() {
       return {
-        "margin-left": `${100-(100/this.range)*this.min*-1-(this.rate*(100/this.range))}%`
+        "margin-left": `${(100/this.range)*this.min*-1+(this.rate*(100/this.range))}%`
 
       };
     }
@@ -65,7 +65,7 @@ export default {
 /* Container for skill bars */
 #container {
   width: 100%; /* Full width */
-  background-image: linear-gradient(to right, green, yellow, red);
+  background-image: linear-gradient(to right, red, yellow, green);
   border-radius: 25px;
 }
 
