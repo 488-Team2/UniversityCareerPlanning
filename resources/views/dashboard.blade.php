@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
+<!--             <div class="card">
                 <div class="card-header">{{ __('Student Dashboard') }}</div>
 
                 <div class="card-body">
@@ -16,8 +16,10 @@
 
                     {{ __('You are logged in!') }}
                 </div>
-            </div>
+            </div> -->
             <student-dashboard></student-dashboard>
+            <br>
+            <load-session></load-session>
 
         </div>
     </div>

@@ -9,6 +9,7 @@
                 <a v-bind:href="'/degree/'+degree.id" target="_blank">{{ degree.degree_name }}</a>
             </li>
         </ul>
+        <button class="btn btn-primary" @click="addSessionSurvey(result)" > Save To Session </button>
     </div>
 </template>
 
@@ -21,11 +22,16 @@ export default {
     data() {
         return {
             topLetters: Object,
-            degreeOptions: Array
+            degreeOptions: Array,
+
+            count: '0',
+            surveySessions: []
+            
         }
     },
     created() {
         this.gradeSurvey();
+        this.viewSurveySession();
     },
     methods: {
         gradeSurvey() {
@@ -43,9 +49,32 @@ export default {
                 .then(function (response) {
                     self.degreeOptions = response.data.data;
                 });
-        }
+        },
+        viewSurveySession() {
+            if(localStorage.getItem('surveySessions')) {
+                this.surveySessions = JSON.parse(localStorage.getItem('surveySessions'));
+                this.count = this.surveySessions.length;
+            }
+        },
+        addSessionSurvey(result) {
+            
+            this.surveySessions = [...this.degreeOptions ];
+            this.storeSession();
+            alert('Result saved!');
+
+        },
+        storeSession() {
+             let parsed = JSON.stringify(this.surveySessions);
+             localStorage.setItem('surveySessions', parsed);
+             this.viewSurveySession();
+        }, 
+        removeSession(res) {
+            this.surveySessions.splice(res, 1);
+            this.storeSession();
+        } 
     }
 }
+
 </script>
 
 <style scoped>

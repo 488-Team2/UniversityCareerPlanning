@@ -7,6 +7,8 @@ require('./bootstrap');
 window.Vue = require('vue').default;
 
 
+//Saved Session
+Vue.component('load-session', require('./components/LoadSavedSession.vue').default);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('User', require('./components/User.vue').default);
