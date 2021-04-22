@@ -1,6 +1,6 @@
 <template>
     <div>
-        <alert :alert-array="alerts" :alertType="alertType"></alert>
+        <alert-message :alert-array="alerts" :alertType="alertType"></alert-message>
         <div class="row">
             <div class="col-sm-8">
                 <h1>Registration</h1>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import Alert from "./Alert";
+import Alert from "./AlertMessage";
 
 export default {
     name: "Register",
