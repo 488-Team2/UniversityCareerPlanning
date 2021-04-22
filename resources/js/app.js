@@ -40,4 +40,4 @@ Vue.component('salary', require('./components/Salary.vue').default);
 
 const app = new Vue({
     el: '#app',
-}).$mount();
+});
