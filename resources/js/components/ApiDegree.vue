@@ -39,8 +39,8 @@
             <label>Job Prospects</label>
             <div id="selectedJobs">
                 
-                <li class="mb-1" v-for="(job, index) in createSelectedJobNames" :key="index">
-                <button id="delete" type="button" class="btn btn-danger" @click="createDegreeRemoveElement(job)" >Delete</button>
+                <li class="mb-1" v-for="(job, index) in selectedJobNames" :key="index">
+                <button id="delete" type="button" class="btn btn-danger" @click="removeJob(job)" >Delete</button>
                 {{job}}
                 </li>
             </div>
