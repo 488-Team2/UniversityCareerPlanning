@@ -19,6 +19,10 @@
         <div>
             <h2 v-model="formatedSalary" :key="[currentJobCode, currentState.state_code]">{{formatedSalary}}</h2>
         </div>
+
+        <div  v-if="currentJobDemand!=null" id="stats">
+            <scale class="mb-4" :max='10' :min='-10' :rate='currentJobDemand' :name="'Job Demand'"></scale>
+        </div>
     </div>
 </template>
 
@@ -29,6 +33,7 @@ export default {
             jobs: [],
             currentJobName: '',
             currentJobCode: '',
+            currentJobDemand: null,
             stateArr: [],
             currentState: {
                 state_code: '',
@@ -129,6 +134,7 @@ export default {
             .then(res => res.json())
             .then(res => {
                 this.currentJobCode = res.data.job_code;
+                this.currentJobDemand = res.data.demand;
             })
             .catch(err => console.log(err));
 
@@ -147,4 +153,10 @@ export default {
 
 <style>
 
+#stats {
+    padding: 20px;
+    border-radius: 25px;
+    background-color: #ECECEC;
+    width: 50%;
+}
 </style>

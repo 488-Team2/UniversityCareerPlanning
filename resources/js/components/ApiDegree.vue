@@ -35,10 +35,6 @@
             <label>Graduation Rate</label>
             <input type="text" class="form-control" v-model="degree.graduation_rate" placeholder="rate...">
         </div><br />
-        <div class="form-group">
-            <label>Job Demand</label>
-            <input type="text" class="form-control" v-model="degree.job_demand" placeholder="job demand...">
-        </div><br />
 
         <div>
             <label>Job Prospects</label>
@@ -78,7 +74,6 @@
                     <th scope="col">Description</th>
                     <th scope="col">Department Id</th>
                     <th scope="col">Graduation Rate</th>
-                    <th scope="col">Job Demand</th>
                     <th scope="col">Job Prospects</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -93,8 +88,6 @@
                     <td>{{ degree.department_id }}</td>
     
                     <td>{{ degree.graduation_rate }}</td>
-    
-                    <td>{{ degree.job_demand }}</td>
 
                     <td>{{ degree.job_prospects }}</td>
                 
@@ -144,7 +137,6 @@ export default {
                 degree_description: '',
                 department_id: '',
                 graduation_rate: 0,
-                job_demand: 0,
                 job_prospects: '',
             },
             index: 0,
@@ -186,7 +178,6 @@ export default {
                     degree_description: this.degree.degree_description,
                     department_id: this.degree.department_id,
                     graduation_rate: this.degree.graduation_rate,
-                    job_demand: this.degree.job_demand,
                     job_prospects: this.selectedJobNames.join()
 
                 })
@@ -232,7 +223,6 @@ export default {
                     degree_description: this.degree.degree_description,
                     department_id: this.degree.department_id,
                     graduation_rate: this.degree.graduation_rate,
-                    job_demand: this.degree.job_demand,
                     job_prospects: this.selectedJobNames.join()
                 })
                 
@@ -240,7 +230,6 @@ export default {
                 this.listDegrees.data[this.index].degree_description = response.data.degree.degree_description
                 this.listDegrees.data[this.index].department_id = response.data.degree.department_id
                 this.listDegrees.data[this.index].graduation_rate = response.data.degree.graduation_rate
-                this.listDegrees.data[this.index].job_demand = response.data.degree.job_demand
                 this.listDegrees.data[this.index].job_prospects = response.data.degree.job_prospects
                 this.listDegrees.data[this.index].isEdit = false
                 
@@ -259,7 +248,6 @@ export default {
                     degree_description: '',
                     department_id: '',
                     graduation_rate: 0,
-                    job_demand: 0
                 }
                 this.selectedJobNames = [];
                 this.listDegrees.data[this.index].isEdit = false;
