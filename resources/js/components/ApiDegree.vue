@@ -1,9 +1,8 @@
 <template>
+
     <div class="api-degree container mt-5">
-        <div>
-            <h1 v-if="!degree.isEdit">Create Degree</h1>
-            <h1 v-else>Update Degree</h1>
-        </div>
+         <button id="back-btn" class="btn btn-danger" onclick="history.back()">Back</button>
+        <h1>Create Degree</h1>
         <transition name="fade">
             <div id="errors" class="alert alert-danger alert-dismissible" role="alert" v-if="error">
                 <b>{{ error.message }}</b>
@@ -40,26 +39,22 @@
             <label>Job Prospects</label>
             <div id="selectedJobs">
                 
-                <li class="mb-1" v-for="(job, index) in selectedJobNames" :key="index">
-                <button id="delete" type="button" class="btn btn-danger" @click="removeJob(job)" >Delete</button>
+                <li class="mb-1" v-for="(job, index) in createSelectedJobNames" :key="index">
+                <button id="delete" type="button" class="btn btn-danger" @click="createDegreeRemoveElement(job)" >Delete</button>
                 {{job}}
                 </li>
             </div>
         </div>
 
         <div>
-            <select class="mb-4" v-model="selectedJob" name="jobSelect" @change="addJob">
+            <select class="mb-4" v-model="selectedJob" name="jobSelect" @change="createDegreeAddJob">
                 <option value="0">Please select a job</option>
                 <option v-for="job in jobArr" :value="job.job_name">{{ job.job_name }}</option>
             </select>
         </div>
     
         <div>
-            <button v-if="!degree.isEdit" class="btn btn-primary" @click="createDegree">Create</button>
-            <div v-else>
-            <button class="btn btn-primary" @click="updateDegree">Update</button>
-            <button class="btn btn-danger" @click="clearForm">Cancel</button>
-            </div>
+            <button class="btn btn-primary" @click="createDegree">Create</button>
         </div>
     
     
@@ -81,23 +76,40 @@
             <transition-group name="slide-fade" tag="tbody">
                 <tr v-for="(degree, index) in listDegrees.data" :key="degree.id">
                     <th scope="row"> {{ degree.id }} </th>
-                    <td>{{ degree.degree_name }}</td>
+                    <td v-if="!degree.isEdit">{{ degree.degree_name }}</td>
+                    <td v-else>
+                        <input type="text" v-model="selectedDegree.degree_name" class="form-control">
+                    </td>
     
-                    <td> {{ degree.degree_description }} </td>
+                    <td v-if="!degree.isEdit"> {{ degree.degree_description }} </td>
+                    <td v-else>
+                        <input type="text" v-model="selectedDegree.degree_description" class="form-control">
+                    </td>
     
-                    <td>{{ degree.department_id }}</td>
+                    <td v-if="!degree.isEdit">{{ degree.department_id }}</td>
+                    <td v-else>
+                        <input type="text" v-model="selectedDegree.department_id" class="form-control">
+                    </td>
     
                     <td>{{ degree.graduation_rate }}</td>
 
-                    <td>{{ degree.job_prospects }}</td>
-                
+                    <td v-if="!degree.isEdit">{{ degree.job_prospects }}</td>
+                    <td v-else>
+                        <div id="selectedJobs">
+                            <li class="mb-1" v-for="(job, index) in updateSelectedJobNames" :key="index">
+                                <button id="delete" type="button" class="btn btn-danger" @click="updateDegreeRemoveElement(job)" >Delete</button>
+                                {{job}}
+                             </li>
+                        </div>
+                    </td>
+    
                     <td v-if="!degree.isEdit">
-                        <button class="btn btn-primary" @click="selectDegree(degree, index)">Edit</button>
+                        <button class="btn btn-primary" @click="selectDegree(degree)">Edit</button>
                         <button class="btn btn-danger" @click="deleteDegree(degree, index)">Delete</button>
                     </td>
                     <td v-else>
-                        <button class="btn btn-primary" @click="updateDegree()">Save</button>
-                        <button class="btn btn-danger" @click="clearForm()">Cancel</button>
+                        <button class="btn btn-primary" @click="updateDegree(index)">Save</button>
+                        <button class="btn btn-danger" @click="degree.isEdit = false">Cancel</button>
                     </td>
                 </tr>
             </transition-group>
@@ -132,19 +144,19 @@ export default {
     data() {
         return {
             degree: {
-                id: '',
                 degree_name: '',
                 degree_description: '',
                 department_id: '',
                 graduation_rate: 0,
                 job_prospects: '',
             },
-            index: 0,
             listDegrees: {},
             error: null,
+            selectedDegree: null,
             jobArr: [],
             selectedJob: "",
-            selectedJobNames: [],
+            createSelectedJobNames: [],
+            updateSelectedJobNames: []
         }
     },
     created() {
@@ -152,14 +164,24 @@ export default {
         this.fetchJobs();
     },
     methods: {
-        addJob(){
+        createDegreeAddJob(){
             if(this.selectedJob!=="0")
-                this.selectedJobNames.push(this.selectedJob);
+                this.createSelectedJobNames.push(this.selectedJob);
         },
-        removeJob(job) {
-            const index = this.selectedJobNames.indexOf(job);
+        createDegreeRemoveElement(job) {
+            const index = this.createSelectedJobNames.indexOf(job);
             if(index > -1){
-                this.selectedJobNames.splice(index, 1);
+                this.createSelectedJobNames.splice(index, 1);
+            }
+        },
+        updateDegreeAddJob(){
+            if(this.selectedJob!=="0")
+                this.updateSelectedJobNames.push(this.selectedJob);
+        },
+        updateDegreeRemoveElement(job) {
+            const index = this.updateSelectedJobNames.indexOf(job);
+            if(index > -1){
+                this.updateSelectedJobNames.splice(index, 1);
             }
         },
         fetchJobs() {
@@ -188,8 +210,16 @@ export default {
                     isEdit: false
                 })
 
-                this.clearForm();
+                //reset form to initial
+                this.degree = {
+                    degree_name: '',
+                    degree_description: '',
+                    department_id: '',
+                    graduation_rate: 0,
+                    job_demand: 0
+                }
 
+                this.createSelectedJobNames = [];
             } catch (error) {
                 this.error = error.response.data
             }
@@ -205,15 +235,12 @@ export default {
                 this.error = error.response.data
             }
         },
-        selectDegree(degree, index) {
+        selectDegree(degree) {
             degree.isEdit = true
-            this.index = index
-            this.degree = { ...degree }
-            this.selectedJobNames = degree.job_prospects.split(',');
-            
-            window.scrollTo(0,0);
+            this.selectedDegree = { ...degree }
+            this.updateSelectedJobNames = degree.job_prospects.split(',');
         },
-        async updateDegree() {
+        async updateDegree(index) {
             try {
                 this.error = null;
 
@@ -234,8 +261,8 @@ export default {
                 this.listDegrees.data[this.index].isEdit = false
                 
 
-                this.clearForm();
-                
+                this.updateSelectedJobNames = [];
+
             } catch (error) {
                 this.error = error.response.data
             }

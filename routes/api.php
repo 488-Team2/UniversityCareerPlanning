@@ -27,6 +27,11 @@ Route::get('/getCurrentUser', function () {
     return Auth::user()->load('roles');
 });
 
+//Route::resource('users', App\Http\Controllers\UserController::class);
+Route::get('users', 'App\Http\Controllers\UserController@index');
+Route::post('user/create', 'App\Http\Controllers\UserController@store');
+
+
 // list of all degrees
 Route::get('degrees', 'App\Http\Controllers\DegreeController@index');
 
