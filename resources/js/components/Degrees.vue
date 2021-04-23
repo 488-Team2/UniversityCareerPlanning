@@ -27,6 +27,8 @@
 </template>
 
 <script>
+    import axios from 'axios';
+
     export default {
     props: {
         keywords: {
@@ -39,15 +41,6 @@
     data: function() {
         return {
             degrees: [],
-            degree: {
-                id: '',
-                degree_name: '',
-                degree_description: '',
-                department_id: '',
-                graduation_rate: '',
-                job_demand: ''
-            },
-            degree_id: '', //how it will know which degree to update
             pagination: {},
             url: null,
 
@@ -69,18 +62,18 @@
                 this.url = '/api/degrees'
             }
         },
-        fetchDegrees(page_url) {
+        async fetchDegrees(page_url) {
 
-            let vm = this;
+            page_url = page_url || this.url 
 
-            page_url = page_url || this.url
-            fetch(page_url)
-                .then(res => res.json())
-                .then(res => {
-                    this.degrees = res.data;
-                    vm.makePagination(res.meta, res.links)
-                })
-                .catch(err => console.log(err));
+            try{
+                const response = await axios.get(page_url);
+                this.degrees = response.data.data;
+                this.makePagination(response.data.meta, response.data.links)
+            } catch (error) {
+                console.error(error);
+            }
+            
         },
 
         makePagination(meta, links) {
@@ -96,6 +89,7 @@
 
     }
 }
+
 </script>
 
 <style>
@@ -119,3 +113,4 @@
 
 
 </style>
+
