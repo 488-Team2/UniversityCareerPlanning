@@ -21,7 +21,7 @@
         </div>
 
         <div  v-if="currentJobDemand!=null" id="stats">
-            <scale class="mb-4" :max='10' :min='-10' :rate='currentJobDemand' :name="'Job Demand'"></scale>
+            <scale class="mb-4" :max='10' :min='-10' :rate='parseFloat(currentJobDemand)' :name="'Job Demand'"></scale>
         </div>
     </div>
 </template>
@@ -70,7 +70,6 @@ export default {
             await fetch('/api/StateJob/' + this.currentState.state_name + "_" + this.currentJobName)
                 .then(res => res.json())
                 .then(res => {
-                    console.log(res.data.salary)
                     if(typeof res.data.salary !== 'undefined')
                     {
                         this.salary = parseInt(res.data.salary);
@@ -97,7 +96,6 @@ export default {
             await this.fetchStateJob();
 
             if(!this.salaryUpdated){
-                console.log("BLS API call");
 
                 const URL = 'https://api.bls.gov/publicAPI/v2/timeseries/data/';
                 const API_KEY = '?registrationkey=d99cc000b0ef4e9dac845bbb2fb0269d';
@@ -108,7 +106,7 @@ export default {
                 const AVERAGE_SALARY = '04';  // 03 -> average hourly rate
 
                 var query = URL + DATASET + NOT_SEASONAL + STATE + this.currentState.state_code + INDUSTRY_CODE + this.currentJobCode + AVERAGE_SALARY + API_KEY;
-                console.log(query);
+                
                 await fetch(query)
                     .then(res => res.json())
                     .then(res => {
@@ -138,12 +136,12 @@ export default {
             })
             .catch(err => console.log(err));
 
-            if (this.currentJobCode != '' && this.currentState.state_code != null) {
+            if (this.currentJobCode != '' && this.currentState.state_code != "") {
                 this.calcSalary();
             }
         },
         'currentState.state_code': function() {
-            if (this.currentJobCode != '' && this.currentState != null) {
+            if (this.currentJobCode != '' && this.currentState != "") {
                 this.calcSalary();
             }
         }

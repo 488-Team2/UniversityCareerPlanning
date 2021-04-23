@@ -38,9 +38,7 @@ export default {
     },
     computed: {
     calcRate() {
-        console.log((100/this.range)*this.min*-1);
-        console.log(this.rate*(100/this.range));
-        console.log(100-(100/this.range)*this.min*-1-(this.rate*(100/this.range)));
+      
       return {
         "background-color": `#2A2A2A`,
         width: `2%`,
