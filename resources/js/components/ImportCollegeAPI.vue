@@ -11,11 +11,12 @@
                                                                         placeholder="API URL"
                                                                         v-model="apiURL">
             <div class="attributeBox rounded text-center fs-4 shadow-sm" v-for="tag in tableAttributes">
-                <input type="checkbox" v-on:click="selectAttribute" :name="tag">
+                <input type="checkbox" v-on:click="selectAttribute" :name="tag" :checked="populatedValue(tag).length > 0">
                 Name: {{ tag }}
                 <input type="text" :placeholder="tag" v-bind:value="populatedValue(tag)">
             </div>
-            <button v-on:click="submitSelectedAttributes" class="btn btn-primary btn-center">Submit changes</button>
+            <button v-on:click.prevent="submitSelectedAttributes" class="btn btn-primary btn-center">Submit changes
+            </button>
         </div>
     </div>
 </template>
@@ -38,18 +39,38 @@ export default {
         fetchStoredAttributes() {
             return axios.get('/api/degreeimportdata').then(data => {
                 this.tableValues = data.data.data;
+                this.apiURL = this.populatedValue("apiURL");
             });
         },
         populatedValue(attribute) {
             let found = false;
             let value = "";
-            for(let i = 0; i < this.tableValues.length && !found; i++) {
-                if(this.tableValues[i].data_type === attribute) {
+            for (let i = 0; i < this.tableValues.length && !found; i++) {
+                if (this.tableValues[i].data_type === attribute) {
                     found = true;
                     value = this.tableValues[i].data_label;
                 }
             }
             return value;
+        },
+        isFieldPopulated(event) {
+            if (event.target.checked)
+                console.log("hello");
+            if (event.target.nextElementSibling.value.length > 0) {
+                console.log(event.target.nextElementSibling.value.length);
+                return true;
+            } else {
+                return false;
+            }
+        },
+        setPopulatedValue(attribute, value) {
+            let found = false;
+            for (let i = 0; i < this.tableValues.length && !found; i++) {
+                if (this.tableValues[i].data_type === attribute) {
+                    found = true;
+                    this.tableValues[i].data_label = value;
+                }
+            }
         },
         selectAttribute(event) {
             if (event.target.checked) {
@@ -63,6 +84,7 @@ export default {
             let submittedAttributes = [];
             this.selectedAttributes.forEach((item) => {
                 submittedAttributes.push({"itemName": item.name, "itemValue": item.nextElementSibling.value});
+                this.setPopulatedValue(item.name, item.nextElementSibling.value);
             });
             submittedAttributes.push({"itemName": "apiURL", "itemValue": this.apiURL});
             axios({
