@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DegreeApiImportInfoResource;
 use App\Models\Degree;
 use App\Models\DegreeApiImportInfo;
 use App\Models\Department;
 use Faker\Factory as Faker;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 
@@ -15,11 +17,13 @@ class DegreeApiImportInfoController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
-        //
+        $attributes = DegreeApiImportInfo::all();
+
+        return DegreeApiImportInfoResource::collection($attributes);
     }
 
     /**
@@ -32,6 +36,15 @@ class DegreeApiImportInfoController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'submittedAttributes' => 'array',
+            'submittedAttributes.*.*' => 'string|required'
+        ],
+        [
+            'string' => 'Error: attribute must be a string',
+            'required' => 'Error: attribute cannot be empty'
+        ]
+        );
         $input = $request->all();
         $attributes = $input['submittedAttributes'];
         foreach ($attributes as $item) {
@@ -41,7 +54,6 @@ class DegreeApiImportInfoController extends Controller
             );
         }
         return response([
-            'data' => $attributes
         ], 200);
     }
 
@@ -53,7 +65,6 @@ class DegreeApiImportInfoController extends Controller
      */
     public function show(DegreeApiImportInfo $degreeApiImportInfo)
     {
-        //
     }
 
     /**
@@ -79,8 +90,14 @@ class DegreeApiImportInfoController extends Controller
         //
     }
 
-    public function runImport() {
+    public function runImport()
+    {
         $this->parseDegreeInformation();
+    }
+
+    public function setUrl($url)
+    {
+
     }
 
     public function findJsonValue($item, $itemKey)
@@ -120,8 +137,7 @@ class DegreeApiImportInfoController extends Controller
                     $itemArray['department_id'] = Department::firstOrCreate([
                         'department_name' => $this->findJsonValue($item, $entry->data_label)
                     ])->id;
-                }
-                else {
+                } else {
                     $itemArray[$entry->data_type] = $this->findJsonValue($item, $entry->data_label);
                 }
             });

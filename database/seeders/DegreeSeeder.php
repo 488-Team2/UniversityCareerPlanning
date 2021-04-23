@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Degree;
-use App\Models\DegreeApiImportInfo;
 use App\Models\Department;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;

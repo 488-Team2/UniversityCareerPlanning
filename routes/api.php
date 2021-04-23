@@ -39,6 +39,8 @@ Route::get('degrees/codes/{codes}', 'App\Http\Controllers\DegreeController@holla
 Route::get('/degreetags', 'App\Http\Controllers\DegreeController@getDegreeColumnNames');
 // Handles post from /api/degreetags, Saving API import information in database
 Route::post('/degreetags', 'App\Http\Controllers\DegreeApiImportInfoController@store');
+// Returns collection of DegreeApiImportInfo data to be used to import degree data from an external resource
+Route::get('/degreeimportdata', 'App\Http\Controllers\DegreeApiImportInfoController@index');
 
 // search degrees
 Route::get('search/{keyword}', 'App\Http\Controllers\DegreeController@search');
