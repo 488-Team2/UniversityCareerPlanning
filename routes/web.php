@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+// Saved session
+Route::get('/sessions', function () {
+    return view('loadSession');
+});
+
 //Any routes you want to lock behind a login put into this routing group
 Route::middleware('auth')->group(function () {
     Route::get('/student/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
@@ -23,6 +28,10 @@ Route::middleware('auth')->group(function () {
 // Home Page:
 Route::get('/', function () {
     return view('homePage');
+});
+
+Route::get('/home', function () {
+    return view('homeLogin');
 });
 
 Route::get('/degrees/{ids}', function ($ids) {
@@ -39,9 +48,9 @@ Route::get('/apiDegree', function () {
     return view('apiDegree');
 });
 
-Auth::routes();
-Route::resource('users', App\Http\Controllers\UserController::class);
 
+Auth::routes();
+//Route::resource('users', App\Http\Controllers\UserController::class);
 Route::get('/getCurrentUser', function () {
     return Auth::user()->load('roles');
 });
