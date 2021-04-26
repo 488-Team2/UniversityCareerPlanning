@@ -1,5 +1,3 @@
-
-
 import Vue from "vue";
 
 
@@ -7,6 +5,8 @@ require('./bootstrap');
 window.Vue = require('vue').default;
 
 
+//Saved Session
+Vue.component('load-session', require('./components/LoadSavedSession.vue').default);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('User', require('./components/User.vue').default);
@@ -15,7 +15,6 @@ Vue.component('navbar', require('./components/Navbar.vue').default);
 //Dashborad:
 Vue.component('student-dashboard', require('./components/StudentDashboard.vue').default);
 Vue.component('admin-dashboard', require('./components/AdminDashboard.vue').default);
-
 
 
 //Home Page
@@ -28,8 +27,7 @@ Vue.component('contact-form', require('./components/ContactForm.vue').default);
 Vue.component('api-degree', require('./components/ApiDegree.vue').default);
 Vue.component('navbar-add-degree', require('./components/NavbarAddDegree.vue').default);
 
-
-Vue.component('alert', require('./components/Alert').default);
+Vue.component('alert-message', require('./components/AlertMessage').default);
 Vue.component('survey', require('./components/Survey').default);
 Vue.component('survey-app', require('./components/SurveyApp').default);
 Vue.component('survey-start', require('./components/SurveyStart').default);

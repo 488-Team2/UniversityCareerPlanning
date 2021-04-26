@@ -5,6 +5,7 @@
     <div id="app">
         <navbar></navbar>
     </div>
+    <br>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">

@@ -14,6 +14,9 @@
         <div class="d-flex justify-content-center">
             <button type="button" class="btn btn-outline-danger">SEARCH BY INTERESTS</button>
             <button type="button" class="btn btn-outline-danger">   TAKE SERVEY   </button>
+            <a href="/sessions">
+                <button type="button" class="btn btn-outline-danger" v-if="currentUser !== null">  LOAD SAVED SESSION  </button>
+            </a>
         </div>
         <br> 
         <h3 class="text-center">All available programs</h3>
@@ -30,15 +33,32 @@
 </template>    
 
 <script>
-    export default {
-        data: function () {
-            return {
-                keywords: ""
-            }
+export default {
+    keywords: "",
+    name: "navbar",
+    data() {
+        return {
+            currentUser: null
+        }
+    },
+    async created() {
+        await this.getCurrentUser()
+    },
+    methods: {
+        async getCurrentUser() {
+            axios.get('/getCurrentUser')
+                .then(response => {
+                    this.currentUser = response.data
+                })
+                .catch(error => {
+                    this.currentUser = null;
+                    console.log(error)
+                })
         },
     }
-
+}
 </script>
+
 <style >
 nav {
     background-color: darkgray;
