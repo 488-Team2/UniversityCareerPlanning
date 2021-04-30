@@ -41,6 +41,7 @@ Route::get('/degreetags', 'App\Http\Controllers\DegreeController@getDegreeColumn
 Route::post('/degreetags', 'App\Http\Controllers\DegreeApiImportInfoController@store');
 // Returns collection of DegreeApiImportInfo data to be used to import degree data from an external resource
 Route::get('/degreeimportdata', 'App\Http\Controllers\DegreeApiImportInfoController@index');
+Route::post('degrees/import', 'App\Http\Controllers\DegreeApiImportInfoController@runImport');
 
 // Deletes a specified data label from the database
 Route::delete('/degreeimportdata', 'App\Http\Controllers\DegreeApiImportInfoController@delete');

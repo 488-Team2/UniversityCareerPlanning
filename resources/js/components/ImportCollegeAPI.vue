@@ -10,6 +10,7 @@
             <label for="collegeApiUrl">College API URL: </label> <input type="text" id="collegeApiUrl"
                                                                         placeholder="API URL"
                                                                         v-model="apiURL" required>
+            <button v-on:click.preven="importDegreeInfo" class="btn btn-primary btn-center">Import</button>
             <div class="attributeBox rounded text-center fs-4 shadow-sm" v-for="tag in tableAttributes">
                 <input type="checkbox" v-model="tag.isChecked" :name="tag.data_type">
                 Name: {{ tag.data_type }}
@@ -65,7 +66,6 @@ export default {
             });
         },
         deleteAttribute(tag) {
-
             axios({
                 method: 'delete', url: '/api/degreeimportdata', data: {
                     "itemName": tag.data_type
@@ -101,9 +101,14 @@ export default {
                 this.alertType = "alert-danger";
                 this.alerts.push(value[0]);
             });
+        },
+        importDegreeInfo() {
+            return axios.post('/api/degrees/import').then(() => {
+                this.alerts = [];
+                this.alerts.push('Degree import successful');
+                this.alertType = "alert-success";
+            }).catch(error => this.handleErrors(error));
         }
-        //TODO: write method for deleting field (Doug Doner 4/26/2021)
-
         //TODO: Setup button for importing data using selected fields (Doug Doner 4/26/2021)
     },
     data() {

@@ -9,6 +9,7 @@ use App\Models\Department;
 use Faker\Factory as Faker;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 
@@ -32,9 +33,9 @@ class DegreeApiImportInfoController extends Controller
      * Will be used later when importing degree information from the college's API
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $this->validate($request, [
             'submittedAttributes' => 'array',
@@ -61,9 +62,9 @@ class DegreeApiImportInfoController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\DegreeApiImportInfo $degreeApiImportInfo
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function show(DegreeApiImportInfo $degreeApiImportInfo)
+    public function show(DegreeApiImportInfo $degreeApiImportInfo): Response
     {
     }
 
@@ -90,7 +91,7 @@ class DegreeApiImportInfoController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param \App\Models\DegreeApiImportInfo $degreeApiImportInfo
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, DegreeApiImportInfo $degreeApiImportInfo)
     {
@@ -101,9 +102,9 @@ class DegreeApiImportInfoController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\DegreeApiImportInfo $degreeApiImportInfo
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function destroy(DegreeApiImportInfo $degreeApiImportInfo)
+    public function destroy(DegreeApiImportInfo $degreeApiImportInfo): Response
     {
         //
     }
@@ -139,7 +140,7 @@ class DegreeApiImportInfoController extends Controller
     public function parseDegreeInformation()
     {
         $degreeApiImportInfoEntries = DegreeApiImportInfo::all();
-        $response = Http::get('https://www.keene.edu/catalog/api/programs/');
+        $response = Http::get(DegreeApiImportInfo::where('data_type', 'apiURL')->first()->data_label);
         $decoded = json_decode($response->body(), true);
         $degreeCollection = collect($decoded['data']);
         $degreeCollection->each(function ($item) use ($degreeApiImportInfoEntries) {
@@ -150,13 +151,14 @@ class DegreeApiImportInfoController extends Controller
 
             //For each item in $degreeApiImportInfoEntries, use findJsonValue function to assign to associative array
             $degreeApiImportInfoEntries->each(function ($entry) use ($item, &$itemArray) {
-                //echo $entry->data_type;
-                if ($entry->data_type == 'department_id') {
-                    $itemArray['department_id'] = Department::firstOrCreate([
-                        'department_name' => $this->findJsonValue($item, $entry->data_label)
-                    ])->id;
-                } else {
-                    $itemArray[$entry->data_type] = $this->findJsonValue($item, $entry->data_label);
+                if ($entry->data_type != 'apiURL') {
+                    if ($entry->data_type == 'department_id') {
+                        $itemArray['department_id'] = Department::firstOrCreate([
+                            'department_name' => $this->findJsonValue($item, $entry->data_label)
+                        ])->id;
+                    } else {
+                        $itemArray[$entry->data_type] = $this->findJsonValue($item, $entry->data_label);
+                    }
                 }
             });
 
