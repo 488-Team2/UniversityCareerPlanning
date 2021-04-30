@@ -40,10 +40,10 @@ class DegreeApiImportInfoController extends Controller
             'submittedAttributes' => 'array',
             'submittedAttributes.*.*' => 'string|required'
         ],
-        [
-            'string' => 'Error: attribute must be a string',
-            'required' => 'Error: attribute cannot be empty'
-        ]
+            [
+                'string' => 'Error: attribute must be a string',
+                'required' => 'Error: attribute cannot be empty'
+            ]
         );
         $input = $request->all();
         $attributes = $input['submittedAttributes'];
@@ -65,6 +65,24 @@ class DegreeApiImportInfoController extends Controller
      */
     public function show(DegreeApiImportInfo $degreeApiImportInfo)
     {
+    }
+
+    public function delete(Request $request)
+    {
+        $this->validate($request, [
+            'itemName' => 'string|required',
+        ],
+            [
+                'string' => 'Error: attribute must be a string'
+            ]
+        );
+        $input = $request->all();
+        $attribute = $input['itemName'];
+        DegreeApiImportInfo::where('data_type', $attribute
+        )->delete();
+
+        return response([
+        ], 200);
     }
 
     /**

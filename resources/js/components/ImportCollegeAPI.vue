@@ -13,7 +13,8 @@
             <div class="attributeBox rounded text-center fs-4 shadow-sm" v-for="tag in tableAttributes">
                 <input type="checkbox" v-model="tag.isChecked" :name="tag.data_type">
                 Name: {{ tag.data_type }}
-                <input type="text" :placeholder="tag.data_type" v-model="tag.data_label">
+                <input type="text" v-model="tag.data_label">
+                <button class="btn btn-danger" v-on:click="deleteAttribute(tag)">Delete</button>
             </div>
             <button v-on:click.prevent="submitSelectedAttributes" class="btn btn-primary btn-center">Submit changes
             </button>
@@ -27,9 +28,8 @@ import axios from "axios";
 export default {
     name: "ImportCollegeAPI",
     async created() {
-        await this.fetchStoredAttributes();
         await this.fetchAttributes();
-        this.setChecked();
+        await this.fetchStoredAttributes();
     },
     methods: {
         async fetchAttributes() {
@@ -38,67 +38,51 @@ export default {
                     let obj = {};
                     obj.data_type = item;
                     obj.isChecked = false;
+                    obj.data_label = "";
                     return obj;
                 });
             });
         },
         fetchStoredAttributes() {
+            let self = this;
             return axios.get('/api/degreeimportdata').then(data => {
-                this.tableValues = data.data.data;
-                console.log(this.tableValues[0].data_label);
+                let storedAttributes = data.data.data;
                 for (let i = 0; i < this.tableAttributes.length; i++) {
-                    this.tableValues.forEach(function (item) {
-                        if (this.tableAttributes[i].data_type === item.data_type) {
-                            this.tableAttributes[i].data_label = item.data_label;
-                            console.log("we did it");
+                    storedAttributes.forEach(function (item) {
+                        if (self.tableAttributes[i].data_type === item.data_type) {
+                            self.tableAttributes[i].data_label = item.data_label;
+                            self.tableAttributes[i].isChecked = true;
                         }
                     });
                 }
-                this.apiURL = this.populatedValue("apiURL");
+                this.apiURL = storedAttributes.filter(item => item.data_type === "apiURL")[0].data_label;
             });
-        },
-        populatedValue(attribute) {
-            let found = false;
-            console.log(attribute.data_type);
-            for (let i = 0; i < this.tableValues.length && !found; i++) {
-                if (this.tableValues[i].data_type === attribute.data_type && this.tableValues[i].data_label !== "") {
-                    //console.log(this.tableValues[i].data_label);
-                    found = true;
-                    attribute.data_label = this.tableValues[i].data_label;
-                }
-            }
-            return attribute.data_label;
-        },
-        setPopulatedValue(attribute, value) {
-            let found = false;
-            for (let i = 0; i < this.tableValues.length && !found; i++) {
-                if (this.tableValues[i].data_type === attribute) {
-                    console.log("Found!");
-                    found = true;
-                    this.tableValues[i].data_label = value;
-                }
-            }
         },
         selectAttributes() {
             let checkedAttributes = this.tableAttributes.filter(item => item.isChecked);
             checkedAttributes.forEach(item => {
                 this.selectedAttributes.push(item);
             });
-            /*if (event.target.checked) {
-                this.selectedAttributes.push(event.target);
-            } else {
-                let itemIndex = this.selectedAttributes.indexOf(event.target);
-                this.selectedAttributes.splice(itemIndex, 1);
-            }*/
+        },
+        deleteAttribute(tag) {
+
+            axios({
+                method: 'delete', url: '/api/degreeimportdata', data: {
+                    "itemName": tag.data_type
+                }
+            }).then(() => {
+                tag.data_label = "";
+                tag.isChecked = false;
+                this.alerts = [];
+                this.alerts.push('Degree item deleted');
+                this.alertType = "alert-success";
+            }).catch(error => this.handleErrors(error));
         },
         submitSelectedAttributes() {
             let submittedAttributes = [];
             this.selectAttributes();
             this.selectedAttributes.forEach((item) => {
-                console.log(item.data_type);
-                console.log(item.data_label);
                 submittedAttributes.push({"itemName": item.data_type, "itemValue": item.data_label});
-                this.setPopulatedValue(item.data_type, item.data_label);
             });
             submittedAttributes.push({"itemName": "apiURL", "itemValue": this.apiURL});
             axios({
@@ -117,18 +101,6 @@ export default {
                 this.alertType = "alert-danger";
                 this.alerts.push(value[0]);
             });
-        },
-        setChecked() {
-            for (let i = 0; i < this.tableValues.length; i++) {
-                this.tableAttributes.forEach(item => {
-                        if (item.data_type === this.tableValues[i].data_type) {
-                            item.isChecked = !item.isChecked;
-                            console.log("haha that tickles");
-                            return item;
-                        }
-                    }
-                );
-            }
         }
         //TODO: write method for deleting field (Doug Doner 4/26/2021)
 
@@ -137,7 +109,6 @@ export default {
     data() {
         return {
             tableAttributes: [],
-            tableValues: [],
             apiURL: "",
             selectedAttributes: [],
             alertType: '',
