@@ -33,6 +33,13 @@ export default {
         await this.fetchStoredAttributes();
     },
     methods: {
+        /**
+         * Sends request to server for degree table attributes
+         * then creates an array of attribute objects to be used
+         * in the Vue component
+         *
+         * @returns {Promise<void>}
+         */
         async fetchAttributes() {
             return axios.get('/api/degreetags').then(response => {
                 this.tableAttributes = response.data.map(item => {
@@ -44,6 +51,12 @@ export default {
                 });
             });
         },
+        /**
+         * Makes a request to the server for stored attribute labels
+         * Stored attributes are then displayed in the input fields
+         *
+         * @returns {Promise<void>}
+         */
         fetchStoredAttributes() {
             let self = this;
             return axios.get('/api/degreeimportdata').then(data => {
@@ -59,12 +72,26 @@ export default {
                 this.apiURL = storedAttributes.filter(item => item.data_type === "apiURL")[0].data_label;
             });
         },
+        /**
+         * Filters the attribute array for items that are checked
+         * Array is used to send to the server to update stored
+         * attributes
+         *
+         */
         selectAttributes() {
             let checkedAttributes = this.tableAttributes.filter(item => item.isChecked);
             checkedAttributes.forEach(item => {
                 this.selectedAttributes.push(item);
             });
         },
+        /**
+         * Sends a delete request to the server with the stored attribute as a parameter
+         * Then clears the input field for the deleted attribute
+         *
+         * If a server error occurs the error is passed to this.handleErrors
+         *
+         * @param tag
+         */
         deleteAttribute(tag) {
             axios({
                 method: 'delete', url: '/api/degreeimportdata', data: {
@@ -78,6 +105,10 @@ export default {
                 this.alertType = "alert-success";
             }).catch(error => this.handleErrors(error));
         },
+        /**
+         * Sends attribute changes to the server
+         * Any errors are handled by handleErrors method
+         */
         submitSelectedAttributes() {
             let submittedAttributes = [];
             this.selectAttributes();
@@ -95,6 +126,11 @@ export default {
                 this.alertType = "alert-success";
             }).catch(error => this.handleErrors(error));
         },
+        /**
+         * Helper method for displaying errors in the alert sub-component
+         *
+         * @param error
+         */
         handleErrors(error) {
             this.alerts = [];
             Object.entries(error.response.data.errors).forEach(([, value]) => {
@@ -102,6 +138,12 @@ export default {
                 this.alerts.push(value[0]);
             });
         },
+        /**
+         * Method for initiating a degree import request
+         * Uses selected attributes to map the API
+         *
+         * @returns {Promise<void>}
+         */
         importDegreeInfo() {
             return axios.post('/api/degrees/import').then(() => {
                 this.alerts = [];
@@ -109,7 +151,6 @@ export default {
                 this.alertType = "alert-success";
             }).catch(error => this.handleErrors(error));
         }
-        //TODO: Setup button for importing data using selected fields (Doug Doner 4/26/2021)
     },
     data() {
         return {
