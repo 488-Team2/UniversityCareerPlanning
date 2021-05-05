@@ -42,12 +42,18 @@ class UserController extends Controller
         $user->name = $data['name'];
         $user->email = $data['email'];
         $user->password = bcrypt('123456');
-        $role  = Role::where('name', $data['role'])->first();
-        
-        $user->save();
 
+        $user->email_verified_at = now();
+        $user->department_id = 1;
+        $role  = Role::where('name', $data['role'])->first();
+
+        $user->account_type = $data['account_type'];
+        $user->save();
         $user->roles()->attach($role);
-        return response('success');
+        //return response('success');
+        return response([
+            'user' => $user
+        ], 200);
     }
 
     /**
