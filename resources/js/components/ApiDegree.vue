@@ -1,5 +1,7 @@
 <template>
+
     <div class="api-degree container mt-5">
+         <button id="back-btn" class="btn btn-danger" onclick="history.back()">Back</button>
         <h1>Create Degree</h1>
         <transition name="fade">
             <div id="errors" class="alert alert-danger alert-dismissible" role="alert" v-if="error">
@@ -32,33 +34,32 @@
             <label>Graduation Rate</label>
             <input type="text" class="form-control" v-model="degree.graduation_rate" placeholder="rate...">
         </div><br />
-        <div class="form-group">
-            <label>Job Demand</label>
-            <input type="text" class="form-control" v-model="degree.job_demand" placeholder="job demand...">
-        </div><br />
 
         <div>
             <label>Job Prospects</label>
             <div id="selectedJobs">
                 
-                <li class="mb-1" v-for="(job, index) in createSelectedJobNames" :key="index">
-                <button id="delete" type="button" class="btn btn-danger" @click="createDegreeRemoveElement(job)" >Delete</button>
+                <li class="mb-1" v-for="(job, index) in selectedJobNames" :key="index">
+                <button id="delete" type="button" class="btn btn-danger" @click="removeJob(job)" >Delete</button>
                 {{job}}
                 </li>
             </div>
         </div>
 
         <div>
-            <select class="mb-4" v-model="selectedJob" name="jobSelect" @change="createDegreeAddJob">
+            <select class="mb-4" v-model="selectedJob" name="jobSelect" @change="addJob">
                 <option value="0">Please select a job</option>
                 <option v-for="job in jobArr" :value="job.job_name">{{ job.job_name }}</option>
             </select>
         </div>
     
         <div>
-            <button class="btn btn-primary" @click="createDegree">Create</button>
+            <button v-if="!degree.isEdit" class="btn btn-primary" @click="createDegree">Create</button>
+            <div v-else>
+            <button class="btn btn-primary" @click="updateDegree">Update</button>
+            <button class="btn btn-danger" @click="clearForm">Cancel</button>
+            </div>
         </div>
-    
     
         <hr>
     
@@ -71,7 +72,6 @@
                     <th scope="col">Description</th>
                     <th scope="col">Department Id</th>
                     <th scope="col">Graduation Rate</th>
-                    <th scope="col">Job Demand</th>
                     <th scope="col">Job Prospects</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -79,48 +79,23 @@
             <transition-group name="slide-fade" tag="tbody">
                 <tr v-for="(degree, index) in listDegrees.data" :key="degree.id">
                     <th scope="row"> {{ degree.id }} </th>
-                    <td v-if="!degree.isEdit">{{ degree.degree_name }}</td>
-                    <td v-else>
-                        <input type="text" v-model="selectedDegree.degree_name" class="form-control">
-                    </td>
+                    <td>{{ degree.degree_name }}</td>
     
-                    <td v-if="!degree.isEdit"> {{ degree.degree_description }} </td>
-                    <td v-else>
-                        <input type="text" v-model="selectedDegree.degree_description" class="form-control">
-                    </td>
+                    <td> {{ degree.degree_description }} </td>
     
-                    <td v-if="!degree.isEdit">{{ degree.department_id }}</td>
-                    <td v-else>
-                        <input type="text" v-model="selectedDegree.department_id" class="form-control">
-                    </td>
+                    <td>{{ degree.department_id }}</td>
     
-                    <td v-if="!degree.isEdit">{{ degree.graduation_rate }}</td>
-                    <td v-else>
-                        <input type="text" v-model="selectedDegree.graduation_rate" class="form-control">
-                    </td>
-    
-                    <td v-if="!degree.isEdit">{{ degree.job_demand }}</td>
-                    <td v-else>
-                        <input type="text" v-model="selectedDegree.job_demand" class="form-control">
-                    </td>
+                    <td>{{ degree.graduation_rate }}</td>
 
-                    <td v-if="!degree.isEdit">{{ degree.job_prospects }}</td>
-                    <td v-else>
-                        <div id="selectedJobs">
-                            <li class="mb-1" v-for="(job, index) in updateSelectedJobNames" :key="index">
-                                <button id="delete" type="button" class="btn btn-danger" @click="updateDegreeRemoveElement(job)" >Delete</button>
-                                {{job}}
-                             </li>
-                        </div>
-                    </td>
-    
+                    <td>{{ degree.job_prospects }}</td>
+                
                     <td v-if="!degree.isEdit">
-                        <button class="btn btn-primary" @click="selectDegree(degree)">Edit</button>
+                        <button class="btn btn-primary" @click="selectDegree(degree, index)">Edit</button>
                         <button class="btn btn-danger" @click="deleteDegree(degree, index)">Delete</button>
                     </td>
                     <td v-else>
-                        <button class="btn btn-primary" @click="updateDegree(index)">Save</button>
-                        <button class="btn btn-danger" @click="degree.isEdit = false">Cancel</button>
+                        <button class="btn btn-primary" @click="updateDegree()">Save</button>
+                        <button class="btn btn-danger" @click="clearForm()">Cancel</button>
                     </td>
                 </tr>
             </transition-group>
@@ -155,20 +130,19 @@ export default {
     data() {
         return {
             degree: {
+                id: '',
                 degree_name: '',
                 degree_description: '',
                 department_id: '',
                 graduation_rate: 0,
-                job_demand: 0,
-                job_prospects: ''
+                job_prospects: '',
             },
+            index: 0,
             listDegrees: {},
             error: null,
-            selectedDegree: null,
             jobArr: [],
             selectedJob: "",
-            createSelectedJobNames: [],
-            updateSelectedJobNames: []
+            selectedJobNames: [],
         }
     },
     created() {
@@ -176,24 +150,14 @@ export default {
         this.fetchJobs();
     },
     methods: {
-        createDegreeAddJob(){
+        addJob(){
             if(this.selectedJob!=="0")
-                this.createSelectedJobNames.push(this.selectedJob);
+                this.selectedJobNames.push(this.selectedJob);
         },
-        createDegreeRemoveElement(job) {
-            const index = this.createSelectedJobNames.indexOf(job);
+        removeJob(job) {
+            const index = this.selectedJobNames.indexOf(job);
             if(index > -1){
-                this.createSelectedJobNames.splice(index, 1);
-            }
-        },
-        updateDegreeAddJob(){
-            if(this.selectedJob!=="0")
-                this.updateSelectedJobNames.push(this.selectedJob);
-        },
-        updateDegreeRemoveElement(job) {
-            const index = this.updateSelectedJobNames.indexOf(job);
-            if(index > -1){
-                this.updateSelectedJobNames.splice(index, 1);
+                this.selectedJobNames.splice(index, 1);
             }
         },
         fetchJobs() {
@@ -212,9 +176,7 @@ export default {
                     degree_description: this.degree.degree_description,
                     department_id: this.degree.department_id,
                     graduation_rate: this.degree.graduation_rate,
-                    job_demand: this.degree.job_demand,
-                    job_prospects: this.createSelectedJobNames.join()
-
+                    job_prospects: this.selectedJobNames.join()
                 })
                 //this.listDegrees.unshift(esponse.data.degree)
                 //console.log(response.data.degree)
@@ -222,17 +184,7 @@ export default {
                     ...response.data.degree,
                     isEdit: false
                 })
-
-                //reset form to initial
-                this.degree = {
-                    degree_name: '',
-                    degree_description: '',
-                    department_id: '',
-                    graduation_rate: 0,
-                    job_demand: 0
-                }
-
-                this.createSelectedJobNames = [];
+                this.clearForm();
             } catch (error) {
                 this.error = error.response.data
             }
@@ -248,37 +200,50 @@ export default {
                 this.error = error.response.data
             }
         },
-        selectDegree(degree) {
+        selectDegree(degree, index) {
             degree.isEdit = true
-            this.selectedDegree = { ...degree }
-            this.updateSelectedJobNames = degree.job_prospects.split(',');
+            this.index = index
+            this.degree = { ...degree }
+            this.selectedJobNames = degree.job_prospects.split(',');
+            
+            window.scrollTo(0,0);
         },
-        async updateDegree(index) {
+        async updateDegree() {
             try {
                 this.error = null;
-
-                const response = await axios.put('api/degree/update/' + this.selectedDegree.id, {
-                    degree_name: this.selectedDegree.degree_name,
-                    degree_description: this.selectedDegree.degree_description,
-                    department_id: this.selectedDegree.department_id,
-                    graduation_rate: this.selectedDegree.graduation_rate,
-                    job_demand: this.selectedDegree.job_demand,
-                    job_prospects: this.updateSelectedJobNames.join()
+                console.log('api/degree/update/' + this.degree.id);
+                const response = await axios.put('api/degree/update/' + this.degree.id, {
+                    degree_name: this.degree.degree_name,
+                    degree_description: this.degree.degree_description,
+                    department_id: this.degree.department_id,
+                    graduation_rate: this.degree.graduation_rate,
+                    job_prospects: this.selectedJobNames.join()
                 })
-
-                this.listDegrees.data[index].degree_name = response.data.degree.degree_name
-                this.listDegrees.data[index].degree_description = response.data.degree.degree_description
-                this.listDegrees.data[index].department_id = response.data.degree.department_id
-                this.listDegrees.data[index].graduation_rate = response.data.degree.graduation_rate
-                this.listDegrees.data[index].job_demand = response.data.degree.job_demand
-                this.listDegrees.data[index].job_prospects = response.data.degree.job_prospects
-                this.listDegrees.data[index].isEdit = false
-
-                this.updateSelectedJobNames = [];
-
+                
+                this.listDegrees.data [this.index].degree_name = response.data.degree.degree_name
+                this.listDegrees.data[this.index].degree_description = response.data.degree.degree_description
+                this.listDegrees.data[this.index].department_id = response.data.degree.department_id
+                this.listDegrees.data[this.index].graduation_rate = response.data.degree.graduation_rate
+                this.listDegrees.data[this.index].job_prospects = response.data.degree.job_prospects
+                this.listDegrees.data[this.index].isEdit = false
+                
+                this.clearForm();
+                
             } catch (error) {
                 this.error = error.response.data
             }
+        },
+        clearForm(){
+            //reset form to initial
+                this.degree = {
+                    id: '',
+                    degree_name: '',
+                    degree_description: '',
+                    department_id: '',
+                    graduation_rate: 0,
+                }
+                this.selectedJobNames = [];
+                this.listDegrees.data[this.index].isEdit = false;
         },
         async deleteDegree(degree, index) {
             try {
@@ -288,7 +253,6 @@ export default {
                 this.error = error.response.data
             }
         }
-
     }
 }
 </script>
