@@ -23,6 +23,7 @@ Route::get('/sessions', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/student/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
     Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
+    Route::get('/admin/dashboard/import', [App\Http\Controllers\AdminController::class, 'displayImport']);
 });
 
 // Home Page:

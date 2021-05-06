@@ -41,8 +41,10 @@
             class="page-item"><a class="page-link" href="#" 
             @click="fetchDegrees(pagination.prev_page_url)">Previous</a></li>
 
-            <li class="page-item disabled"><a class="page-link dark-text"
-             href="#">Page {{ pagination.current_page }} of {{ pagination.last_page }}</a></li>
+                <li class="page-item disabled"><a class="page-link dark-text"
+                                                  href="#">Page {{ pagination.current_page }} of {{
+                        pagination.last_page
+                    }}</a></li>
 
 
             <li v-bind:class="[{disabled: !pagination.next_page_url}]" 
@@ -188,16 +190,17 @@
 
 <style>
 
-.degree, .degree:hover{
+.degree, .degree:hover {
     color: black;
     text-decoration: none;
 }
 
-#grow { 
-    transition: all .2s ease-in-out; 
+#grow {
+    transition: all .2s ease-in-out;
 }
-#grow:hover { 
-    transform: scale(1.03); 
+
+#grow:hover {
+    transform: scale(1.03);
 }
 
 #paginationNav {
