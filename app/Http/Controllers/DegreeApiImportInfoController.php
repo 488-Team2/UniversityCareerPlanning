@@ -12,6 +12,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class DegreeApiImportInfoController extends Controller
 {
@@ -167,5 +168,58 @@ class DegreeApiImportInfoController extends Controller
             $itemArray['job_demand'] = $faker->numberBetween(0, 100);
             Degree::create($itemArray);
         });
+    }
+
+    /**
+     * Uses k nearest-neighbor classifier to produce the top three Holland codes for a given
+     * Degree name. Uses data from previously classified degree names and their associated codes
+     *
+     * @param $degree
+     *
+     * @return String
+     */
+    public function classifyDegreeCodes($degree): string
+    {
+        $hollandDegreeFile = Storage::get('holland-codes.csv');
+
+        echo $hollandDegreeFile;
+
+        $hollandDegrees = [];
+        $hollandDegreeCollection = collect(explode("\n", $hollandDegreeFile));
+        $hollandDegreeCollection->each(function ($item) use ($hollandDegrees) {
+            if ($item !== NULL || strlen($item) > 0)
+                $itemArray = preg_split("~,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)~", $item);
+            //echo $itemArray[0] . " " . $itemArray[1] . "\n";
+            if ($itemArray[0] !== NULL || strlen($itemArray[0]) > 0)
+                array_push($hollandDegrees, $itemArray);
+        });
+
+        print_r($hollandDegrees);
+//        for (Gene testGene : testGeneList) {
+//            List<Gene> neighbors = new ArrayList<>();
+//            int smallestNeighborDistanceIndex = 0;
+//
+//            for (Gene trainingGene : trainingGeneList) {
+//                double distance = testGene.computeDistance(trainingGene);
+//
+//                if (neighbors.size() < 3) {
+//                    neighbors.add(trainingGene);
+//                    smallestNeighborDistanceIndex = neighbors.indexOf(trainingGene);
+//                } else if (distance > testGene.computeDistance(neighbors.get(smallestNeighborDistanceIndex))) {
+//                    neighbors.remove(smallestNeighborDistanceIndex);
+//                    neighbors.add(trainingGene);
+//                }
+//
+//                for (Gene g : neighbors) {
+//                    if (testGene.computeDistance(g) < testGene.computeDistance(neighbors.get(smallestNeighborDistanceIndex))) {
+//                        smallestNeighborDistanceIndex = neighbors.indexOf(g);
+//                    }
+//                }
+//            }
+//
+//            testGene.decideLocalization(neighbors);
+//        }
+
+        return "";
     }
 }
