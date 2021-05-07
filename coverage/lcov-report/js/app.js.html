@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/24</span>
+                <span class='fraction'>0/25</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/24</span>
+                <span class='fraction'>0/25</span>
             </div>
         
             
@@ -103,11 +103,7 @@
 <a name='L44'></a><a href='#L44'>44</a>
 <a name='L45'></a><a href='#L45'>45</a>
 <a name='L46'></a><a href='#L46'>46</a>
-<a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L47'></a><a href='#L47'>47</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -116,13 +112,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -134,7 +131,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -153,15 +149,15 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
-&nbsp;
-import Vue from "vue";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Vue from "vue";
 &nbsp;
 &nbsp;
 <span class="cstat-no" title="statement not covered" >require('./bootstrap');</span>
 <span class="cstat-no" title="statement not covered" >window.Vue = require('vue').default;</span>
 &nbsp;
 &nbsp;
+//Saved Session
+<span class="cstat-no" title="statement not covered" >Vue.component('load-session', require('./components/LoadSavedSession.vue').default);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >Vue.component('example-component', require('./components/ExampleComponent.vue').default);</span>
 <span class="cstat-no" title="statement not covered" >Vue.component('User', require('./components/User.vue').default);</span>
@@ -170,7 +166,6 @@ import Vue from "vue";
 //Dashborad:
 <span class="cstat-no" title="statement not covered" >Vue.component('student-dashboard', require('./components/StudentDashboard.vue').default);</span>
 <span class="cstat-no" title="statement not covered" >Vue.component('admin-dashboard', require('./components/AdminDashboard.vue').default);</span>
-&nbsp;
 &nbsp;
 &nbsp;
 //Home Page
@@ -183,8 +178,7 @@ import Vue from "vue";
 <span class="cstat-no" title="statement not covered" >Vue.component('api-degree', require('./components/ApiDegree.vue').default);</span>
 <span class="cstat-no" title="statement not covered" >Vue.component('navbar-add-degree', require('./components/NavbarAddDegree.vue').default);</span>
 &nbsp;
-&nbsp;
-<span class="cstat-no" title="statement not covered" >Vue.component('alert', require('./components/Alert').default);</span>
+<span class="cstat-no" title="statement not covered" >Vue.component('alert-message', require('./components/AlertMessage').default);</span>
 <span class="cstat-no" title="statement not covered" >Vue.component('survey', require('./components/Survey').default);</span>
 <span class="cstat-no" title="statement not covered" >Vue.component('survey-app', require('./components/SurveyApp').default);</span>
 <span class="cstat-no" title="statement not covered" >Vue.component('survey-start', require('./components/SurveyStart').default);</span>
@@ -208,7 +202,7 @@ const app = <span class="cstat-no" title="statement not covered" >new Vue({</spa
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Apr 22 2021 19:45:16 GMT-0700 (Pacific Daylight Time)
+                at Thu May 06 2021 21:50:27 GMT-0700 (Pacific Daylight Time)
             </div>
         </div>
         <script src="../prettify.js"></script>

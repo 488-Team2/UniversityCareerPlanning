@@ -4,7 +4,7 @@
         <div :style="calcLocation">{{rate}}%</div>
         <div id="container">
             
-            <div class="skills" :style="calcRate" ></div>
+            <div class="line" :style="calcRate" ></div>
         </div>
     </div>
 </template>
@@ -14,34 +14,35 @@
 export default {
   data() {
         return {
-            range: 0,
-            midRange: 0
+            range: 0
         }
     },
     props: {
         rate: {
-            type: Number
+            type: Number,
+            required: true
         },
         name: {
           type: String
         },
         max: {
-          type: Number
+          type: Number,
+          required: true
         },
         min: {
-          type: Number
+          type: Number,
+          required: true
         }
     },
     created() {
         this.range = (this.max - this.min)
-        this.midRange = this.range/2;
     },
     computed: {
     calcRate() {
       
       return {
         "background-color": `#2A2A2A`,
-        width: `2%`,
+        "width": `2%`,
         "margin-left": `${(100/this.range)*this.min*-1+(this.rate*(100/this.range))}%` 
 
       };
@@ -69,7 +70,7 @@ export default {
 
 
 
-.skills {
+.line {
   text-align: right; /* Right-align text */
   padding-top: 10px; /* Add top padding */
   padding-bottom: 10px; /* Add bottom padding */

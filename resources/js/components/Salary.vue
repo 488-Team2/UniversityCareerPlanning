@@ -27,6 +27,10 @@
 </template>
 
 <script>
+
+import axios from "axios";
+import fetch from 'cross-fetch'
+
 export default {
     data() {
         return {
@@ -56,28 +60,29 @@ export default {
     },
 
     methods: {
-        fetchStates() {
+        async fetchStates() {
 
-            fetch('/api/states')
-                .then(res => res.json())
-                .then(res => {
-                    this.stateArr = res.data;
-                })
-                .catch(err => console.log(err));
+            try{
+                const response = await axios.get('/api/states');
+                this.stateArr = response.data.data;
+            } catch (error) {
+                console.error(error);
+            }
+            
         },
         async fetchStateJob() {
 
-            await fetch('/api/StateJob/' + this.currentState.state_name + "_" + this.currentJobName)
-                .then(res => res.json())
-                .then(res => {
-                    if(typeof res.data.salary !== 'undefined')
-                    {
-                        this.salary = parseInt(res.data.salary);
-                        this.formatedSalary = "$ " + this.salary.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                        this.salaryUpdated = true;
-                    }
-                })
-                .catch(err => console.log(err));
+            try{
+                const response = await axios.get('/api/StateJob/' + this.currentState.state_name + "_" + this.currentJobName);
+                if(typeof response.data.data.salary !== 'undefined')
+                {
+                    this.salary = parseInt(response.data.data.salary);
+                    this.formatedSalary = "$ " + this.salary.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    this.salaryUpdated = true;
+                }
+            } catch (error) {
+                console.error(error);
+            }
 
         },
         async storeStateJob() {
@@ -128,21 +133,21 @@ export default {
     watch: {
         'currentJobName': async function() {
 
-        await fetch('/api/job/' + this.currentJobName)
-            .then(res => res.json())
-            .then(res => {
-                this.currentJobCode = res.data.job_code;
-                this.currentJobDemand = res.data.demand;
-            })
-            .catch(err => console.log(err));
+            try{
+                const response = await axios.get('/api/job/' + this.currentJobName);
+                this.currentJobCode = response.data.data.job_code;
+                this.currentJobDemand = response.data.data.demand;
+            } catch (error) {
+                console.error(error);
+            }
 
             if (this.currentJobCode != '' && this.currentState.state_code != "") {
-                this.calcSalary();
+                await this.calcSalary();
             }
         },
-        'currentState.state_code': function() {
+        'currentState.state_code': async function() {
             if (this.currentJobCode != '' && this.currentState != "") {
-                this.calcSalary();
+                await this.calcSalary();
             }
         }
     },

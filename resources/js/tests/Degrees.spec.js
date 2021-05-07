@@ -44,7 +44,7 @@ test('keywords and ids props expect keywords url', function(){
 
 test('fetchDegrees', async() => {
     const wrapper = mount(Degrees);
-    await wrapper.vm.fenpmtchDegrees();
+    await wrapper.vm.fetchDegrees();
 
     const response = await axios.get('api/degrees');
 

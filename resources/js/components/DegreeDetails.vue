@@ -18,21 +18,24 @@
             </li>
         </div>
          
-        
-
         <salary  class="mt-4" :jobArr="degree.job_prospects.split(',')"></salary>
         
     </div>
 </template>
 
 <script>
+
+import axios from 'axios';
+
 export default {
     props: {
         prev_page_url: {
-            type: String
+            type: String,
+            required: true
         },
         degree_id: {
-            type: String
+            type: String,
+            required: true
         }
     },
     data() {
@@ -43,7 +46,6 @@ export default {
                 degree_description: '',
                 department_id: '',
                 graduation_rate: '',
-                job_demand: '',
                 job_prospects: '',
             },
             edit: false,
@@ -56,16 +58,16 @@ export default {
     },
 
     methods: {
-        fetchDegree() {
-            const url = window.location.href;
+        async fetchDegree() {
             const id = this.degree_id;
 
-            fetch('/api/degree/' + id)
-                .then(res => res.json())
-                .then(res => {
-                    this.degree = res.data;
-                })
-                .catch(err => console.log(err));
+            try{
+                const response = await axios.get('/api/degree/' + id);
+                this.degree = response.data.data;
+            } catch (error) {
+                console.error(error);
+            }
+            
         },
     },
 
