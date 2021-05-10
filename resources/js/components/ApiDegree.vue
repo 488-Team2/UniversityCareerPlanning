@@ -13,11 +13,10 @@
                     </li>
                 </ul>
                 <button type="button" class="btn btn-light" @click="error = null">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
             </div>
         </transition>
-    
     
         <div class="form-group">
             <label>Name</label>
@@ -28,6 +27,25 @@
             <textarea class="form-control" v-model="degree.degree_description" rows="5" placeholder="Description..."></textarea>
         </div><br />
         <div class="form-group">
+            <div class="inline">
+                <label>Category (select up to three. To learn more about the categories click</label>
+                <a href="https://www.thecareerproject.org/blog/how-are-you-intelligent-an-introduction-to-the-holland-codes-riasec/">here</a>
+                <label>)</label>
+            </div>
+            <li class="mb-1" v-for="(item, key, index) in degree_codes" :key="index">
+                <label>
+                    <input type="checkbox" 
+                    :id='key' 
+                    :value='key' 
+                    v-model="checkedCategories" 
+                    :disabled="checkedCategories.length > 2 && checkedCategories.indexOf(key) === -1" >
+                    {{item}}
+                </label>
+            </li>
+            <br>
+        </div>
+    
+        <div class="form-group">
             <label>Department Id</label>
             <input type="text" class="form-control" v-model="degree.department_id" placeholder="id...">
         </div><br />
@@ -35,33 +53,31 @@
             <label>Graduation Rate</label>
             <input type="text" class="form-control" v-model="degree.graduation_rate" placeholder="rate...">
         </div><br />
-
+    
         <div>
             <label>Job Prospects</label>
             <div id="selectedJobs">
-                
+    
                 <li class="mb-1" v-for="(job, index) in selectedJobNames" :key="index">
-                <button id="delete" type="button" class="btn btn-danger" @click="removeJob(job)" >Delete</button>
-                {{job}}
+                    <button id="delete" type="button" class="btn btn-danger" @click="removeJob(job)">Delete</button> {{job}}
                 </li>
             </div>
         </div>
-
+    
         <div>
             <select class="mb-4" v-model="selectedJob" name="jobSelect" @change="addJob">
-                <option value="0">Please select a job</option>
-                <option v-for="job in jobArr" :value="job.job_name">{{ job.job_name }}</option>
-            </select>
+                                <option value="0">Please select a job</option>
+                                <option v-for="job in jobArr" :value="job.job_name">{{ job.job_name }}</option>
+                            </select>
         </div>
     
         <div>
             <button v-if="!degree.isEdit" class="btn btn-primary" @click="createDegree">Create</button>
             <div v-else>
-            <button class="btn btn-primary" @click="updateDegree">Update</button>
-            <button class="btn btn-danger" @click="clearForm">Cancel</button>
+                <button class="btn btn-primary" @click="updateDegree">Update</button>
+                <button class="btn btn-danger" @click="clearForm">Cancel</button>
             </div>
         </div>
-    
     
         <hr>
     
@@ -88,9 +104,9 @@
                     <td>{{ degree.department_id }}</td>
     
                     <td>{{ degree.graduation_rate }}</td>
-
+    
                     <td>{{ degree.job_prospects }}</td>
-                
+    
                     <td v-if="!degree.isEdit">
                         <button class="btn btn-primary" @click="selectDegree(degree, index)">Edit</button>
                         <button class="btn btn-danger" @click="deleteDegree(degree, index)">Delete</button>
@@ -135,6 +151,7 @@ export default {
                 id: '',
                 degree_name: '',
                 degree_description: '',
+                degree_code: '',
                 department_id: '',
                 graduation_rate: 0,
                 job_prospects: '',
@@ -145,6 +162,15 @@ export default {
             jobArr: [],
             selectedJob: "",
             selectedJobNames: [],
+            checkedCategories: [],
+            degree_codes: {
+                "R": "Realistic: Doers",
+                "I": "Investigative: Thinkers",
+                "A": "Artistic: Creators",
+                "S": "Social: Helpers",
+                "E": "Enterprising: persuaders",
+                "C": "Conventional: Organizers"
+            }
         }
     },
     created() {
@@ -152,13 +178,13 @@ export default {
         this.fetchJobs();
     },
     methods: {
-        addJob(){
-            if(this.selectedJob!=="0")
+        addJob() {
+            if (this.selectedJob !== "0")
                 this.selectedJobNames.push(this.selectedJob);
         },
         removeJob(job) {
             const index = this.selectedJobNames.indexOf(job);
-            if(index > -1){
+            if (index > -1) {
                 this.selectedJobNames.splice(index, 1);
             }
         },
@@ -176,6 +202,7 @@ export default {
                 const response = await axios.post('/api/degree/create', {
                     degree_name: this.degree.degree_name,
                     degree_description: this.degree.degree_description,
+                    degree_code: this.checkedCategories.join(''),
                     department_id: this.degree.department_id,
                     graduation_rate: this.degree.graduation_rate,
                     job_prospects: this.selectedJobNames.join()
@@ -207,8 +234,9 @@ export default {
             this.index = index
             this.degree = { ...degree }
             this.selectedJobNames = degree.job_prospects.split(',');
-            
-            window.scrollTo(0,0);
+            this.checkedCategories = degree.degree_code.split('');
+
+            window.scrollTo(0, 0);
         },
         async updateDegree() {
             try {
@@ -217,35 +245,39 @@ export default {
                 const response = await axios.put('api/degree/update/' + this.degree.id, {
                     degree_name: this.degree.degree_name,
                     degree_description: this.degree.degree_description,
+                    degree_code: this.checkedCategories.join(''),
                     department_id: this.degree.department_id,
                     graduation_rate: this.degree.graduation_rate,
                     job_prospects: this.selectedJobNames.join()
                 })
-                
-                this.listDegrees.data [this.index].degree_name = response.data.degree.degree_name
+
+                this.listDegrees.data[this.index].degree_name = response.data.degree.degree_name
                 this.listDegrees.data[this.index].degree_description = response.data.degree.degree_description
+                this.listDegrees.data[this.index].degree_code = response.data.degree.degree_code
                 this.listDegrees.data[this.index].department_id = response.data.degree.department_id
                 this.listDegrees.data[this.index].graduation_rate = response.data.degree.graduation_rate
                 this.listDegrees.data[this.index].job_prospects = response.data.degree.job_prospects
                 this.listDegrees.data[this.index].isEdit = false
-                
+
                 this.clearForm();
-                
+
             } catch (error) {
                 this.error = error.response.data
             }
         },
-        clearForm(){
+        clearForm() {
             //reset form to initial
-                this.degree = {
-                    id: '',
-                    degree_name: '',
-                    degree_description: '',
-                    department_id: '',
-                    graduation_rate: 0,
-                }
-                this.selectedJobNames = [];
-                this.listDegrees.data[this.index].isEdit = false;
+            this.degree = {
+                id: '',
+                degree_name: '',
+                degree_description: '',
+                degree_code: '',
+                department_id: '',
+                graduation_rate: 0,
+            }
+            this.selectedJobNames = [];
+            this.checkedCategories = [];
+            this.listDegrees.data[this.index].isEdit = false;
         },
         async deleteDegree(degree, index) {
             try {
@@ -265,34 +297,46 @@ export default {
 .fade-leave-active {
     transition: opacity .5s;
 }
+
 .fade-enter,
 .fade-leave-to {
     opacity: 0;
 }
+
 .slide-fade-enter-active {
     transition: all .2s ease;
 }
+
 .slide-fade-leave-active {
     transition: all .6s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
+
 .slide-fade-enter,
 .slide-fade-leave-to {
     transform: translateX(10px);
     opacity: 0;
 }
+
 #delete {
     font-size: 80%;
     padding: .3%
 }
+
 #selectedJobs {
     padding: 20px;
     border: 1px solid #d4d4d4;
     border-radius: 5px;
 }
+
 li {
     list-style-type: none;
 }
+
 #errors {
     position: fixed;
+}
+
+.inline {
+    display: inline;
 }
 </style>
