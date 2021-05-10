@@ -182,44 +182,44 @@ class DegreeApiImportInfoController extends Controller
     {
         $hollandDegreeFile = Storage::get('holland-codes.csv');
 
-        echo $hollandDegreeFile;
-
-        $hollandDegrees = [];
+        $trainingDegrees = collect();
         $hollandDegreeCollection = collect(explode("\n", $hollandDegreeFile));
-        $hollandDegreeCollection->each(function ($item) use ($hollandDegrees) {
-            if ($item !== NULL || strlen($item) > 0)
+        $hollandDegreeCollection->each(function ($item) use ($trainingDegrees) {
+            if ($item !== NULL && strlen($item) > 0) {
                 $itemArray = preg_split("~,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)~", $item);
-            //echo $itemArray[0] . " " . $itemArray[1] . "\n";
-            if ($itemArray[0] !== NULL || strlen($itemArray[0]) > 0)
-                array_push($hollandDegrees, $itemArray);
+                $trainingDegrees->add($itemArray);
+            }
         });
 
-        print_r($hollandDegrees);
-//        for (Gene testGene : testGeneList) {
-//            List<Gene> neighbors = new ArrayList<>();
-//            int smallestNeighborDistanceIndex = 0;
-//
-//            for (Gene trainingGene : trainingGeneList) {
-//                double distance = testGene.computeDistance(trainingGene);
-//
-//                if (neighbors.size() < 3) {
-//                    neighbors.add(trainingGene);
-//                    smallestNeighborDistanceIndex = neighbors.indexOf(trainingGene);
-//                } else if (distance > testGene.computeDistance(neighbors.get(smallestNeighborDistanceIndex))) {
-//                    neighbors.remove(smallestNeighborDistanceIndex);
-//                    neighbors.add(trainingGene);
-//                }
-//
-//                for (Gene g : neighbors) {
-//                    if (testGene.computeDistance(g) < testGene.computeDistance(neighbors.get(smallestNeighborDistanceIndex))) {
-//                        smallestNeighborDistanceIndex = neighbors.indexOf(g);
-//                    }
-//                }
-//            }
-//
-//            testGene.decideLocalization(neighbors);
-//        }
+        $neighbors = collect();
+        $smallestNeighborDistanceIndex = 0;
 
-        return "";
+        $trainingDegrees->each(function ($trainingDegree) use ($degree, $neighbors, $smallestNeighborDistanceIndex) {
+            $distance = levenshtein($degree, $trainingDegree[0]);
+
+            if ($neighbors->count() < 3) {
+                $neighbors->add($trainingDegree);
+                $smallestNeighborDistanceIndex = $neighbors->search($trainingDegree);
+            } else if ($distance < levenshtein($degree, $neighbors[$smallestNeighborDistanceIndex][0])) {
+                $neighbors[$smallestNeighborDistanceIndex] = $trainingDegree;
+            }
+        });
+
+        return $this->decideHollandCodes($neighbors);
+    }
+
+    /**
+     * Compares most common degree code among top three
+     * neighbors to test degree name
+     *
+     * return holland code by majority wins among neighbors' holland codes
+     *
+     * @param $neighbors
+     * @return String
+     */
+    function decideHollandCodes($neighbors): string
+    {
+
+        return $neighbors[0][1];
     }
 }
