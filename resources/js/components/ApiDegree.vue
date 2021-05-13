@@ -230,13 +230,17 @@ export default {
             }
         },
         selectDegree(degree, index) {
+
+            window.scrollTo(0, 0);
+
             degree.isEdit = true
             this.index = index
             this.degree = { ...degree }
             this.selectedJobNames = degree.job_prospects.split(',');
-            this.checkedCategories = degree.degree_code.split('');
+            if(degree.degree_code!=null){
+                this.checkedCategories = degree.degree_code.split('');
+            }
 
-            window.scrollTo(0, 0);
         },
         async updateDegree() {
             try {

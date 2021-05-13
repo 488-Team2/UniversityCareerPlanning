@@ -110,27 +110,13 @@ class DegreeController extends Controller
   
     public function update(Request $request, $id)
     {
-         $this->validate($request, [
-            'degree_name' => 'required|min:5',
-            'degree_description' => 'required|min:5',
-            'degree_code' => 'required|min:1',
-            'department_id' => 'required|numeric|gt:0',
-            'graduation_rate' => 'required|numeric|gt:0',
-            'job_prospects' => 'required|min:1'
-        ]);
-        $degree = Degree::find($id);
 
-        $degree->degree_name = $request->input('degree_name');
-        $degree->degree_description = $request->input('degree_description');
-        $degree->degree_code = $request->input('degree_code');
-        $degree->department_id = $request ->input('department_id');
-        $degree->graduation_rate = $request ->input('graduation_rate');
-        $degree->job_prospects = $request->input('job_prospects');
-
-        $degree->save();
+        $degree = Degree::findOrFail($id);
+        $degree->update($request->all());
         return response([
             'degree' => $degree
-        ], 200); 
+        ], 200);
+
     }
 
 
