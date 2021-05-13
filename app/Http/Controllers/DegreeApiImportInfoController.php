@@ -164,8 +164,10 @@ class DegreeApiImportInfoController extends Controller
 
             $itemArray['degree_code'] = ['R', 'I', 'A', 'S', 'E', 'C'][array_rand(['R', 'I', 'A', 'S', 'E', 'C'])];
             $itemArray['graduation_rate'] = $faker->numberBetween(0, 100);
-            $itemArray['job_demand'] = $faker->numberBetween(0, 100);
             Degree::create($itemArray);
         });
+
+        return response([
+        ], 200);
     }
 }
