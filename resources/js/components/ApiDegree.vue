@@ -23,6 +23,10 @@
             <input type="text" class="form-control" v-model="degree.degree_name" placeholder="Name...">
         </div><br />
         <div class="form-group">
+            <label>Degree Type</label>
+            <input class="form-control" v-model="degree.degree_type" rows="5" placeholder="Degree Type..."></input>
+        </div><br />
+        <div class="form-group">
             <label>Description</label>
             <textarea class="form-control" v-model="degree.degree_description" rows="5" placeholder="Description..."></textarea>
         </div><br />
@@ -150,6 +154,7 @@ export default {
             degree: {
                 id: '',
                 degree_name: '',
+                degree_type: '',
                 degree_description: '',
                 degree_code: '',
                 department_id: '',
@@ -201,22 +206,25 @@ export default {
                 this.error = null
                 const response = await axios.post('/api/degree/create', {
                     degree_name: this.degree.degree_name,
+                    degree_type: this.degree.degree_type,
                     degree_description: this.degree.degree_description,
                     degree_code: this.checkedCategories.join(''),
                     department_id: this.degree.department_id,
                     graduation_rate: this.degree.graduation_rate,
                     job_prospects: this.selectedJobNames.join()
-                })
-                //this.listDegrees.unshift(esponse.data.degree)
-                //console.log(response.data.degree)
+                });
+
                 this.listDegrees.data.unshift({
                     ...response.data.degree,
                     isEdit: false
                 })
-                this.clearForm();
+                
             } catch (error) {
                 this.error = error.response.data
             }
+
+            this.clearForm();
+
         },
         async getListDegrees(page = 1) {
             try {
@@ -248,6 +256,7 @@ export default {
                 console.log('api/degree/update/' + this.degree.id);
                 const response = await axios.put('api/degree/update/' + this.degree.id, {
                     degree_name: this.degree.degree_name,
+                    degree_type: this.degree.degree_type,
                     degree_description: this.degree.degree_description,
                     degree_code: this.checkedCategories.join(''),
                     department_id: this.degree.department_id,
@@ -256,6 +265,7 @@ export default {
                 })
 
                 this.listDegrees.data[this.index].degree_name = response.data.degree.degree_name
+                this.listDegrees.data[this.index].degree_type = response.data.degree.degree_type
                 this.listDegrees.data[this.index].degree_description = response.data.degree.degree_description
                 this.listDegrees.data[this.index].degree_code = response.data.degree.degree_code
                 this.listDegrees.data[this.index].department_id = response.data.degree.department_id
@@ -263,17 +273,19 @@ export default {
                 this.listDegrees.data[this.index].job_prospects = response.data.degree.job_prospects
                 this.listDegrees.data[this.index].isEdit = false
 
-                this.clearForm();
-
             } catch (error) {
                 this.error = error.response.data
             }
+
+            this.clearForm();
+            
         },
         clearForm() {
             //reset form to initial
             this.degree = {
                 id: '',
                 degree_name: '',
+                degree_type: '',
                 degree_description: '',
                 degree_code: '',
                 department_id: '',
