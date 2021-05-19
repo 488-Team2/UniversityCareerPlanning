@@ -91,10 +91,10 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Type</th>
                     <th scope="col">Description</th>
                     <th scope="col">Department Id</th>
                     <th scope="col">Graduation Rate</th>
-                    <th scope="col">Job Prospects</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
@@ -102,14 +102,15 @@
                 <tr v-for="(degree, index) in listDegrees.data" :key="degree.id">
                     <th scope="row"> {{ degree.id }} </th>
                     <td>{{ degree.degree_name }}</td>
+
+                    <td>{{ degree.degree_type}}</td>
     
-                    <td> {{ degree.degree_description }} </td>
-    
+                    <td v-if="degree.degree_description.length<120"> {{ degree.degree_description }} </td>
+                    <td v-else> {{degree.degree_description.substring(0,120)+"..."}} </td>
+
                     <td>{{ degree.department_id }}</td>
     
                     <td>{{ degree.graduation_rate }}</td>
-    
-                    <td>{{ degree.job_prospects }}</td>
     
                     <td v-if="!degree.isEdit">
                         <button class="btn btn-primary" @click="selectDegree(degree, index)">Edit</button>
@@ -218,12 +219,14 @@ export default {
                     ...response.data.degree,
                     isEdit: false
                 })
+
+
+                this.clearForm();
                 
             } catch (error) {
                 this.error = error.response.data
             }
 
-            this.clearForm();
 
         },
         async getListDegrees(page = 1) {
@@ -273,12 +276,14 @@ export default {
                 this.listDegrees.data[this.index].job_prospects = response.data.degree.job_prospects
                 this.listDegrees.data[this.index].isEdit = false
 
+                this.clearForm();
+
             } catch (error) {
                 this.error = error.response.data
             }
 
-            this.clearForm();
             
+
         },
         clearForm() {
             //reset form to initial
