@@ -12,6 +12,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class DegreeApiImportInfoController extends Controller
 {
@@ -162,9 +163,10 @@ class DegreeApiImportInfoController extends Controller
                 }
             });
 
-            $itemArray['degree_code'] = ['R', 'I', 'A', 'S', 'E', 'C'][array_rand(['R', 'I', 'A', 'S', 'E', 'C'])];
+            $itemArray['degree_code'] = $this->classifyDegreeCodes($itemArray['degree_name']);
             $itemArray['graduation_rate'] = $faker->numberBetween(0, 100);
-            Degree::create($itemArray);
+            $itemArray['job_demand'] = $faker->numberBetween(0, 100);
+            Degree::create($itemArray)->save();
         });
 
         return response([

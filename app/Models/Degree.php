@@ -17,6 +17,7 @@ class Degree extends Model
         'degree_type',
         'graduation_rate',
         'job_prospects',
+        'job_demand',
         'keywords'
     ];
 

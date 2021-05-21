@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import Alert from "./Alert";
+import Alert from "./AlertMessage";
 
 export default {
     name: "Register",

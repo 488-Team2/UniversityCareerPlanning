@@ -34,9 +34,11 @@ class DegreeController extends Controller
 
     public function hollandCodeDegrees($codes)
     {
-        $codeArray = explode(" ", $codes);
-
-        $degrees = Degree::whereIn("degree_code", $codeArray)->paginate(10);
+        $codeArray = str_split($codes);
+        $degrees = collect(Degree::all()->filter(function ($degree) use ($codeArray) {
+            $degreeCodes = str_split($degree->degree_code);
+            return count(array_intersect($degreeCodes, $codeArray)) > 0;
+        }))->random(12);
 
         //return collection of degrees as a resource
         return DegreeResource::collection($degrees);
@@ -125,27 +127,27 @@ class DegreeController extends Controller
     public function update(Request $request, $id)
     {
         return $request->all();
-       /* $this->validate($request, [
-            'degree_name' => 'required|min:5',
-            'degree_description' => 'required|min:5',
-            'department_id' => 'required|numeric|gt:0',
-            'graduation_rate' => 'required|numeric|gt:0',
-            'job_demand' => 'required|numeric|gt:0',
-            'job_prospects' => 'required|min:1'
-        ]);
-        $degree = Degree::find($id);
+        /* $this->validate($request, [
+             'degree_name' => 'required|min:5',
+             'degree_description' => 'required|min:5',
+             'department_id' => 'required|numeric|gt:0',
+             'graduation_rate' => 'required|numeric|gt:0',
+             'job_demand' => 'required|numeric|gt:0',
+             'job_prospects' => 'required|min:1'
+         ]);
+         $degree = Degree::find($id);
 
-        $degree->degree_name = $request->input('degree_name');
-        $degree->degree_description = $request->input('degree_description');
-        $degree->department_id = $request ->input('department_id');
-        $degree->graduation_rate = $request ->input('graduation_rate');
-        $degree->job_demand = $request ->input('job_demand');
-        $degree->job_prospects = $request->input('job_prospects');
+         $degree->degree_name = $request->input('degree_name');
+         $degree->degree_description = $request->input('degree_description');
+         $degree->department_id = $request ->input('department_id');
+         $degree->graduation_rate = $request ->input('graduation_rate');
+         $degree->job_demand = $request ->input('job_demand');
+         $degree->job_prospects = $request->input('job_prospects');
 
-        $degree->save();
-        return response([
-            'degree' => $degree
-        ], 200); */
+         $degree->save();
+         return response([
+             'degree' => $degree
+         ], 200); */
     }
 
 

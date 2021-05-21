@@ -8,7 +8,7 @@
 
 <script>
 export default {
-    name: "alert",
+    name: "alert-message",
     props: {
         alertArray: Array,
         alertType: String
