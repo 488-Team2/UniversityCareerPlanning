@@ -14,6 +14,7 @@ class Degree extends Model
         'degree_description',
         'degree_code',
         'department_id',
+        'degree_type',
         'graduation_rate',
         'job_demand',
         'job_prospects',
@@ -28,5 +29,11 @@ class Degree extends Model
     public function jobs()
     {
         return $this->belongsToMany(Job::class);
+    }
+
+    public function getColumns(): array
+    {
+        $columns = $this->getFillable();
+        return $columns;
     }
 }
