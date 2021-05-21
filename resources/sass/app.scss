@@ -6,3 +6,11 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// Import degree info styling
+@import 'importDegree';
+
+body {
+    font-family: "Nunito", sans-serif;
+    font-size: 16px;
+}

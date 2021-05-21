@@ -1,5 +1,7 @@
 <template>
     <div class="api-degree container mt-5">
+        <button id="back-btn" class="btn btn-danger" onclick="history.back()">Back</button>
+         <br><br>
         <div>
             <h1 v-if="!degree.isEdit">Create Degree</h1>
             <h1 v-else>Update Degree</h1>

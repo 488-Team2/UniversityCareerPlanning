@@ -7,6 +7,7 @@ use \Http\Requests;
 use App\Models\Degree;
 use App\Http\Resources\Degree as DegreeResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Log;
 
 class DegreeController extends Controller
 {
@@ -20,14 +21,15 @@ class DegreeController extends Controller
         //get degress
         $degrees = Degree::orderBy('created_at', 'desc')->paginate(10);
 
-       //return collection of degrees as a resource
-       return DegreeResource::collection($degrees);
-    
+        //return collection of degrees as a resource
+        return DegreeResource::collection($degrees);
+
     }
+
     public function display(Request $request)
     {
 
-       return Degree::orderBy('created_at', 'desc')->paginate(10);
+        return Degree::orderBy('created_at', 'desc')->paginate(10);
     }
 
     public function hollandCodeDegrees($codes)
@@ -38,6 +40,17 @@ class DegreeController extends Controller
 
         //return collection of degrees as a resource
         return DegreeResource::collection($degrees);
+    }
+
+    /**
+     * Get database column names from degrees database table
+     *
+     * @return array
+     */
+    public function getDegreeColumnNames(): array
+    {
+        $degree = new Degree();
+        return $degree->getColumns();
     }
 
     public function set($ids)
@@ -53,14 +66,14 @@ class DegreeController extends Controller
     public function search($keyword)
     {
 
-        $degrees = Degree::where("degree_name", "like", "%".$keyword."%")
-                    ->orwhere("degree_description", "like", "%".$keyword."%")
-                    ->orwhere("keywords", "like", "%".$keyword."%")
-                    ->orwhere("job_prospects", "like", "%".$keyword."%")->paginate(10);
+        $degrees = Degree::where("degree_name", "like", "%" . $keyword . "%")
+            ->orwhere("degree_description", "like", "%" . $keyword . "%")
+            ->orwhere("keywords", "like", "%" . $keyword . "%")
+            ->orwhere("job_prospects", "like", "%" . $keyword . "%")->paginate(10);
 
         return DegreeResource::collection($degrees);
     }
-  
+
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -97,11 +110,12 @@ class DegreeController extends Controller
         return new DegreeResource($degree);
 
     }
+
     public function showAll()
     {
-      return DegreeResource::collection(Degree::all());
+        return DegreeResource::collection(Degree::all());
     }
-  
+
 
     public function edit($id)
     {
@@ -110,7 +124,7 @@ class DegreeController extends Controller
 
     }
 
-  
+
     public function update(Request $request, $id)
     {
 
