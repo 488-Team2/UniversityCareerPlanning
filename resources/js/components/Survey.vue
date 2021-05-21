@@ -1,6 +1,6 @@
 <template>
     <div>
-        <alert-message :alert-array="alerts" :alertType="alertType"></alert-message>
+        <alert :alert-array="alerts" :alertType="alertType"></alert>
         <h2 :class="currentQuestion.question_code">Question: {{ currentQuestion.question_text }}</h2>
         <div class="answer-inputs">
             <div>
@@ -41,8 +41,10 @@ export default {
             responseArray: {"R": 0, "I": 0, "A": 0, "S": 0, "E": 0, "C": 0}
         }
     },
-    async created() {
-        await this.fetchQuestions();
+    created: async function () {
+        const response = await axios.get('/api/survey/questions');
+        this.questions = response.data.data;
+        this.currentQuestion = this.questions[0];
     },
     methods: {
         goToNextQuestion() {
@@ -57,13 +59,6 @@ export default {
                 //Send responses to parent component so they can be graded
                 this.$emit('submitSurvey', this.responseArray);
             }
-        },
-        fetchQuestions() {
-            return axios.get('/api/survey/questions').then(response => {
-                this.questions = response.data.data;
-                this.currentQuestion = this.questions[0];
-                return response;
-            });
         }
     },
     computed: {

@@ -27,9 +27,14 @@ Route::get('/getCurrentUser', function () {
     return Auth::user()->load('roles');
 });
 
-//Route::resource('users', App\Http\Controllers\UserController::class);
+//User: list user, create user, update user
 Route::get('users', 'App\Http\Controllers\UserController@index');
 Route::post('user/create', 'App\Http\Controllers\UserController@store');
+Route::put('user/update/{id}', 'App\Http\Controllers\UserController@update');
+Route::delete('user/delete/{id}', 'App\Http\Controllers\UserController@destroy');
+Route::get('user/search', 'App\Http\Controllers\UserController@userSearch');
+
+
 
 
 // list of all degrees
@@ -77,6 +82,7 @@ Route::get('StateJob/{stateName}_{jobName}', 'App\Http\Controllers\AllStateJobCo
 // create new state job
 Route::post('StateJob/create', 'App\Http\Controllers\AllStateJobController@store');
 
+//API degree
 Route::post('degree/create', 'App\Http\Controllers\DegreeController@store');
 Route::get('degree/edit/{id}', 'App\Http\Controllers\DegreeController@edit');
 Route::put('degree/update/{id}', 'App\Http\Controllers\DegreeController@update');

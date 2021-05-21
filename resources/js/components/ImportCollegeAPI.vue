@@ -1,7 +1,7 @@
 <template>
     <div>
         <navbar></navbar>
-        <alert :alert-array="alerts" :alertType="alertType"></alert>
+        <alert-message :alert-array="alerts" :alertType="alertType"></alert-message>
         <div>
             <h1>Import degree information</h1>
             <p>To import degree information from your college's API, please provide the API URL, and match the
