@@ -79,22 +79,25 @@ class DegreeController extends Controller
         $this->validate($request, [
             'degree_name' => 'required|min:5',
             'degree_description' => 'required|min:5',
+            'degree_type' => 'required|min:1',
+            'degree_code' => 'required|min:1',
             'department_id' => 'required|numeric|gt:0',
             'graduation_rate' => 'required|numeric|gt:0',
-            'job_demand' => 'required|numeric|gt:0',
             'job_prospects' => 'required|min:1'
         ]);
         $degree = Degree::create([
-            'degree_name' => $request->get('degree_name'),
-            'degree_description' => $request->get('degree_description'),
-            'department_id' => $request->get('department_id'),
-            'graduation_rate' => $request->get('graduation_rate'),
-            'job_demand' => $request->get('job_demand'),
-            'job_prospects' => $request->get('job_prospects')
+            'degree_name' => $request->input('degree_name'),
+            'degree_description' => $request->input('degree_description'),
+            'degree_type' => $request->input('degree_type'),
+            'degree_code' => $request->input('degree_code'),
+            'department_id' => $request->input('department_id'),
+            'graduation_rate' => $request->input('graduation_rate'),
+            'job_prospects' => $request->input('job_prospects')
         ]);
         return response([
             'degree' => $degree
         ], 200);
+        
     }
 
 
@@ -124,13 +127,19 @@ class DegreeController extends Controller
 
     public function update(Request $request, $id)
     {
-        return $request->all();
-       /* $this->validate($request, [
+
+        $degree = Degree::findOrFail($id);
+        $degree->update($request->all());
+        return response([
+            'degree' => $degree
+        ], 200);
+
+    /*
+        $this->validate($request, [
             'degree_name' => 'required|min:5',
             'degree_description' => 'required|min:5',
             'department_id' => 'required|numeric|gt:0',
             'graduation_rate' => 'required|numeric|gt:0',
-            'job_demand' => 'required|numeric|gt:0',
             'job_prospects' => 'required|min:1'
         ]);
         $degree = Degree::find($id);
@@ -139,13 +148,13 @@ class DegreeController extends Controller
         $degree->degree_description = $request->input('degree_description');
         $degree->department_id = $request ->input('department_id');
         $degree->graduation_rate = $request ->input('graduation_rate');
-        $degree->job_demand = $request ->input('job_demand');
         $degree->job_prospects = $request->input('job_prospects');
 
         $degree->save();
         return response([
             'degree' => $degree
-        ], 200); */
+        ], 200);
+    */
     }
 
 

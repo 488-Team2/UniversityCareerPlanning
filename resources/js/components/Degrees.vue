@@ -34,7 +34,9 @@
         <div id="grow" class="card card-body mb-2" v-for="degree in degrees" v-bind:key="degree.id">
             <a class="degree" :href="'/degree/' + degree.id" >
                 <h3> {{degree.degree_name}} </h3> 
-                <p> {{degree.degree_description}} </p>                
+                <p v-if="degree.degree_description.length<240"> {{ degree.degree_description }} </p>
+                <p v-else> {{degree.degree_description.substring(0,240)+"..."}} </p>
+              
             </a>      
 
             <div class="btn-toolbar" >
