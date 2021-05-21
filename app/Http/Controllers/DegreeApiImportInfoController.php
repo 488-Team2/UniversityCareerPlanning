@@ -163,7 +163,7 @@ class DegreeApiImportInfoController extends Controller
                 }
             });
 
-            $itemArray['degree_code'] = ['R', 'I', 'A', 'S', 'E', 'C'][array_rand(['R', 'I', 'A', 'S', 'E', 'C'])];
+            $itemArray['degree_code'] = $this->classifyDegreeCodes($itemArray['degree_name']);
             $itemArray['graduation_rate'] = $faker->numberBetween(0, 100);
             $itemArray['job_demand'] = $faker->numberBetween(0, 100);
             Degree::create($itemArray);
@@ -192,34 +192,30 @@ class DegreeApiImportInfoController extends Controller
         });
 
         $neighbors = collect();
-        $smallestNeighborDistanceIndex = 0;
+        $largestNeighborIndex = 0;
+        $smallestNeighborIndex = 0;
 
-        $trainingDegrees->each(function ($trainingDegree) use ($degree, $neighbors, $smallestNeighborDistanceIndex) {
+        $trainingDegrees->each(function ($trainingDegree) use ($degree, &$neighbors, &$largestNeighborIndex, &$smallestNeighborIndex) {
             $distance = levenshtein($degree, $trainingDegree[0]);
 
             if ($neighbors->count() < 3) {
                 $neighbors->add($trainingDegree);
-                $smallestNeighborDistanceIndex = $neighbors->search($trainingDegree);
-            } else if ($distance < levenshtein($degree, $neighbors[$smallestNeighborDistanceIndex][0])) {
-                $neighbors[$smallestNeighborDistanceIndex] = $trainingDegree;
+                $largestNeighborIndex = $neighbors->search($trainingDegree);
+            } else if ($distance < levenshtein($degree, $neighbors[$largestNeighborIndex][0])) {
+                $neighbors->splice($largestNeighborIndex, 1);
+                $neighbors->add($trainingDegree);
+                $largestNeighborIndex = $neighbors->search($trainingDegree);
             }
+            $neighbors->each(function ($neighbor) use ($degree, &$neighbors, &$largestNeighborIndex, &$smallestNeighborIndex) {
+                if (levenshtein($degree, $neighbor[0]) > levenshtein($degree, $neighbors->get($largestNeighborIndex)[0])) {
+                    $largestNeighborIndex = $neighbors->search($neighbor);
+                }
+                if (levenshtein($degree, $neighbor[0]) < levenshtein($degree, $neighbors[$smallestNeighborIndex][0])) {
+                    $smallestNeighborIndex = $neighbors->search($neighbor);
+                }
+            });
         });
 
-        return $this->decideHollandCodes($neighbors);
-    }
-
-    /**
-     * Compares most common degree code among top three
-     * neighbors to test degree name
-     *
-     * return holland code by majority wins among neighbors' holland codes
-     *
-     * @param $neighbors
-     * @return String
-     */
-    function decideHollandCodes($neighbors): string
-    {
-
-        return $neighbors[0][1];
+        return $neighbors[$smallestNeighborIndex][1];
     }
 }
