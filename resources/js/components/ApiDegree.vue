@@ -1,8 +1,11 @@
 <template>
-
     <div class="api-degree container mt-5">
-         <button id="back-btn" class="btn btn-danger" onclick="history.back()">Back</button>
-        <h1>Create Degree</h1>
+        <button id="back-btn" class="btn btn-danger" onclick="history.back()">Back</button>
+         <br><br>
+        <div>
+            <h1 v-if="!degree.isEdit">Create Degree</h1>
+            <h1 v-else>Update Degree</h1>
+        </div>
         <transition name="fade">
             <div id="errors" class="alert alert-danger alert-dismissible" role="alert" v-if="error">
                 <b>{{ error.message }}</b>
@@ -60,6 +63,7 @@
             <button class="btn btn-danger" @click="clearForm">Cancel</button>
             </div>
         </div>
+    
     
         <hr>
     
@@ -263,41 +267,33 @@ export default {
 .fade-leave-active {
     transition: opacity .5s;
 }
-
 .fade-enter,
 .fade-leave-to {
     opacity: 0;
 }
-
 .slide-fade-enter-active {
     transition: all .2s ease;
 }
-
 .slide-fade-leave-active {
     transition: all .6s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
-
 .slide-fade-enter,
 .slide-fade-leave-to {
     transform: translateX(10px);
     opacity: 0;
 }
-
 #delete {
     font-size: 80%;
     padding: .3%
 }
-
 #selectedJobs {
     padding: 20px;
     border: 1px solid #d4d4d4;
     border-radius: 5px;
 }
-
 li {
     list-style-type: none;
 }
-
 #errors {
     position: fixed;
 }

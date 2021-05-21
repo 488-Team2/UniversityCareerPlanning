@@ -32,7 +32,7 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    return view('homeLogin');
+    return view('home');
 });
 
 Route::get('/degrees/{ids}', function ($ids) {

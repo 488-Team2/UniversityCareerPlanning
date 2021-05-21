@@ -1,4 +1,12 @@
+
+
 import Vue from "vue";
+import moment from "moment";
+import FlashMessage from '@smartweb/vue-flash-message';
+Vue.prototype.moment = moment
+
+Vue.use(FlashMessage);
+Vue.config.productionTip = false;
 
 
 require('./bootstrap');
@@ -18,6 +26,7 @@ Vue.component('admin-dashboard', require('./components/AdminDashboard.vue').defa
 Vue.component('import-college-api', require('./components/ImportCollegeAPI').default);
 
 
+
 //Home Page
 Vue.component('home', require('./components/Home.vue').default);
 Vue.component('home-login', require('./components/HomeLogin.vue').default);
@@ -28,7 +37,8 @@ Vue.component('contact-form', require('./components/ContactForm.vue').default);
 Vue.component('api-degree', require('./components/ApiDegree.vue').default);
 Vue.component('navbar-add-degree', require('./components/NavbarAddDegree.vue').default);
 
-Vue.component('alert-message', require('./components/AlertMessage').default);
+
+Vue.component('alert', require('./components/Alert').default);
 Vue.component('survey', require('./components/Survey').default);
 Vue.component('survey-app', require('./components/SurveyApp').default);
 Vue.component('survey-start', require('./components/SurveyStart').default);

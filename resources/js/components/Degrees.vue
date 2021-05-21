@@ -1,32 +1,8 @@
 <template>
     <div id= "degress">
-        <!-- <div v-for="session in sessions" :key="session.id">
-            <h4> {{ session.name }} </h4>
-            <p> {{ session.description }}</p>
-        </div> -->
+     <br>
 
-
-        <br>
-<!--         <h4> {{ count }}</h4>
-        <table class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody> 
-                <tr v-for="session in sessions" :key="session.session_id">
-                    <td> {{ session.name }}</td>
-                    <td>  {{ session.description }} </td>
-                    <td>  {{ session.graduation_rate }} </td>
-                    <td witdh = "60"> 
-                        <button class="btn btn-primary" @click="removeSession()"> Remove </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table> -->
-
+    <FlashMessage :position="'right top'"></FlashMessage>
     <h2>Degrees</h2>
 
         <div class="float-end">
@@ -52,9 +28,10 @@
              @click="fetchDegrees(pagination.next_page_url)">Next</a></li>
         </ul>
     </nav>
- 
+
+        <transition-group name="slide-fade" tag="div" class="row row-cols-1">
+        <!-- <div id="grow" class="card card-body mb-2" v-for="degree in degrees" v-bind:key="degree.id"> -->
         <div id="grow" class="card card-body mb-2" v-for="degree in degrees" v-bind:key="degree.id">
-      
             <a class="degree" :href="'/degree/' + degree.id" >
                 <h3> {{degree.degree_name}} </h3> 
                 <p> {{degree.degree_description}} </p>                
@@ -64,18 +41,14 @@
                 <button type="button" class="btn btn-outline-primary float-end" @click="addSession(degree)"> Save To Session </button>
                 &nbsp;
             </div> 
-
-            
-
-
-
         </div>
+         </transition-group>
     </div>
+
+
 </template>
 
 <script>
-    import axios from 'axios';
-
     export default {
     props: {
         keywords: {
@@ -88,6 +61,14 @@
     data: function() {
         return {
             degrees: [],
+            degree: {
+                id: '',
+                degree_name: '',
+                degree_description: '',
+                graduation_rate: '',
+                job_demand: ''
+            },
+            degree_id: '', //how it will know which degree to update
             pagination: {},
             url: null,
 
@@ -122,18 +103,18 @@
                 this.url = '/api/degrees'
             }
         },
-        async fetchDegrees(page_url) {
+        fetchDegrees(page_url) {
 
-            page_url = page_url || this.url 
+            let vm = this;
 
-            try{
-                const response = await axios.get(page_url);
-                this.degrees = response.data.data;
-                this.makePagination(response.data.meta, response.data.links)
-            } catch (error) {
-                console.error(error);
-            }
-            
+            page_url = page_url || this.url
+            fetch(page_url)
+                .then(res => res.json())
+                .then(res => {
+                    this.degrees = res.data;
+                    vm.makePagination(res.meta, res.links)
+                })
+                .catch(err => console.log(err));
         },
 
         makePagination(meta, links) {
@@ -156,7 +137,12 @@
 
             var found = this.sessions.find(p => p.session_id === deg.id);
             if(found) {
-                alert(deg.degree_name+' is already saved!');
+                //alert(deg.degree_name+' is already saved!');
+                this.flashMessage.show({
+							status: 'error',
+                            message: deg.degree_name + " is already saved!",
+                            time: 1000
+				});
             } else {
                 this.session.session_id =  deg.id;
                 this.session.name = deg.degree_name;
@@ -165,7 +151,12 @@
                 this.session.job_demand = deg.job_demand;
 
                 this.sessions.push(this.session);
-                alert(deg.degree_name+' saved!');
+               // alert(deg.degree_name+' saved!');
+                this.flashMessage.show({
+							status: 'success',
+                            message: deg.degree_name + " saved!",
+                            time: 1000
+						});
                 this.session.id =  this.sessions.length;
 
                 this.session= {};
@@ -185,10 +176,9 @@
 
     }
 }
-
 </script>
 
-<style>
+<style scoped>
 
 .degree, .degree:hover {
     color: black;
@@ -198,10 +188,9 @@
 #grow {
     transition: all .2s ease-in-out;
 }
-
-#grow:hover {
-    transform: scale(1.03);
-}
+#grow:hover { 
+    transform: scale(1.03); 
+} 
 
 #paginationNav {
     background: white;
@@ -216,4 +205,3 @@
 
 
 </style>
-

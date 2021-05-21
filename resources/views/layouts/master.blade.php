@@ -40,7 +40,7 @@
         <nav class="navbar navbar-expand-sm navbar-dark bg-info">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                     Career Planning 
+                    University Career Planning 
                 </a> 
 
                 <div class="row">

@@ -1,5 +1,21 @@
 <template>
     <div>
+        <FlashMessage :position="'right top'"></FlashMessage>
+     <!--     <button
+      class="error"
+      @click="
+        flashMessage.error({
+          title: 'Error Title',
+          message: 'hi',
+          time:5000,
+          x: 400,
+          y: 50
+        })
+      "
+    >
+      ERROR
+    </button>
+ -->
         <button id="back-btn" class="btn btn-danger" onclick="history.back()">Back</button>
 
          <nav>
@@ -11,7 +27,7 @@
             <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                  <br>
-                    <h4> Your saved degrees: {{ this.sessions.length }} </h4>
+                    <h4> Your saved degree(s): {{ this.sessions.length }} </h4>
                          <div class="card card-body mb-2" v-for="session in sessions" :key="session.session_id">
                             <h4> {{ session.name }}</h4>
                             <p>  {{ session.description}} </p>
@@ -21,7 +37,9 @@
                                     <button class="btn btn btn-outline-primary"> Details</button>
                                 </a>
                                 &nbsp;
-                                <button class="btn btn-outline-danger" @click="removeSession()"> Remove </button>
+                                <button class="btn btn-outline-danger" @click="removeSession(), flashMessage.error({ title: 'Deleted', message: session.name + ' is deleted!', time:1000 });"> 
+                                    Remove 
+                                </button>
                             </div>
                         </div>
 
@@ -29,7 +47,8 @@
 
             <div class="tab-pane fade " id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                  <br>
-                    <h4> Your career survey result: {{ surveySessions.length}}</h4>
+                    <h4> Your career survey result(s): {{ surveySessions.length}}</h4>
+                    <transition-group name="slide-fade" tag="div" class="row row-cols-1">
                     <div class="card card-body mb-2" v-for="res in this.surveySessions" :key="res.id">
                         <h3> {{ res.degree_name }}</h3>               
                     
@@ -39,10 +58,13 @@
                                     <button class="btn btn-outline-primary"> Details</button>
                                 </a>
                                 &nbsp;
-                                <button class="btn btn-outline-danger" @click="removeSurveySession()"> Remove </button>
+                                <button class="btn btn-outline-danger" @click="removeSurveySession(), flashMessage.error({ title: 'Deleted', message: res.degree_name + ' is deleted!', time:1000 });">
+                                     Remove
+                                </button>
                             </div>
 
                     </div>
+                 </transition-group>
             </div>
             </div>
 
@@ -86,10 +108,12 @@ export default {
              this.viewSession();
         }, 
         removeSession(deg) {
-            if(confirm("Do you really want to delete this session?")){
+    //        if(confirm("Do you really want to delete this session?")){
                 this.sessions.splice(deg, 1);
                 this.storeSession();
-            }
+
+                
+     //       }
         },
         viewSurveySession() {
             if(localStorage.getItem('surveySessions')) {
@@ -102,7 +126,7 @@ export default {
              localStorage.setItem('surveySessions', parsed);
              this.viewSurveySession();
         },
-        removeSurveySession() {
+        removeSurveySession(res) {
             this.surveySessions.splice(res, 1);
             this.storeSurveySession();
         }
@@ -110,7 +134,7 @@ export default {
     }
 }
 </script>
-<style >
+<style scoped >
 .divider{
     width:5px;
     height:auto;
@@ -130,4 +154,8 @@ export default {
     top: 80px; 
     text-align: right;
 }
+.active {
+  background: none;
+}
+
 </style>

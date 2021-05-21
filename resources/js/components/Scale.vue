@@ -10,7 +10,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
         return {
@@ -38,18 +37,15 @@ export default {
     },
     computed: {
     calcRate() {
-      
       return {
         "background-color": `#2A2A2A`,
         width: `2%`,
         "margin-left": `${(100/this.range)*this.min*-1+(this.rate*(100/this.range))}%` 
-
       };
     },
     calcLocation() {
       return {
         "margin-left": `${(100/this.range)*this.min*-1+(this.rate*(100/this.range))}%`
-
       };
     }
   }
@@ -57,18 +53,12 @@ export default {
 </script>
 
 <style>
-
-
-
 /* Container for skill bars */
 #container {
   width: 100%; /* Full width */
   background-image: linear-gradient(to right, red, yellow, green);
   border-radius: 25px;
 }
-
-
-
 .skills {
   text-align: right; /* Right-align text */
   padding-top: 10px; /* Add top padding */
