@@ -26,7 +26,7 @@
                         </li>
                         <li class="nav-item" v-if="currentUser !== null"><a class="nav-link" >-</a></li>
                         <li class="nav-item" v-if="currentUser !== null"><a class="nav-link" href="/logout">Logout</a></li>
-                        <li class="nav-item" v-else><a class="nav-link" href="/login">Login</a></li>
+                        <li data-test="btnLogin" class="nav-item" v-else><a class="nav-link" href="/login">Login</a></li>
 
                         
                     </ul>

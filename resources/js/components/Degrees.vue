@@ -17,10 +17,8 @@
             class="page-item"><a class="page-link" href="#" 
             @click="fetchDegrees(pagination.prev_page_url)">Previous</a></li>
 
-                <li class="page-item disabled"><a class="page-link dark-text"
-                                                  href="#">Page {{ pagination.current_page }} of {{
-                        pagination.last_page
-                    }}</a></li>
+            <li class="page-item disabled"><a class="page-link dark-text"
+             href="#">Page {{ pagination.current_page }} of {{ pagination.last_page }}</a></li>
 
 
             <li v-bind:class="[{disabled: !pagination.next_page_url}]" 
@@ -34,9 +32,7 @@
         <div id="grow" class="card card-body mb-2" v-for="degree in degrees" v-bind:key="degree.id">
             <a class="degree" :href="'/degree/' + degree.id" >
                 <h3> {{degree.degree_name}} </h3> 
-                <p v-if="degree.degree_description.length<240"> {{ degree.degree_description }} </p>
-                <p v-else> {{degree.degree_description.substring(0,240)+"..."}} </p>
-              
+                <p> {{degree.degree_description}} </p>                
             </a>      
 
             <div class="btn-toolbar" >
@@ -182,13 +178,13 @@
 
 <style scoped>
 
-.degree, .degree:hover {
+.degree, .degree:hover{
     color: black;
     text-decoration: none;
 }
 
-#grow {
-    transition: all .2s ease-in-out;
+#grow { 
+    transition: all .2s ease-in-out; 
 }
 #grow:hover { 
     transform: scale(1.03); 

@@ -26,15 +26,4 @@ class AdminController extends Controller
         $request->user()->authorizeRoles('admin');
         return view('adminDashboard');
     }
-
-    /**
-     * Show the application admin dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function displayImport(Request $request)
-    {
-        $request->user()->authorizeRoles('student');
-        return view('importCollegeApiPage');
-    }
 }

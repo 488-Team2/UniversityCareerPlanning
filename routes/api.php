@@ -44,18 +44,6 @@ Route::get('degrees', 'App\Http\Controllers\DegreeController@index');
 Route::get('degrees/{ids}', 'App\Http\Controllers\DegreeController@set');
 // set of degrees from Holland codes
 Route::get('degrees/codes/{codes}', 'App\Http\Controllers\DegreeController@hollandCodeDegrees');
-
-// Set of degree table columns
-Route::get('/degreetags', 'App\Http\Controllers\DegreeController@getDegreeColumnNames');
-// Handles post from /api/degreetags, Saving API import information in database
-Route::post('/degreetags', 'App\Http\Controllers\DegreeApiImportInfoController@store');
-// Returns collection of DegreeApiImportInfo data to be used to import degree data from an external resource
-Route::get('/degreeimportdata', 'App\Http\Controllers\DegreeApiImportInfoController@index');
-Route::post('degrees/import', 'App\Http\Controllers\DegreeApiImportInfoController@runImport');
-
-// Deletes a specified data label from the database
-Route::delete('/degreeimportdata', 'App\Http\Controllers\DegreeApiImportInfoController@delete');
-
 // search degrees
 Route::get('search/{keyword}', 'App\Http\Controllers\DegreeController@search');
 
