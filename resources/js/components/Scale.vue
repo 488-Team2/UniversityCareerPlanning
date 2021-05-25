@@ -3,66 +3,62 @@
         <h5>{{name}}</h5>
         <div :style="calcLocation">{{rate}}%</div>
         <div id="container">
-            
-            <div class="skills" :style="calcRate" ></div>
+    
+            <div class="position" :style="calcRate"></div>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-  data() {
-        return {
-            range: 0,
-            midRange: 0
-        }
-    },
     props: {
         rate: {
             type: Number
         },
         name: {
-          type: String
+            type: String
         },
         max: {
-          type: Number
+            type: Number
         },
         min: {
-          type: Number
+            type: Number
         }
     },
-    created() {
-        this.range = (this.max - this.min)
-        this.midRange = this.range/2;
-    },
     computed: {
-    calcRate() {
-      return {
-        "background-color": `#2A2A2A`,
-        width: `2%`,
-        "margin-left": `${(100/this.range)*this.min*-1+(this.rate*(100/this.range))}%` 
-      };
-    },
-    calcLocation() {
-      return {
-        "margin-left": `${(100/this.range)*this.min*-1+(this.rate*(100/this.range))}%`
-      };
+        calcRate() {
+            console.log((100 / this.range) * this.min * -1 + (this.rate * (100 / this.range)));
+            return {
+                "background-color": `#2A2A2A`,
+                width: `2%`,
+                "margin-left": `${(100/this.range)*this.min*-1+(this.rate*(100/this.range))}%`
+            };
+        },
+        calcLocation() {
+            return {
+                "margin-left": `${(100/this.range)*this.min*-1+(this.rate*(100/this.range))}%`
+            };
+        },
+        range() {
+          return (this.max - this.min)
+        }
     }
-  }
 }
 </script>
 
 <style>
-/* Container for skill bars */
+
 #container {
-  width: 100%; /* Full width */
-  background-image: linear-gradient(to right, red, yellow, green);
-  border-radius: 25px;
+    width: 100%;
+    /* Full width */
+    background-image: linear-gradient(to right, red, yellow, green);
+    border-radius: 25px;
 }
-.skills {
-  text-align: right; /* Right-align text */
-  padding-top: 10px; /* Add top padding */
-  padding-bottom: 10px; /* Add bottom padding */
-  color: white; /* White text color */
+
+.position {
+    text-align: right;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: white;
 }
 </style>

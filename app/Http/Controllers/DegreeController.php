@@ -29,7 +29,7 @@ class DegreeController extends Controller
     public function display(Request $request)
     {
 
-        return Degree::orderBy('created_at', 'desc')->paginate(10);
+        return Degree::orderBy('created_at', 'desc')->paginate(6);
     }
 
     public function hollandCodeDegrees($codes)
