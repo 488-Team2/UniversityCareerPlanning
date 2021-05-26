@@ -2,8 +2,8 @@
     <div class="gridContainer">
         <div>
             <a :href="prev_page_url">
-                    <button id="back" class="btn btn-danger">Back</button>
-                </a>
+                <button id="back" class="btn btn-danger">Back</button>
+            </a>
             <h2 class="mt-3">{{degree.degree_name}}</h2>
             <p>{{degree.degree_description}}</p>
             <div id="stats">
