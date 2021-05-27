@@ -157,6 +157,10 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import axios from 'axios';
+const fetch = require("node-fetch");
+
 export default {
     data() {
         return {
@@ -249,23 +253,22 @@ export default {
             }
         },
         async getListDegrees(page = 1) {
-            try {
-                const response = await axios.get('/api/degreeDisplay?page=' + page)
-                this.listDegrees = response.data
-                this.listDegrees.data.forEach(item => {
-                    Vue.set(item, 'isEdit', false)
-                })
+            return axios.get('/api/degreeDisplay?page=' + page)
+                .then((response) => {
+                    this.listDegrees = response.data
+                    this.listDegrees.data.forEach(item => {
+                        Vue.set(item, 'isEdit', false)
+                    })
 
-                
-                console.log(response.data.data.length)
-                console.log(this.listDegrees.data.length)
-                console.log(response.data.data[0].degree_name)
-                console.log(this.listDegrees.data[0].degree_name)
-             
 
-            } catch (error) {
-                this.error = error.response.data
-            }
+                    console.log(response.data.data.length)
+                    console.log(this.listDegrees.data.length)
+                    console.log(response.data.data[0].degree_name)
+                    console.log(this.listDegrees.data[0].degree_name)
+                }).catch((error) => {
+                    console.log(error);
+                    //this.error = error.response.data
+                });
         },
         selectDegree(degree) {
             degree.isEdit = true
