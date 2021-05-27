@@ -65,7 +65,7 @@
     </div>
     
         <hr>
-    
+    <div>
         <h3>List Degrees</h3>
         <table class="table">
             <thead>
@@ -73,7 +73,7 @@
                     <th scope="col">ID</th>
                     <th scope="col">Name</th>
                     <th scope="col">Description</th>
-                    <th scope="col">Department Id</th>
+                    <th @click ="sortDeptId()">Department Id</th>
                     <th scope="col">Graduation Rate</th>
                     <th scope="col">Job Demand</th>
                     <th scope="col">Job Prospects</th>
@@ -119,12 +119,12 @@
                     </td>
     
                     <td v-if="!degree.isEdit">
-                        <button data-test="btnEdit" class="btn btn-primary" @click="selectDegree(degree)">Edit</button>
-                        <button data-test="btnDelete" class="btn btn-danger" @click="deleteDegree(degree, index)">Delete</button>
+                        <button id="edit" data-test="btnEdit" class="btn btn-primary" @click="selectDegree(degree)">Edit</button>
+                        <button id="del" data-test="btnDelete" class="btn btn-danger" @click="deleteDegree(degree, index)">Delete</button>
                     </td>
                     <td v-else>
-                        <button data-test="btnSave" class="btn btn-primary" @click="updateDegree(index)">Save</button>
-                        <button data-test="btnCancel" class="btn btn-danger" @click="degree.isEdit = false">Cancel</button>
+                        <button id="save" data-test="btnSave" class="btn btn-primary" @click="updateDegree(index)">Save</button>
+                        <button id="cancel" data-test="btnCancel" class="btn btn-danger" @click="degree.isEdit = false">Cancel</button>
                     </td>
                 </tr>
             </transition-group>
@@ -150,6 +150,8 @@
                 <a class="page-link" href="#">Next</a>
             </li>
         </ul>
+    </div>
+
     <FlashMessage :position="'right top'"></FlashMessage>
     </div>
 </template>
@@ -172,7 +174,8 @@ export default {
             jobArr: [],
             selectedJob: "",
             createSelectedJobNames: [],
-            updateSelectedJobNames: []
+            updateSelectedJobNames: [],
+
             }
     },
     created() {
@@ -256,6 +259,9 @@ export default {
                 
                 console.log(response.data.data.length)
                 console.log(this.listDegrees.data.length)
+                console.log(response.data.data[0].degree_name)
+                console.log(this.listDegrees.data[0].degree_name)
+             
 
             } catch (error) {
                 this.error = error.response.data
@@ -304,14 +310,22 @@ export default {
             } catch (error) {
                 this.error = error.response.data
             }
-        }
+        },
+        
 
-    }
+    },
+    
 }
 </script>
 
 
 <style lang="scss" scoped>
+#edit, #del, #save, #cancel {
+    padding: 0px 8px;
+    width: fit-content;
+}
+
+
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity .5s;
