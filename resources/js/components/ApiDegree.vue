@@ -1,11 +1,7 @@
 <template>
     <div class="api-degree container mt-5">
         <button id="back-btn" class="btn btn-danger" onclick="history.back()">Back</button>
-         <br><br>
-        <div>
-            <h1 v-if="!degree.isEdit">Create Degree</h1>
-            <h1 v-else>Update Degree</h1>
-        </div>
+        <br><br>
         <transition name="fade">
             <div id="errors" class="alert alert-danger alert-dismissible" role="alert" v-if="error">
                 <b>{{ error.message }}</b>
@@ -15,138 +11,138 @@
                     </li>
                 </ul>
                 <button type="button" class="btn btn-light" @click="error = null">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         </transition>
+        <div class="gridContainer">
+            <div id="degreeForm">
+                <div>
+                    <h1 v-if="!degree.isEdit">Create Degree</h1>
+                    <h1 v-else>Update Degree</h1>
+                </div>
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" class="form-control" v-model="degree.degree_name" placeholder="Name...">
+                </div><br />
+                <div class="form-group">
+                    <label>Degree Type</label>
+                    <input class="form-control" v-model="degree.degree_type" rows="5" placeholder="Degree Type..."></input>
+                </div><br />
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" v-model="degree.degree_description" rows="5" placeholder="Description..."></textarea>
+                </div><br />
+                <div class="form-group">
+                    <div class="inline">
+                        <label>Category (select up to three. To learn more about the categories click</label>
+                        <a href="https://www.thecareerproject.org/blog/how-are-you-intelligent-an-introduction-to-the-holland-codes-riasec/">here</a>
+                        <label>)</label>
+                    </div>
+                    <li class="mb-1"  v-for="(item, key, index) in degree_codes" :key="index">
+                        <label>
+                            <input type="checkbox" 
+                                :id='key' 
+                                :value='key' 
+                                v-model="checkedCategories" 
+                                :disabled="checkedCategories.length > 2 && checkedCategories.indexOf(key) === -1" >
+                                {{item}}
+                        </label>
+                    </li>
+                    <br>
+                </div>
     
-        <div class="form-group">
-            <label>Name</label>
-            <input type="text" class="form-control" v-model="degree.degree_name" placeholder="Name...">
-        </div><br />
-        <div class="form-group">
-            <label>Degree Type</label>
-            <input class="form-control" v-model="degree.degree_type" rows="5" placeholder="Degree Type..."></input>
-        </div><br />
-        <div class="form-group">
-            <label>Description</label>
-            <textarea class="form-control" v-model="degree.degree_description" rows="5" placeholder="Description..."></textarea>
-        </div><br />
-        <div class="form-group">
-            <div class="inline">
-                <label>Category (select up to three. To learn more about the categories click</label>
-                <a href="https://www.thecareerproject.org/blog/how-are-you-intelligent-an-introduction-to-the-holland-codes-riasec/">here</a>
-                <label>)</label>
+                <div class="form-group">
+                    <label>Department Id</label>
+                    <input type="text" class="form-control" v-model="degree.department_id" placeholder="id...">
+                </div><br />
+                <div class="form-group">
+                    <label>Graduation Rate</label>
+                    <input type="text" class="form-control" v-model="degree.graduation_rate" placeholder="rate...">
+                </div><br />
+    
+                <div>
+                    <label>Job Prospects</label>
+                    <div id="selectedJobs">
+                        <li class="mb-1" v-for="(job, index) in selectedJobNames" :key="index">
+                            <button id="delete" type="button" class="btn btn-danger" @click="removeJob(job)">Delete</button> {{job}}
+                        </li>
+                    </div>
+                </div>
+    
+                <div>
+                    <select id="dropDown" class="mb-4" v-model="selectedJob" name="jobSelect" @change="addJob">
+                            <option value="0">Please select a job</option>
+                            <option v-for="job in jobArr" :value="job.job_name">{{ job.job_name }}</option>
+                        </select>
+                </div>
+    
+                <div>
+                    <button v-if="!degree.isEdit" class="btn btn-primary" @click="createDegree">Create</button>
+                    <div v-else>
+                        <button class="btn btn-primary" @click="updateDegree">Update</button>
+                        <button class="btn btn-danger" @click="clearForm">Cancel</button>
+                    </div>
+                </div>
             </div>
-            <li class="mb-1" v-for="(item, key, index) in degree_codes" :key="index">
-                <label>
-                    <input type="checkbox" 
-                    :id='key' 
-                    :value='key' 
-                    v-model="checkedCategories" 
-                    :disabled="checkedCategories.length > 2 && checkedCategories.indexOf(key) === -1" >
-                    {{item}}
-                </label>
-            </li>
-            <br>
-        </div>
     
-        <div class="form-group">
-            <label>Department Id</label>
-            <input type="text" class="form-control" v-model="degree.department_id" placeholder="id...">
-        </div><br />
-        <div class="form-group">
-            <label>Graduation Rate</label>
-            <input type="text" class="form-control" v-model="degree.graduation_rate" placeholder="rate...">
-        </div><br />
+            <div id="degreeList">
+                <h1>List Degrees</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Grad Rate</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <transition-group name="slide-fade" tag="tbody">
+                        <tr v-for="(degree, index) in listDegrees.data" :key="degree.id">
+                            <th scope="row"> {{ degree.degree_name }} </th>
     
-        <div>
-            <label>Job Prospects</label>
-            <div id="selectedJobs">
+                            <td>{{ degree.degree_type}}</td>
     
-                <li class="mb-1" v-for="(job, index) in selectedJobNames" :key="index">
-                    <button id="delete" type="button" class="btn btn-danger" @click="removeJob(job)">Delete</button> {{job}}
-                </li>
+                            <td v-if="degree.degree_description.length<120"> {{ degree.degree_description }} </td>
+                            <td v-else> {{degree.degree_description.substring(0,120)+"..."}} </td>
+    
+                            <td>{{ degree.graduation_rate }}</td>
+    
+                            <td v-if="!degree.isEdit">
+                                <button id="item" class="btn btn-primary" @click="selectDegree(degree, index)">Edit</button>
+                                <button id="item" class="btn btn-danger" @click="deleteDegree(degree, index)">Delete</button>
+                            </td>
+                            <td class="item" v-else>
+                                <button id="item" class="btn btn-primary" @click="updateDegree()">Save</button>
+                                <button id="item" class="btn btn-danger" @click="clearForm()">Cancel</button>
+                            </td>
+                        </tr>
+                    </transition-group>
+                </table>
+    
+                <div>
+                    {{ listDegrees.from }} - {{ listDegrees.to }} of {{ listDegrees.total }}
+                </div>
+                <ul class="pagination">
+                    <li class="page-item" :class="{ 'disabled': listDegrees.prev_page_url === null }" @click="listDegrees.prev_page_url && getListDegrees(listDegrees.current_page - 1)">
+                        <a class="page-link" href="#">Previous</a>
+                    </li>
+                    <li class="page-item" v-if="listDegrees.prev_page_url" @click="getListDegrees(listDegrees.current_page - 1)">
+                        <a class="page-link" href="#">{{ listDegrees.current_page - 1 }}</a>
+                    </li>
+                    <li class="page-item active">
+                        <a class="page-link" href="#">{{ listDegrees.current_page }}</a>
+                    </li>
+                    <li class="page-item" v-if="listDegrees.next_page_url" @click="getListDegrees(listDegrees.current_page + 1)">
+                        <a class="page-link" href="#">{{ listDegrees.current_page + 1 }}</a>
+                    </li>
+                    <li class="page-item" :class="{ 'disabled': listDegrees.next_page_url === null }" @click="listDegrees.next_page_url && getListDegrees(listDegrees.current_page + 1)">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
             </div>
         </div>
-    
-        <div>
-            <select class="mb-4" v-model="selectedJob" name="jobSelect" @change="addJob">
-                                <option value="0">Please select a job</option>
-                                <option v-for="job in jobArr" :value="job.job_name">{{ job.job_name }}</option>
-                            </select>
-        </div>
-    
-        <div>
-            <button v-if="!degree.isEdit" class="btn btn-primary" @click="createDegree">Create</button>
-            <div v-else>
-                <button class="btn btn-primary" @click="updateDegree">Update</button>
-                <button class="btn btn-danger" @click="clearForm">Cancel</button>
-            </div>
-        </div>
-    
-        <hr>
-    
-        <h1>List Degrees</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Department Id</th>
-                    <th scope="col">Graduation Rate</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <transition-group name="slide-fade" tag="tbody">
-                <tr v-for="(degree, index) in listDegrees.data" :key="degree.id">
-                    <th scope="row"> {{ degree.id }} </th>
-                    <td>{{ degree.degree_name }}</td>
-
-                    <td>{{ degree.degree_type}}</td>
-    
-                    <td v-if="degree.degree_description.length<120"> {{ degree.degree_description }} </td>
-                    <td v-else> {{degree.degree_description.substring(0,120)+"..."}} </td>
-
-                    <td>{{ degree.department_id }}</td>
-    
-                    <td>{{ degree.graduation_rate }}</td>
-    
-                    <td v-if="!degree.isEdit">
-                        <button class="btn btn-primary" @click="selectDegree(degree, index)">Edit</button>
-                        <button class="btn btn-danger" @click="deleteDegree(degree, index)">Delete</button>
-                    </td>
-                    <td v-else>
-                        <button class="btn btn-primary" @click="updateDegree()">Save</button>
-                        <button class="btn btn-danger" @click="clearForm()">Cancel</button>
-                    </td>
-                </tr>
-            </transition-group>
-        </table>
-    
-        <div>
-            {{ listDegrees.from }} - {{ listDegrees.to }} of {{ listDegrees.total }}
-        </div>
-        <ul class="pagination">
-            <li class="page-item" :class="{ 'disabled': listDegrees.prev_page_url === null }" @click="listDegrees.prev_page_url && getListDegrees(listDegrees.current_page - 1)">
-                <a class="page-link" href="#">Previous</a>
-            </li>
-            <li class="page-item" v-if="listDegrees.prev_page_url" @click="getListDegrees(listDegrees.current_page - 1)">
-                <a class="page-link" href="#">{{ listDegrees.current_page - 1 }}</a>
-            </li>
-            <li class="page-item active">
-                <a class="page-link" href="#">{{ listDegrees.current_page }}</a>
-            </li>
-            <li class="page-item" v-if="listDegrees.next_page_url" @click="getListDegrees(listDegrees.current_page + 1)">
-                <a class="page-link" href="#">{{ listDegrees.current_page + 1 }}</a>
-            </li>
-            <li class="page-item" :class="{ 'disabled': listDegrees.next_page_url === null }" @click="listDegrees.next_page_url && getListDegrees(listDegrees.current_page + 1)">
-                <a class="page-link" href="#">Next</a>
-            </li>
-        </ul>
-    
     </div>
 </template>
 
@@ -224,7 +220,7 @@ export default {
 
 
                 this.clearForm();
-                
+
             } catch (error) {
                 this.error = error.response.data
             }
@@ -250,7 +246,7 @@ export default {
             this.index = index
             this.degree = { ...degree }
             this.selectedJobNames = degree.job_prospects.split(',');
-            if(degree.degree_code!=null){
+            if (degree.degree_code != null) {
                 this.checkedCategories = degree.degree_code.split('');
             }
 
@@ -284,7 +280,7 @@ export default {
                 this.error = error.response.data
             }
 
-            
+
 
         },
         clearForm() {
@@ -331,7 +327,7 @@ export default {
 }
 
 .slide-fade-leave-active {
-    transition: all .6s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 
 .slide-fade-enter,
@@ -349,6 +345,7 @@ export default {
     padding: 20px;
     border: 1px solid #d4d4d4;
     border-radius: 5px;
+    background: white;
 }
 
 li {
@@ -361,5 +358,37 @@ li {
 
 .inline {
     display: inline;
+}
+
+#dropDown {
+    width: 100%;
+}
+
+#degreeList {}
+
+#degreeForm {}
+
+.gridContainer {
+    margin-top: 1%;
+    display: grid;
+    width: 100%;
+    grid-template-columns: 50% 50%;
+    grid-gap: 3%
+}
+
+@media (max-width: 1100px) {
+    .gridContainer {
+        grid-template-columns: 100%;
+    }
+}
+
+#box {
+    display: flex;
+    margin: 45px;
+    padding: 45px;
+}
+
+#item {
+    margin: 10%;
 }
 </style>

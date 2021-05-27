@@ -3,8 +3,7 @@
 @section('title', 'ApiDegree')
 @section('content')
 
-    <div class="container">
-        <navbar-add-degree></navbar-add-degree>
-        <api-degree></api-degree>
-    </div>
+    <navbar-add-degree></navbar-add-degree>
+    <api-degree></api-degree>
+    
 @endsection

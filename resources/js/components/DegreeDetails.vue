@@ -1,26 +1,26 @@
 <template>
-    <div>
-        <a :href="prev_page_url">
-            <button id="back" class="btn btn-danger">Back</button>
-        </a>
-
-         <!-- <button class="btn btn-danger" onclick="history.go(-1)">Back</button> -->
-        <h2 class="mt-3" >{{degree.degree_name}}</h2>
-        <p>{{degree.degree_description}}</p>
-        <div id="stats">
-            <scale class="mb-4" :rate='degree.graduation_rate' :name="'Graduation Rate'"></scale>
-            <scale class="mb-4" :rate='degree.job_demand' :name="'Job Demand'"></scale>
-        </div class="mb-8">
-            <h4 class="mt-4" >Job Prospects</h4>
-            <li class="mb-2" v-for="job in degree.job_prospects.split(',')" :key="degree.id">
-            {{job}}
-            </li>
+    <div class="gridContainer">
         <div>
-         
+            <a :href="prev_page_url">
+                <button id="back" class="btn btn-danger">Back</button>
+            </a>
+            <h2 class="mt-3">{{degree.degree_name}}</h2>
+            <p>{{degree.degree_description}}</p>
+            <div id="stats">
+                <scale class="mb-4" :max='100' :min='0' :rate='parseInt(degree.graduation_rate)' :name="'Graduation Rate'"></scale>
+            </div>
+    
         </div>
-
-        <salary  class="mt-4" :jobArr="degree.job_prospects.split(',')"></salary>
-        
+    
+        <div>
+            <div class="mb-8">
+                <h4 class="mt-4">Job Prospects</h4>
+                <li class="mb-2" v-for="job in degree.job_prospects.split(',')" :key="degree.id">
+                    {{job}}
+                </li>
+            </div>
+            <salary class="mt-4" :jobArr="degree.job_prospects.split(',')"></salary>
+        </div>
     </div>
 </template>
 
@@ -49,16 +49,13 @@ export default {
             value: ''
         }
     },
-
     created() {
         this.fetchDegree();
     },
-
     methods: {
         fetchDegree() {
             const url = window.location.href;
             const id = this.degree_id;
-
             fetch('/api/degree/' + id)
                 .then(res => res.json())
                 .then(res => {
@@ -67,8 +64,6 @@ export default {
                 .catch(err => console.log(err));
         },
     },
-
-
 }
 </script>
 
@@ -82,14 +77,21 @@ export default {
 
 #back {
     position: absolute;
-    /* right: 2%; */
-    right: 120px; 
-    top: 70px; 
-    text-align: right;
-
+    right: 2%;
 }
 
-
+.gridContainer {
+    margin-top: 1%;
+    display: grid;
+    width: 100%;
+    grid-template-columns: 50% 50%;
+    grid-gap: 3%
+}
+@media (max-width: 900px) {
+    .gridContainer {
+        grid-template-columns: 100%;
+    }
+}
 
 
 </style>
