@@ -34,12 +34,15 @@ class DegreeController extends Controller
 
     public function hollandCodeDegrees($codes)
     {
-        $codeArray = explode(" ", $codes);
+        $codeArray = str_split($codes);
+        $degrees = collect(Degree::all()->filter(function ($degree) use ($codeArray) {
+            $degreeCodes = str_split($degree->degree_code);
+            return count(array_intersect($degreeCodes, $codeArray)) > 0;
+        }));
 
-        $degrees = Degree::whereIn("degree_code", $codeArray)->paginate(10);
-
+        $randomDegrees = $degrees->random(min($degrees->count(), 12));
         //return collection of degrees as a resource
-        return DegreeResource::collection($degrees);
+        return DegreeResource::collection($randomDegrees);
     }
 
     /**
@@ -97,7 +100,7 @@ class DegreeController extends Controller
         return response([
             'degree' => $degree
         ], 200);
-        
+
     }
 
 

@@ -34,7 +34,7 @@ class AdminController extends Controller
      */
     public function displayImport(Request $request)
     {
-        $request->user()->authorizeRoles('student');
+        $request->user()->authorizeRoles('admin');
         return view('importCollegeApiPage');
     }
 }

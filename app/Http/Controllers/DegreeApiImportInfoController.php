@@ -12,6 +12,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class DegreeApiImportInfoController extends Controller
 {
@@ -162,12 +163,62 @@ class DegreeApiImportInfoController extends Controller
                 }
             });
 
-            $itemArray['degree_code'] = ['R', 'I', 'A', 'S', 'E', 'C'][array_rand(['R', 'I', 'A', 'S', 'E', 'C'])];
+            $itemArray['degree_code'] = $this->classifyDegreeCodes($itemArray['degree_name']);
             $itemArray['graduation_rate'] = $faker->numberBetween(0, 100);
-            Degree::create($itemArray);
+            $itemArray['job_demand'] = $faker->numberBetween(0, 100);
+            Degree::create($itemArray)->save();
         });
 
         return response([
         ], 200);
+    }
+
+    /**
+     * Uses k nearest-neighbor classifier to produce the top three Holland codes for a given
+     * Degree name. Uses data from previously classified degree names and their associated codes
+     *
+     * @param $degree
+     *
+     * @return String
+     */
+    public function classifyDegreeCodes($degree): string
+    {
+        $hollandDegreeFile = Storage::get('holland-codes.csv');
+
+        $trainingDegrees = collect();
+        $hollandDegreeCollection = collect(explode("\n", $hollandDegreeFile));
+        $hollandDegreeCollection->each(function ($item) use ($trainingDegrees) {
+            if ($item !== NULL && strlen($item) > 0) {
+                $itemArray = preg_split("~,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)~", $item);
+                $trainingDegrees->add($itemArray);
+            }
+        });
+
+        $neighbors = collect();
+        $largestNeighborIndex = 0;
+        $smallestNeighborIndex = 0;
+
+        $trainingDegrees->each(function ($trainingDegree) use ($degree, &$neighbors, &$largestNeighborIndex, &$smallestNeighborIndex) {
+            $distance = levenshtein($degree, $trainingDegree[0]);
+
+            if ($neighbors->count() < 3) {
+                $neighbors->add($trainingDegree);
+                $largestNeighborIndex = $neighbors->search($trainingDegree);
+            } else if ($distance < levenshtein($degree, $neighbors[$largestNeighborIndex][0])) {
+                $neighbors->splice($largestNeighborIndex, 1);
+                $neighbors->add($trainingDegree);
+                $largestNeighborIndex = $neighbors->search($trainingDegree);
+            }
+            $neighbors->each(function ($neighbor) use ($degree, &$neighbors, &$largestNeighborIndex, &$smallestNeighborIndex) {
+                if (levenshtein($degree, $neighbor[0]) > levenshtein($degree, $neighbors->get($largestNeighborIndex)[0])) {
+                    $largestNeighborIndex = $neighbors->search($neighbor);
+                }
+                if (levenshtein($degree, $neighbor[0]) < levenshtein($degree, $neighbors[$smallestNeighborIndex][0])) {
+                    $smallestNeighborIndex = $neighbors->search($neighbor);
+                }
+            });
+        });
+
+        return $neighbors[$smallestNeighborIndex][1];
     }
 }
