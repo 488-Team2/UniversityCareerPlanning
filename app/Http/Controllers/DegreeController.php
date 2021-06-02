@@ -42,7 +42,7 @@ class DegreeController extends Controller
 
         $randomDegrees = $degrees->random(min($degrees->count(), 12));
         //return collection of degrees as a resource
-        return DegreeResource::collection($degrees);
+        return DegreeResource::collection($randomDegrees);
     }
 
     /**
