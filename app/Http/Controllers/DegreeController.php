@@ -38,8 +38,9 @@ class DegreeController extends Controller
         $degrees = collect(Degree::all()->filter(function ($degree) use ($codeArray) {
             $degreeCodes = str_split($degree->degree_code);
             return count(array_intersect($degreeCodes, $codeArray)) > 0;
-        }))->random(12);
+        }));
 
+        $randomDegrees = $degrees->random(min($degrees->count(), 12));
         //return collection of degrees as a resource
         return DegreeResource::collection($degrees);
     }
@@ -99,7 +100,7 @@ class DegreeController extends Controller
         return response([
             'degree' => $degree
         ], 200);
-        
+
     }
 
 
