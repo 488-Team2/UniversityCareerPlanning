@@ -2,9 +2,8 @@
 
 @section('title', 'Home')
 @section('content')
-
+    <navbar></navbar>
     <div class="container">
-        <navbar></navbar>
         <home></home>
     </div>
 @endsection

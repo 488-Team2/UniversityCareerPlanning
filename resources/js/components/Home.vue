@@ -1,72 +1,76 @@
 <template>
-    <div>     
-        <h1 class="text-center">  University Career Planning </h1>
+    <div>
+        <h1 class="text-center"> University Career Planning </h1>
         <p class="text-md-center">
-        Explore our undergraduate, master's, doctoral, and certificate programs.
-        Search your interests and we will match you with degrees
+            Explore our undergraduate, master's, doctoral, and certificate programs.
+            Search your interests and we will match you with degrees
         </p>
         <div class="input-group mb-3">
             <input v-model="keywords" class="form-control mr-sm-2" placeholder="career or degree keywords">
             <a :href="'/degreeSearch/' + this.keywords">
-                <button class="btn btn-outline-secondary my-2 my-sm-0" @ >Search</button>
+                <button class="btn btn-outline-secondary my-2 my-sm-0" @>Search</button>
             </a>
         </div>
         <div class="d-flex justify-content-center">
-            <button type="button" class="btn btn-outline-danger">SEARCH BY INTERESTS</button>
-            <a href="/survey">
-                <button type="button" class="btn btn-outline-danger">   TAKE SERVEY   </button>
-            </a>
-            <a href="/sessions">
-                <button type="button" class="btn btn-outline-danger" v-if="currentUser !== null">  LOAD SAVED SESSION  </button>
-            </a>
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-danger">SEARCH BY INTERESTS</button>
+                <button type="button" class="btn btn-outline-danger"><a href="/survey">
+                    TAKE SURVEY
+                </a></button>
+                <button type="button" class="btn btn-outline-danger" v-if="currentUser !== null"><a href="/sessions">
+                    LOAD SAVED SESSION
+                </a>
+                </button>
+            </div>
         </div>
-        <br> 
+        <br>
         <h3 class="text-center">All available programs</h3>
         <div class="d-flex justify-content-center">
             <ul class="list-inline">
-            <li class="list-inline-item">UNDERGRADUATE</li>
-            <li class="list-inline-item">GRADUATE</li>
-            <li class="list-inline-item">MINORS</li>
-            </ul> 
+                <li class="list-inline-item">UNDERGRADUATE</li>
+                <li class="list-inline-item">GRADUATE</li>
+                <li class="list-inline-item">MINORS</li>
+            </ul>
         </div>
 
         <transition-group name="slide-fade" tag="div" class="row row-cols-1 row-cols-md-3 g-4">
-        <!-- <div class="row row-cols-1 row-cols-md-3 g-4" > -->
-        <div class="col" v-for="degree in degrees" :key="degree.id" >
-            <div class="card h-100 border-danger mb-3">
-            <div id="grow" class="card-body" >
-                 <a class="degree" :href="'/degree/' + degree.id" >
-                    <h5 class="card-title"> {{degree.degree_name}} </h5>
-                    <p class="card-text"> {{degree.degree_description }}</p>
-                </a> 
+            <!-- <div class="row row-cols-1 row-cols-md-3 g-4" > -->
+            <div class="col" v-for="degree in degrees" :key="degree.id">
+                <div class="card h-100 border-danger mb-3">
+                    <div id="grow" class="card-body">
+                        <a class="degree" :href="'/degree/' + degree.id">
+                            <h5 class="card-title"> {{ degree.degree_name }} </h5>
+                            <p class="card-text"> {{ degree.degree_description }}</p>
+                        </a>
+                    </div>
+                </div>
             </div>
-            </div> 
-        </div>
-        <!-- </div> -->
+            <!-- </div> -->
         </transition-group>
 
         <br>
         <nav id="paginationNav">
-        <ul class="pagination">
-            <li v-bind:class="[{disabled: !pagination.prev_page_url}]" 
-            class="page-item"><a class="page-link" href="#" 
-            @click="fetchDegrees(pagination.prev_page_url)">Previous</a></li>
+            <ul class="pagination">
+                <li v-bind:class="[{disabled: !pagination.prev_page_url}]"
+                    class="page-item"><a class="page-link" href="#"
+                                         @click="fetchDegrees(pagination.prev_page_url)">Previous</a></li>
 
-            <li class="page-item disabled"><a class="page-link dark-text"
-             href="#">Page {{ pagination.current_page }} of {{ pagination.last_page }}</a></li>
+                <li class="page-item disabled"><a class="page-link dark-text"
+                                                  href="#">Page {{ pagination.current_page }} of {{
+                        pagination.last_page
+                    }}</a></li>
 
 
-            <li v-bind:class="[{disabled: !pagination.next_page_url}]" 
-            class="page-item"><a class="page-link" href="#"
-             @click="fetchDegrees(pagination.next_page_url)">Next</a></li>
-        </ul>
-    </nav>
+                <li v-bind:class="[{disabled: !pagination.next_page_url}]"
+                    class="page-item"><a class="page-link" href="#"
+                                         @click="fetchDegrees(pagination.next_page_url)">Next</a></li>
+            </ul>
+        </nav>
 
     </div>
 
-    
 
-</template>    
+</template>
 
 <script>
 export default {
@@ -105,14 +109,12 @@ export default {
                     console.log(error)
                 })
         },
-        constructURL(){
-            if(this.keywords != null){
+        constructURL() {
+            if (this.keywords != null) {
                 this.url = '/api/search/' + this.keywords;
-            }
-            else if(this.ids != null){
+            } else if (this.ids != null) {
                 this.url = '/api/degrees/' + this.ids;
-            }
-            else{
+            } else {
                 this.url = '/api/degrees'
             }
         },
@@ -144,31 +146,37 @@ export default {
 }
 </script>
 
-<style >
+<style>
 nav {
     background-color: darkgray;
 }
+
 .nav-link {
     color: #fff;
 }
+
 /* .active {
   background: red;
 } */
 
-#grow { 
-    transition: all .2s ease-in-out; 
+#grow {
+    transition: all .2s ease-in-out;
 }
-#grow:hover { 
-    transform: scale(1.03); 
+
+#grow:hover {
+    transform: scale(1.03);
     background: none;
 }
-.degree{
+
+.degree {
     color: black;
     text-decoration: none;
 }
-.degree:hover{
+
+.degree:hover {
     color: red;
 }
+
 #paginationNav {
     background: white;
 }

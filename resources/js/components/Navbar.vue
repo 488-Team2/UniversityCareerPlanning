@@ -14,21 +14,24 @@
 
                         <li class="nav-item"><a class="nav-link" href="/degrees">Degrees</a></li>
                         <li class="nav-item"><a class="nav-link" href="/survey">Career Survey</a></li>
-                        <li class="nav-item"><a class="nav-link" >|</a></li>
-                        <li class="nav-item" v-if="currentUser == null"><a class="nav-link" href="/register">Register</a></li>
+                        <li class="nav-item"><a class="nav-link">|</a></li>
+                        <li class="nav-item" v-if="currentUser == null"><a class="nav-link"
+                                                                           href="/register">Register</a></li>
                         <li class="nav-item" v-if="checkIsAdmin">
                             <a class="nav-link"
                                href="/admin/dashboard">{{ (currentUser !== null) ? currentUser.name : "Dashboard" }}</a>
                         </li>
                         <li class="nav-item" v-else-if="currentUser !== null">
                             <a class="nav-link"
-                               href="/student/dashboard">{{ (currentUser !== null) ? currentUser.name : "Dashboard" }} </a>
+                               href="/student/dashboard">{{ (currentUser !== null) ? currentUser.name : "Dashboard"
+                                }} </a>
                         </li>
-                        <li class="nav-item" v-if="currentUser !== null"><a class="nav-link" >-</a></li>
-                        <li class="nav-item" v-if="currentUser !== null"><a class="nav-link" href="/logout">Logout</a></li>
+                        <li class="nav-item" v-if="currentUser !== null"><a class="nav-link">-</a></li>
+                        <li class="nav-item" v-if="currentUser !== null"><a class="nav-link" href="/logout">Logout</a>
+                        </li>
                         <li class="nav-item" v-else><a class="nav-link" href="/login">Login</a></li>
 
-                        
+
                     </ul>
                 </div>
             </div>
@@ -80,6 +83,10 @@ export default {
 #header {
     color: white;
     text-decoration: none;
+}
+
+.navbar {
+    margin-bottom: 20px;
 }
 
 
