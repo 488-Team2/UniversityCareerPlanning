@@ -1,7 +1,10 @@
 <template>
+
     <div class="api-degree container mt-5">
-        <button id="back-btn" class="btn btn-danger" onclick="history.back()">Back</button>
-        <br><br>
+        
+         <button data-test="btnBack" id="back-btn" class="btn btn-danger" onclick="history.back()">Back</button>
+         <br><br>
+        <h3>Create New Degree: </h3>
         <transition name="fade">
             <div id="errors" class="alert alert-danger alert-dismissible" role="alert" v-if="error">
                 <b>{{ error.message }}</b>
@@ -11,188 +14,200 @@
                     </li>
                 </ul>
                 <button type="button" class="btn btn-light" @click="error = null">
-                    <span aria-hidden="true">&times;</span>
+                                    <span aria-hidden="true">&times;</span>
                 </button>
             </div>
         </transition>
-        <div class="gridContainer">
-            <div id="degreeForm">
-                <div>
-                    <h1 v-if="!degree.isEdit">Create Degree</h1>
-                    <h1 v-else>Update Degree</h1>
-                </div>
-                <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" class="form-control" v-model="degree.degree_name" placeholder="Name...">
-                </div><br />
-                <div class="form-group">
-                    <label>Degree Type</label>
-                    <input class="form-control" v-model="degree.degree_type" rows="5" placeholder="Degree Type..."></input>
-                </div><br />
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea class="form-control" v-model="degree.degree_description" rows="5" placeholder="Description..."></textarea>
-                </div><br />
-                <div class="form-group">
-                    <div class="inline">
-                        <label>Category (select up to three. To learn more about the categories click</label>
-                        <a href="https://www.thecareerproject.org/blog/how-are-you-intelligent-an-introduction-to-the-holland-codes-riasec/">here</a>
-                        <label>)</label>
-                    </div>
-                    <li class="mb-1"  v-for="(item, key, index) in degree_codes" :key="index">
-                        <label>
-                            <input type="checkbox" 
-                                :id='key' 
-                                :value='key' 
-                                v-model="checkedCategories" 
-                                :disabled="checkedCategories.length > 2 && checkedCategories.indexOf(key) === -1" >
-                                {{item}}
-                        </label>
-                    </li>
-                    <br>
-                </div>
     
-                <div class="form-group">
-                    <label>Department Id</label>
-                    <input type="text" class="form-control" v-model="degree.department_id" placeholder="id...">
-                </div><br />
-                <div class="form-group">
-                    <label>Graduation Rate</label>
-                    <input type="text" class="form-control" v-model="degree.graduation_rate" placeholder="rate...">
-                </div><br />
-    
-                <div>
-                    <label>Job Prospects</label>
-                    <div id="selectedJobs">
-                        <li class="mb-1" v-for="(job, index) in selectedJobNames" :key="index">
-                            <button id="delete" type="button" class="btn btn-danger" @click="removeJob(job)">Delete</button> {{job}}
-                        </li>
-                    </div>
-                </div>
-    
-                <div>
-                    <select id="dropDown" class="mb-4" v-model="selectedJob" name="jobSelect" @change="addJob">
-                            <option value="0">Please select a job</option>
-                            <option v-for="job in jobArr" :value="job.job_name">{{ job.job_name }}</option>
-                        </select>
-                </div>
-    
-                <div>
-                    <button v-if="!degree.isEdit" class="btn btn-primary" @click="createDegree">Create</button>
-                    <div v-else>
-                        <button class="btn btn-primary" @click="updateDegree">Update</button>
-                        <button class="btn btn-danger" @click="clearForm">Cancel</button>
-                    </div>
-                </div>
-            </div>
-    
-            <div id="degreeList">
-                <h1>List Degrees</h1>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Grad Rate</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                    </thead>
-                    <transition-group name="slide-fade" tag="tbody">
-                        <tr v-for="(degree, index) in listDegrees.data" :key="degree.id">
-                            <th scope="row"> {{ degree.degree_name }} </th>
-    
-                            <td>{{ degree.degree_type}}</td>
-    
-                            <td v-if="degree.degree_description.length<120"> {{ degree.degree_description }} </td>
-                            <td v-else> {{degree.degree_description.substring(0,120)+"..."}} </td>
-    
-                            <td>{{ degree.graduation_rate }}</td>
-    
-                            <td v-if="!degree.isEdit">
-                                <button id="item" class="btn btn-primary" @click="selectDegree(degree, index)">Edit</button>
-                                <button id="item" class="btn btn-danger" @click="deleteDegree(degree, index)">Delete</button>
-                            </td>
-                            <td class="item" v-else>
-                                <button id="item" class="btn btn-primary" @click="updateDegree()">Save</button>
-                                <button id="item" class="btn btn-danger" @click="clearForm()">Cancel</button>
-                            </td>
-                        </tr>
-                    </transition-group>
-                </table>
-    
-                <div>
-                    {{ listDegrees.from }} - {{ listDegrees.to }} of {{ listDegrees.total }}
-                </div>
-                <ul class="pagination">
-                    <li class="page-item" :class="{ 'disabled': listDegrees.prev_page_url === null }" @click="listDegrees.prev_page_url && getListDegrees(listDegrees.current_page - 1)">
-                        <a class="page-link" href="#">Previous</a>
-                    </li>
-                    <li class="page-item" v-if="listDegrees.prev_page_url" @click="getListDegrees(listDegrees.current_page - 1)">
-                        <a class="page-link" href="#">{{ listDegrees.current_page - 1 }}</a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#">{{ listDegrees.current_page }}</a>
-                    </li>
-                    <li class="page-item" v-if="listDegrees.next_page_url" @click="getListDegrees(listDegrees.current_page + 1)">
-                        <a class="page-link" href="#">{{ listDegrees.current_page + 1 }}</a>
-                    </li>
-                    <li class="page-item" :class="{ 'disabled': listDegrees.next_page_url === null }" @click="listDegrees.next_page_url && getListDegrees(listDegrees.current_page + 1)">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
+    <div class="shadow p-3 mb-5 bg-white rounded">
+        <div class="form-group">
+            <label>Name</label>
+            <input data-test="degreeNameText" type="text" class="form-control" v-model="degree.degree_name" placeholder="Name...">
+        </div><br />
+        <div class="form-group">
+            <label>Description</label>
+            <textarea data-test="degreeDescriptionText" class="form-control" v-model="degree.degree_description" rows="5" placeholder="Description..."></textarea>
+        </div><br />
+        <div class="form-group">
+            <label>Department Id</label>
+            <input data-test="degreeDeptIDText" type="text" class="form-control" v-model="degree.department_id" placeholder="id...">
+        </div><br />
+        <div class="form-group">
+            <label>Graduation Rate</label>
+            <input data-test="degreeRateText" type="text" class="form-control" v-model="degree.graduation_rate" placeholder="rate...">
+        </div><br />
+        <div class="form-group">
+            <label>Job Demand</label>
+            <input data-test="degreeJobText" type="text" class="form-control" v-model="degree.job_demand" placeholder="job demand...">
+        </div><br />
+
+        <div>
+            <label>Job Prospects</label>
+            <div id="selectedJobs">
+                
+                <li class="mb-1" v-for="(job, index) in createSelectedJobNames" :key="index">
+                <button id="delete" type="button" class="btn btn-danger" @click="createDegreeRemoveElement(job)" >Delete</button>
+                {{job}}
+                </li>
             </div>
         </div>
+
+        <div>
+            <select class="mb-4" v-model="selectedJob" name="jobSelect" @change="createDegreeAddJob">
+                <option value="0">Please select a job</option>
+                <option v-for="job in jobArr" :value="job.job_name">{{ job.job_name }}</option>
+            </select>
+        </div>
+    
+        <div>
+            <button data-test="btnCreate" class="btn btn-primary" @click="createDegree">Create</button>
+        </div>
+    </div>
+    
+        <hr>
+    <div>
+        <h3>List Degrees</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th @click ="sortDeptId()">Department Id</th>
+                    <th scope="col">Graduation Rate</th>
+                    <th scope="col">Job Demand</th>
+                    <th scope="col">Job Prospects</th>
+                    <th scope="col">Actions</th>               
+                </tr>
+            </thead>
+            <transition-group name="slide-fade" tag="tbody">
+                <tr v-for="(degree, index) in listDegrees.data" :key="degree.id">
+                    <th scope="row"> {{ degree.id }} </th>
+                    <td data-test="listDegreeNames" v-if="!degree.isEdit">{{ degree.degree_name }}</td>
+                    <td v-else>
+                        <input type="text" v-model="selectedDegree.degree_name" class="form-control">
+                    </td>
+    
+                    <td v-if="!degree.isEdit"> {{ degree.degree_description }} </td>
+                    <td v-else>
+                        <input type="text" v-model="selectedDegree.degree_description" class="form-control">
+                    </td>
+    
+                    <td v-if="!degree.isEdit">{{ degree.department_id }}</td>
+                    <td v-else>
+                        <input type="text" v-model="selectedDegree.department_id" class="form-control">
+                    </td>
+    
+                    <td v-if="!degree.isEdit">{{ degree.graduation_rate }}</td>
+                    <td v-else>
+                        <input type="text" v-model="selectedDegree.graduation_rate" class="form-control">
+                    </td>
+    
+                    <td v-if="!degree.isEdit">{{ degree.job_demand }}</td>
+                    <td v-else>
+                        <input type="text" v-model="selectedDegree.job_demand" class="form-control">
+                    </td>
+
+                    <td v-if="!degree.isEdit">{{ degree.job_prospects }}</td>
+                    <td v-else>
+                        <div id="selectedJobs">
+                            <li class="mb-1" v-for="(job, index) in updateSelectedJobNames" :key="index">
+                                <button id="delete" type="button" class="btn btn-danger" @click="updateDegreeRemoveElement(job)" >Delete</button>
+                                {{job}}
+                             </li>
+                        </div>
+                    </td>
+    
+                    <td v-if="!degree.isEdit">
+                        <button id="edit" data-test="btnEdit" class="btn btn-primary" @click="selectDegree(degree)">Edit</button>
+                        <button id="del" data-test="btnDelete" class="btn btn-danger" @click="deleteDegree(degree, index)">Delete</button>
+                    </td>
+                    <td v-else>
+                        <button id="save" data-test="btnSave" class="btn btn-primary" @click="updateDegree(index)">Save</button>
+                        <button id="cancel" data-test="btnCancel" class="btn btn-danger" @click="degree.isEdit = false">Cancel</button>
+                    </td>
+                </tr>
+            </transition-group>
+        </table>
+    
+        <div>
+            {{ listDegrees.from }} - {{ listDegrees.to }} of {{ listDegrees.total }}
+        </div>
+        <ul class="pagination">
+            <li class="page-item" :class="{ 'disabled': listDegrees.prev_page_url === null }" @click="listDegrees.prev_page_url && getListDegrees(listDegrees.current_page - 1)">
+                <a class="page-link" href="#">Previous</a>
+            </li>
+            <li class="page-item" v-if="listDegrees.prev_page_url" @click="getListDegrees(listDegrees.current_page - 1)">
+                <a class="page-link" href="#">{{ listDegrees.current_page - 1 }}</a>
+            </li>
+            <li class="page-item active">
+                <a class="page-link" href="#">{{ listDegrees.current_page }}</a>
+            </li>
+            <li class="page-item" v-if="listDegrees.next_page_url" @click="getListDegrees(listDegrees.current_page + 1)">
+                <a class="page-link" href="#">{{ listDegrees.current_page + 1 }}</a>
+            </li>
+            <li class="page-item" :class="{ 'disabled': listDegrees.next_page_url === null }" @click="listDegrees.next_page_url && getListDegrees(listDegrees.current_page + 1)">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </div>
+
+    <FlashMessage :position="'right top'"></FlashMessage>
     </div>
 </template>
 
 <script>
+import Vue from 'vue';
+import axios from 'axios';
+const fetch = require("node-fetch");
+
 export default {
     data() {
         return {
             degree: {
-                id: '',
                 degree_name: '',
-                degree_type: '',
                 degree_description: '',
-                degree_code: '',
                 department_id: '',
                 graduation_rate: 0,
-                job_prospects: '',
+                job_demand: 0,
+                job_prospects: ''
             },
-            index: 0,
             listDegrees: {},
             error: null,
+            selectedDegree: null,
             jobArr: [],
             selectedJob: "",
-            selectedJobNames: [],
-            checkedCategories: [],
-            degree_codes: {
-                "R": "Realistic: Doers",
-                "I": "Investigative: Thinkers",
-                "A": "Artistic: Creators",
-                "S": "Social: Helpers",
-                "E": "Enterprising: persuaders",
-                "C": "Conventional: Organizers"
+            createSelectedJobNames: [],
+            updateSelectedJobNames: [],
+
             }
-        }
     },
     created() {
         this.getListDegrees();
         this.fetchJobs();
     },
     methods: {
-        addJob() {
-            if (this.selectedJob !== "0")
-                this.selectedJobNames.push(this.selectedJob);
+        createDegreeAddJob(){
+            if(this.selectedJob!=="0")
+                this.createSelectedJobNames.push(this.selectedJob);
         },
-        removeJob(job) {
-            const index = this.selectedJobNames.indexOf(job);
-            if (index > -1) {
-                this.selectedJobNames.splice(index, 1);
+        createDegreeRemoveElement(job) {
+            const index = this.createSelectedJobNames.indexOf(job);
+            if(index > -1){
+                this.createSelectedJobNames.splice(index, 1);
             }
         },
-        fetchJobs() {
+        updateDegreeAddJob(){
+            if(this.selectedJob!=="0")
+                this.updateSelectedJobNames.push(this.selectedJob);
+        },
+        updateDegreeRemoveElement(job) {
+            const index = this.updateSelectedJobNames.indexOf(job);
+            if(index > -1){
+                this.updateSelectedJobNames.splice(index, 1);
+            }
+        },
+        async fetchJobs() {
             fetch('/api/jobs')
                 .then(res => res.json())
                 .then(res => {
@@ -205,113 +220,115 @@ export default {
                 this.error = null
                 const response = await axios.post('/api/degree/create', {
                     degree_name: this.degree.degree_name,
-                    degree_type: this.degree.degree_type,
                     degree_description: this.degree.degree_description,
-                    degree_code: this.checkedCategories.join(''),
                     department_id: this.degree.department_id,
                     graduation_rate: this.degree.graduation_rate,
-                    job_prospects: this.selectedJobNames.join()
-                });
+                    job_demand: this.degree.job_demand,
+                    job_prospects: this.createSelectedJobNames.join()
 
+                })
+                //this.listDegrees.unshift(esponse.data.degree)
+                //console.log(response.data.degree)
                 this.listDegrees.data.unshift({
                     ...response.data.degree,
                     isEdit: false
                 })
 
+                //reset form to initial
+                this.degree = {
+                    degree_name: '',
+                    degree_description: '',
+                    department_id: '',
+                    graduation_rate: 0,
+                    job_demand: 0
+                }
+                this.createSelectedJobNames = [];
 
-                this.clearForm();
-
+                this.flashMessage.show({
+							status: 'success',
+							message: degree.degree_name + " is added!"
+				});
             } catch (error) {
                 this.error = error.response.data
             }
-
-
         },
         async getListDegrees(page = 1) {
-            try {
-                const response = await axios.get('/api/degreeDisplay?page=' + page)
-                this.listDegrees = response.data
-                this.listDegrees.data.forEach(item => {
-                    Vue.set(item, 'isEdit', false)
-                })
-            } catch (error) {
-                this.error = error.response.data
-            }
+            return axios.get('/api/degreeDisplay?page=' + page)
+                .then((response) => {
+                    this.listDegrees = response.data
+                    this.listDegrees.data.forEach(item => {
+                        Vue.set(item, 'isEdit', false)
+                    })
+
+
+                    console.log(response.data.data.length)
+                    console.log(this.listDegrees.data.length)
+                    console.log(response.data.data[0].degree_name)
+                    console.log(this.listDegrees.data[0].degree_name)
+                }).catch((error) => {
+                    console.log(error);
+                    //this.error = error.response.data
+                });
         },
-        selectDegree(degree, index) {
-
-            window.scrollTo(0, 0);
-
+        selectDegree(degree) {
             degree.isEdit = true
-            this.index = index
-            this.degree = { ...degree }
-            this.selectedJobNames = degree.job_prospects.split(',');
-            if (degree.degree_code != null) {
-                this.checkedCategories = degree.degree_code.split('');
-            }
-
+            this.selectedDegree = { ...degree }
+            this.updateSelectedJobNames = degree.job_prospects.split(',');
         },
-        async updateDegree() {
+        async updateDegree(index) {
             try {
                 this.error = null;
-                console.log('api/degree/update/' + this.degree.id);
-                const response = await axios.put('api/degree/update/' + this.degree.id, {
-                    degree_name: this.degree.degree_name,
-                    degree_type: this.degree.degree_type,
-                    degree_description: this.degree.degree_description,
-                    degree_code: this.checkedCategories.join(''),
-                    department_id: this.degree.department_id,
-                    graduation_rate: this.degree.graduation_rate,
-                    job_prospects: this.selectedJobNames.join()
+
+                const response = await axios.put('api/degree/update/' + this.selectedDegree.id, {
+                    degree_name: this.selectedDegree.degree_name,
+                    degree_description: this.selectedDegree.degree_description,
+                    department_id: this.selectedDegree.department_id,
+                    graduation_rate: this.selectedDegree.graduation_rate,
+                    job_demand: this.selectedDegree.job_demand,
+                    job_prospects: this.updateSelectedJobNames.join()
                 })
 
-                this.listDegrees.data[this.index].degree_name = response.data.degree.degree_name
-                this.listDegrees.data[this.index].degree_type = response.data.degree.degree_type
-                this.listDegrees.data[this.index].degree_description = response.data.degree.degree_description
-                this.listDegrees.data[this.index].degree_code = response.data.degree.degree_code
-                this.listDegrees.data[this.index].department_id = response.data.degree.department_id
-                this.listDegrees.data[this.index].graduation_rate = response.data.degree.graduation_rate
-                this.listDegrees.data[this.index].job_prospects = response.data.degree.job_prospects
-                this.listDegrees.data[this.index].isEdit = false
+                this.listDegrees.data[index].degree_name = response.data.degree.degree_name
+                this.listDegrees.data[index].degree_description = response.data.degree.degree_description
+                this.listDegrees.data[index].department_id = response.data.degree.department_id
+                this.listDegrees.data[index].graduation_rate = response.data.degree.graduation_rate
+                this.listDegrees.data[index].job_demand = response.data.degree.job_demand
+                this.listDegrees.data[index].job_prospects = response.data.degree.job_prospects
+                this.listDegrees.data[index].isEdit = false
 
-                this.clearForm();
+                this.updateSelectedJobNames = [];
 
             } catch (error) {
                 this.error = error.response.data
             }
-
-
-
-        },
-        clearForm() {
-            //reset form to initial
-            this.degree = {
-                id: '',
-                degree_name: '',
-                degree_type: '',
-                degree_description: '',
-                degree_code: '',
-                department_id: '',
-                graduation_rate: 0,
-            }
-            this.selectedJobNames = [];
-            this.checkedCategories = [];
-            this.listDegrees.data[this.index].isEdit = false;
         },
         async deleteDegree(degree, index) {
             try {
                 await axios.delete('/api/degree/delete/' + degree.id)
                 this.listDegrees.data.splice(index, 1)
+                this.flashMessage.show({
+							status: 'error',
+							message: degree.degree_name + " is deleted!"
+				});
             } catch (error) {
                 this.error = error.response.data
             }
-        }
-    }
+        },
+        
+
+    },
+    
 }
 </script>
 
 
 <style lang="scss" scoped>
+#edit, #del, #save, #cancel {
+    padding: 0px 8px;
+    width: fit-content;
+}
+
+
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity .5s;
@@ -327,7 +344,7 @@ export default {
 }
 
 .slide-fade-leave-active {
-    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    transition: all .6s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 
 .slide-fade-enter,
@@ -345,7 +362,6 @@ export default {
     padding: 20px;
     border: 1px solid #d4d4d4;
     border-radius: 5px;
-    background: white;
 }
 
 li {
@@ -354,41 +370,5 @@ li {
 
 #errors {
     position: fixed;
-}
-
-.inline {
-    display: inline;
-}
-
-#dropDown {
-    width: 100%;
-}
-
-#degreeList {}
-
-#degreeForm {}
-
-.gridContainer {
-    margin-top: 1%;
-    display: grid;
-    width: 100%;
-    grid-template-columns: 50% 50%;
-    grid-gap: 3%
-}
-
-@media (max-width: 1100px) {
-    .gridContainer {
-        grid-template-columns: 100%;
-    }
-}
-
-#box {
-    display: flex;
-    margin: 45px;
-    padding: 45px;
-}
-
-#item {
-    margin: 10%;
 }
 </style>

@@ -3,8 +3,8 @@
 @section('title', 'DegreeDetails')
 @section('content')
 
-<navbar></navbar>
     <div class="container">
+        <navbar></navbar>
         <degree-details :prev_page_url="'{{ URL::previous() }}'" :degree_id="'{{ $id }}'"></degree-details>
     </div>
 @endsection

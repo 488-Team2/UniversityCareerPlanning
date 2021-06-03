@@ -21,14 +21,16 @@
             </a>
         </div>
         <br> 
+
         <h3 class="text-center">All available programs</h3>
         <div class="d-flex justify-content-center">
             <ul class="list-inline">
-            <li class="list-inline-item">UNDERGRADUATE</li>
-            <li class="list-inline-item">GRADUATE</li>
-            <li class="list-inline-item">MINORS</li>
+            <button @click.prevent="searchProgram('Undergraduate')" class="btn btn-outline-primary-sm">UNDERGRADUATE</button>
+            <button @click.prevent="searchProgram('Graduate')" class="btn btn-outline-primary-sm">GRADUATE</button>
+            <button @click.prevent="searchProgram('Minors')" class="btn btn-outline-primary-sm">MINORS</button>
             </ul> 
         </div>
+<div v-if="showSearch==false"> 
 
         <transition-group name="slide-fade" tag="div" class="row row-cols-1 row-cols-md-3 g-4">
         <!-- <div class="row row-cols-1 row-cols-md-3 g-4" > -->
@@ -61,7 +63,28 @@
              @click="fetchDegrees(pagination.next_page_url)">Next</a></li>
         </ul>
     </nav>
-
+</div>
+<div v-if="showSearch==true"> 
+        <!--  <ul>
+          <h4>Result(s): {{ searchArr.length }} </h4> 
+          <li v-for="sear in searchArr" :key="sear.id"> {{sear.degree_name}} | name: {{sear.program_type}}</li>
+        </ul> -->
+         <transition-group name="slide-fade" tag="div" class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" v-for="sear in searchArr" :key="sear.id" >
+            <div class="card h-100 border-primary mb-3">
+            <div id="grow" class="card-body" >
+                 <a class="degree" :href="'/degree/' + sear.id" >
+                    <h5 class="card-title"> {{sear.degree_name}} </h5>
+                    <p class="card-text"> {{sear.degree_description }}</p>
+                    <p class="card-text"> {{sear.program_type }}</p>
+                </a> 
+            </div>
+            </div> 
+        </div>
+        </transition-group>
+        <br>
+        <br>
+</div>
     </div>
 
     
@@ -86,7 +109,10 @@ export default {
             degree_id: '', //how it will know which degree to update
             pagination: {},
             url: null,
-            hover: false
+            hover: false,
+            search: '',
+            showSearch: false,
+			searchArr: [],
         }
     },
     async created() {
@@ -139,12 +165,32 @@ export default {
             }
 
             this.pagination = pagination;
-        }
+        },
+         searchProgram(q) {
+               this.search=q
+                fetch('/api/program/search?q=' + this.search)
+				.then(res => res.json())
+				.then(res => {
+					this.searchArr = res;
+					this.search = '';
+					this.showSearch = true;
+				})
+				.catch(error => {
+					console.log(error)
+				});
+               
+     	
+		}
     }
 }
 </script>
 
 <style >
+
+button {
+    margin: 0 0.3rem;
+}
+
 nav {
     background-color: darkgray;
 }
@@ -167,7 +213,7 @@ nav {
     text-decoration: none;
 }
 .degree:hover{
-    color: red;
+    color: steelblue;
 }
 #paginationNav {
     background: white;

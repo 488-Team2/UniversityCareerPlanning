@@ -11,14 +11,14 @@ class Degree extends Model
 
     protected $fillable = [
         'degree_name',
-        'degree_type',
         'degree_description',
         'degree_code',
         'department_id',
         'graduation_rate',
-        'job_prospects',
         'job_demand',
-        'keywords'
+        'job_prospects',
+        'keywords',
+        'program_type',
     ];
 
     public function department()
@@ -29,11 +29,5 @@ class Degree extends Model
     public function jobs()
     {
         return $this->belongsToMany(Job::class);
-    }
-
-    public function getColumns(): array
-    {
-        $columns = $this->getFillable();
-        return $columns;
     }
 }
