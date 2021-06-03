@@ -32,6 +32,7 @@ class DegreeFactory extends Factory
             'graduation_rate' => $this->faker->numberBetween(0, 100),
             'job_demand' => $this->faker->numberBetween(0, 100),
             'job_prospects' => $this->faker->jobTitle,
+            'program_type' => $this->faker->randomElement(['undergraduate', 'graduate', 'minors']),
             'keywords' => $this->faker->sentence
         ];
     }

@@ -20,10 +20,9 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('User', require('./components/User.vue').default);
 Vue.component('navbar', require('./components/Navbar.vue').default);
 
-//Dashboard:
+//Dashborad:
 Vue.component('student-dashboard', require('./components/StudentDashboard.vue').default);
 Vue.component('admin-dashboard', require('./components/AdminDashboard.vue').default);
-Vue.component('import-college-api', require('./components/ImportCollegeAPI').default);
 
 
 
@@ -38,7 +37,7 @@ Vue.component('api-degree', require('./components/ApiDegree.vue').default);
 Vue.component('navbar-add-degree', require('./components/NavbarAddDegree.vue').default);
 
 
-Vue.component('alert-message', require('./components/AlertMessage').default);
+Vue.component('alert', require('./components/Alert').default);
 Vue.component('survey', require('./components/Survey').default);
 Vue.component('survey-app', require('./components/SurveyApp').default);
 Vue.component('survey-start', require('./components/SurveyStart').default);

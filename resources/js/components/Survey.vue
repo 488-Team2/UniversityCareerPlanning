@@ -1,6 +1,6 @@
 <template>
     <div>
-        <alert-message :alert-array="alerts" :alertType="alertType"></alert-message>
+        <alert :alert-array="alerts" :alertType="alertType"></alert>
         <h2 :class="currentQuestion.question_code">Question: {{ currentQuestion.question_text }}</h2>
         <div class="answer-inputs">
             <div>

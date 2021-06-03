@@ -15,7 +15,7 @@
         		<div class="form-group row">
         			<label class="col-3">Name </label>
 					<div class="col-9">
-						<input type="text" v-model="user.name" class="form-control" >
+						<input data-test="userNameText" type="text" v-model="user.name" class="form-control" >
 					</div>
         		</div>
 
@@ -23,7 +23,7 @@
         		<div class="form-group row">
 					<label class="col-3">Email </label>
 					<div class="col-9">
-        			<input type="email" v-model="user.email" class="form-control" >
+        			<input data-test="userEmailText" type="email" v-model="user.email" class="form-control" >
 					</div>
         		</div>
 
@@ -31,7 +31,7 @@
         		<div class="form-group row">
 					<label class="col-3">Dept. Id </label>
 					<div class="col-9">
-        			<input type="text" v-model="user.department_id" class="form-control" >
+        			<input data-test="userDeptIdText" type="text" v-model="user.department_id" class="form-control" >
 					</div>
         		</div>
 
@@ -39,7 +39,7 @@
         		<div class="form-group row">
 					<label class="col-3">Role </label>
 					<div class="col-9">
-        			<select class="form-control" v-model="user.role" >
+        			<select data-test="userRoleText" class="form-control" v-model="user.role" >
         				<option value="student">Student</option>
         				<option value="user">User</option>
         				<option value="admin">Admin</option>
@@ -51,7 +51,7 @@
 				<div class="form-group row">
 					<label class="col-3">User Type </label>
 					<div class="col-9">
-        			<select class="form-control" v-model="user.account_type" >
+        			<select data-test="userAccountTypeText" class="form-control" v-model="user.account_type" >
         				<option value="student">Student</option>
         				<option value="user">User</option>
         				<option value="admin">Admin</option>
@@ -63,7 +63,7 @@
         		<div class="form-group row">
 					<div class="col-3" ></div>
 					<div class="col-9">
-        			<button class="btn btn-primary" @click="createUser(), flashMessage.success({ message:'Successfully created '+user.name+ '|email: '+ user.email, time:4000 });">Create User</button>
+        			<button data-test="createBtn" class="btn btn-primary" @click="createUser(), flashMessage.success({ message:'Successfully created '+user.name+ '|email: '+ user.email, time:4000 });">Create User</button>
 					</div>
         		</div>
 	    
@@ -86,7 +86,7 @@
                 	
 					<div class = "col-md-5">
 						<div class="input-group">
-							<input type="text" v-model="search" v-on:keyup.enter="searchUser()" class="form-control" placeholder="name, email, dept. id, role...">
+							<input data-test="userSearchText" type="text" v-model="search" v-on:keyup.enter="searchUser()" class="form-control" placeholder="name, email, dept. id, role...">
 							<div class="input-group-prepend">
 								<button @click.prevent="searchUser()" class="btn btn-primary">Search</button>
 							</div>
