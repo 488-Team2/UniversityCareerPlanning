@@ -19,7 +19,7 @@ class DegreeController extends Controller
     public function index(Request $request)
     {
         //get degress
-        $degrees = Degree::orderBy('created_at', 'desc')->paginate(10);
+        $degrees = Degree::orderBy('created_at', 'desc')->paginate(9);
 
         //return collection of degrees as a resource
         return DegreeResource::collection($degrees);
@@ -28,7 +28,6 @@ class DegreeController extends Controller
 
     public function display(Request $request)
     {
-
         return Degree::orderBy('created_at', 'desc')->paginate(6);
     }
 

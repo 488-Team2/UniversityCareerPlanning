@@ -164,8 +164,15 @@ class DegreeApiImportInfoController extends Controller
             });
 
             $itemArray['degree_code'] = $this->classifyDegreeCodes($itemArray['degree_name']);
-            $itemArray['graduation_rate'] = $faker->numberBetween(0, 100);
-            $itemArray['job_demand'] = $faker->numberBetween(0, 100);
+
+            if(!array_key_exists("graduation_rate", $itemArray)) {
+                $itemArray['graduation_rate'] = $faker->numberBetween(0, 100);
+            }
+
+            if(!array_key_exists("job_demand", $itemArray)) {
+                $itemArray['job_demand'] = $faker->numberBetween(0, 100);
+            }
+
             Degree::create($itemArray)->save();
         });
 

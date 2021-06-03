@@ -2,9 +2,8 @@
 
 @section('title', 'Career Survey')
 @section('content')
-
+    <navbar></navbar>
     <div class="container">
-        <navbar></navbar>
         <survey-app></survey-app>
     </div>
 @endsection
