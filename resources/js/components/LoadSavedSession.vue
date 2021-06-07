@@ -144,7 +144,7 @@ export default {
 .btn-toolbar {
     position: absolute;
     right: 20px; 
-    top: 20px; 
+    top: 12px; 
     text-align: right;
 
 }
