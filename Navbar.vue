@@ -77,9 +77,8 @@ export default {
 
 <style>
   nav{
-         display: flex;
+        display: flex;
         flex-wrap: wrap;
-         background-color: #990000;
   }  
 
   nav li:hover{
