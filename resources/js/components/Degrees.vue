@@ -183,29 +183,106 @@ export default {
 
 <style scoped>
 
-.degree, .degree:hover {
-    color: black;
+.degree {
+    color: white;
     text-decoration: none;
+    padding: 0;
+	margin: 50px auto;
+	list-style: none;
+	text-align: center;
+}
+.card-body{
+    font-color: white;
+    display: inline-block;
+	width: 20%;
+	min-width: 200px;
+	max-width: 230px;
+	padding: 80px 20px 40px;
+	position: relative;
+	vertical-align: top;
+	margin: 10px;
+	font-family: 'helvetica', san-serif;
+	min-height: 25vh;
+	background: #262a2b;
+	border: 1px solid #252727;
+	text-align: left;
 }
 
+.card-body h3{
+    font-color: white;
+    font-size: 25px;
+	margin: 0;
+	position: absolute;
+	top: 50px;
+	right: 10px;
+	transition: all 0.3s ease-in-out;
+}
 #grow {
     transition: all .2s ease-in-out;
 }
-
-#grow:hover {
-    transform: scale(1.03);
-}
+#grow:hover { 
+    transform: scale(1.03); 
+} 
 
 #paginationNav {
-    background: white;
+    background: gray;
+    border-color: black;
+}
+.btn-toolbar {
+
+    background: #222 url(/images/alert-overlay.png) repeat-x;
+    background-color: gray;
+    display: inline-block;
+    padding: 5px 10px 6px;
+    color: #fff;
+    border-color: black;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-box-shadow: 0 1px 3px #999;
+    -webkit-box-shadow: 0 1px 3px #999;
+    text-shadow: 0 -1px 1px #222;
+    border-bottom: 1px solid #222;
+    position: relative;
+    cursor: pointer;
+}
+.btn-primary{
+    background-color:gray;
+    border-color:black;
+}
+.btn-outline-primary{
+    background: #222 url(/images/alert-overlay.png) repeat-x;
+    background-color: gray;
+    display: inline-block;
+    padding: 5px 10px 6px;
+    color: #fff;
+    border-color: black;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 1;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-box-shadow: 0 1px 3px #999;
+    -webkit-box-shadow: 0 1px 3px #999;
+    text-shadow: 0 -1px 1px #222;
+    border-bottom: 1px solid #222;
+    position: relative;
+    cursor: pointer;
+
 }
 
-.btn-toolbar {
-    position: absolute;
-    right: 20px;
-    top: 30px;
-    text-align: right;
-
+.btn-primary:hover{
+    background-color: #990000;
+     transform: translateY(-10px);
+}
+.btn-outline-primary:hover{
+    background-color: #990000;
+}
+.btn-toolbar:hover{
+    background-color: #990000;
+     transform: translateY(-10px);
 }
 
 

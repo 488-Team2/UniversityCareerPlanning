@@ -87,7 +87,16 @@ export default {
 
 .navbar {
     margin-bottom: 20px;
+         display: flex;
+        flex-wrap: wrap;
+         background-color: #990000;
 }
 
-
+  nav li:hover{
+     background-color: #990000;
+     transform: translateY(-10px);
+  } 
+  nav li:active{
+      background-color: #990000;
+  }
 </style>

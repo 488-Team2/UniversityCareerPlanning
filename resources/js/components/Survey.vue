@@ -77,5 +77,14 @@ export default {
 </script>
 
 <style scoped>
+  .btn-primary{
+        background-color:gray;
+        border-color:black;
+    }
 
+    .btn-primary:hover{
+        background-color: #990000;
+        border-color:black;
+        transform: translateY(-10px);
+    }
 </style>

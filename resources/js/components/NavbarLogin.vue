@@ -22,3 +22,19 @@
         </div>
     </nav>
 </template>
+<style>
+
+#header {
+    color: black;
+    text-decoration: underline;
+    text-align: center;
+    background: whitesmoke;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+
+}
+
+</style>
