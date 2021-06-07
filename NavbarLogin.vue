@@ -23,7 +23,6 @@
     </nav>
 </template>
 <style>
-
 #header {
     color: black;
     text-decoration: underline;
@@ -36,5 +35,4 @@
     background-color: #333;
 
 }
-
 </style>
