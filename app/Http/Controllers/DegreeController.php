@@ -169,6 +169,12 @@ class DegreeController extends Controller
             'result' => 'success'
         ], 200);
     }
+    public function degreeSearch(Request $request)
+    {
+        $search = $request->get('q');
+        return Degree::where('program_type', 'like', '%'.$search.'%')->get();
+    }
+
 
 
 }

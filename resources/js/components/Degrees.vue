@@ -1,69 +1,62 @@
 <template>
-    <div id="degress">
+    <div id= "degress">
+     <br>
 
-        <FlashMessage :position="'right top'"></FlashMessage>
-        <h2>Degrees</h2>
+    <FlashMessage :position="'right top'"></FlashMessage>
+    <h2>Degrees</h2>
 
         <div class="float-end">
             <a href="/sessions">
-                <button class="btn btn-primary"> Go to Session ( {{ count }} )</button>
-            </a>
+                    <button id="goSesstionBtn" class="btn btn-primary"> Go to Session ( {{ count }} )</button>
+                </a>
         </div>
-        <br>
-        <nav id="paginationNav">
-            <ul class="pagination">
-                <li v-bind:class="[{disabled: !pagination.prev_page_url}]"
-                    class="page-item"><a class="page-link" href="#"
-                                         @click="fetchDegrees(pagination.prev_page_url)">Previous</a></li>
+    <br>
+    <nav id="paginationNav">
+        <ul class="pagination">
+            <li v-bind:class="[{disabled: !pagination.prev_page_url}]" 
+            class="page-item"><a class="page-link" href="#" 
+            @click="fetchDegrees(pagination.prev_page_url)">Previous</a></li>
 
-                <li class="page-item disabled"><a class="page-link dark-text"
-                                                  href="#">Page {{ pagination.current_page }} of {{
-                        pagination.last_page
-                    }}</a></li>
+            <li class="page-item disabled"><a class="page-link dark-text"
+             href="#">Page {{ pagination.current_page }} of {{ pagination.last_page }}</a></li>
 
 
-                <li v-bind:class="[{disabled: !pagination.next_page_url}]"
-                    class="page-item"><a class="page-link" href="#"
-                                         @click="fetchDegrees(pagination.next_page_url)">Next</a></li>
-            </ul>
-        </nav>
+            <li v-bind:class="[{disabled: !pagination.next_page_url}]" 
+            class="page-item"><a class="page-link" href="#"
+             @click="fetchDegrees(pagination.next_page_url)">Next</a></li>
+        </ul>
+    </nav>
 
         <transition-group name="slide-fade" tag="div" class="row row-cols-1">
-            <!-- <div id="grow" class="card card-body mb-2" v-for="degree in degrees" v-bind:key="degree.id"> -->
-            <div id="grow" class="card card-body mb-2" v-for="degree in degrees" v-bind:key="degree.id">
-                <a class="degree" :href="'/degree/' + degree.id">
-                    <h3> {{ degree.degree_name }} </h3>
-                    <p v-if="degree.degree_description != null && degree.degree_description.length<240">
-                        {{ degree.degree_description }} </p>
-                    <p v-else-if="degree.degree_description === null"></p>
-                    <p v-else> {{ degree.degree_description.substring(0, 240) + "..." }} </p>
+        <!-- <div id="grow" class="card card-body mb-2" v-for="degree in degrees" v-bind:key="degree.id"> -->
+        <div id="grow" class="card card-body mb-2" v-for="degree in degrees" v-bind:key="degree.id">
+            <a class="degree" :href="'/degree/' + degree.id" >
+                <h3> {{degree.degree_name}} </h3> 
+                <p> {{degree.degree_description}} </p>                
+            </a>      
 
-                </a>
-
-                <div class="btn-toolbar">
-                    <button type="button" class="btn btn-outline-primary float-end" @click="addSession(degree)"> Save To
-                        Session
-                    </button>
-                    &nbsp;
-                </div>
-            </div>
-        </transition-group>
+            <div class="btn-toolbar" >
+                <button type="button" class="btn btn-outline-primary float-end" @click="addSession(degree)"> Save To Session </button>
+                &nbsp;
+            </div> 
+        </div>
+         </transition-group>
     </div>
 
 
 </template>
 
 <script>
-export default {
+    export default {
     props: {
         keywords: {
             type: String
         },
         ids: {
-            type: String
+          type: String
         }
     },
-    data: function () {
+    data: function() {
         return {
             degrees: [],
             degree: {
@@ -82,7 +75,7 @@ export default {
                 id: '',
                 session_id: '',
                 name: '',
-                description: '',
+                description : '',
                 graduation_rate: '',
                 job_demand: '',
                 job_prospects: ''
@@ -97,12 +90,14 @@ export default {
         this.viewSession();
     },
     methods: {
-        constructURL() {
-            if (this.keywords != null) {
+        constructURL(){
+            if(this.keywords != null){
                 this.url = '/api/search/' + this.keywords;
-            } else if (this.ids != null) {
+            }
+            else if(this.ids != null){
                 this.url = '/api/degrees/' + this.ids;
-            } else {
+            }
+            else{
                 this.url = '/api/degrees'
             }
         },
@@ -131,7 +126,7 @@ export default {
             this.pagination = pagination;
         },
         viewSession() {
-            if (localStorage.getItem('sessions')) {
+            if(localStorage.getItem('sessions')) {
                 this.sessions = JSON.parse(localStorage.getItem('sessions'));
                 this.count = this.sessions.length;
             }
@@ -139,39 +134,39 @@ export default {
         addSession(deg) {
 
             var found = this.sessions.find(p => p.session_id === deg.id);
-            if (found) {
+            if(found) {
                 //alert(deg.degree_name+' is already saved!');
                 this.flashMessage.show({
-                    status: 'error',
-                    message: deg.degree_name + " is already saved!",
-                    time: 1000
-                });
+							status: 'error',
+                            message: deg.degree_name + " is already saved!",
+                            time: 1000
+				});
             } else {
-                this.session.session_id = deg.id;
+                this.session.session_id =  deg.id;
                 this.session.name = deg.degree_name;
                 this.session.description = deg.degree_description;
                 this.session.graduation_rate = deg.graduation_rate;
                 this.session.job_demand = deg.job_demand;
 
                 this.sessions.push(this.session);
-                // alert(deg.degree_name+' saved!');
+               // alert(deg.degree_name+' saved!');
                 this.flashMessage.show({
-                    status: 'success',
-                    message: deg.degree_name + " saved!",
-                    time: 1000
-                });
-                this.session.id = this.sessions.length;
+							status: 'success',
+                            message: deg.degree_name + " saved!",
+                            time: 1000
+						});
+                this.session.id =  this.sessions.length;
 
-                this.session = {};
+                this.session= {};
                 this.storeSession();
             }
         },
         storeSession() {
-            //this.axios.post('http://localhost:8000/api/degree/session', this.sessions)
-            let parsed = JSON.stringify(this.sessions);
-            localStorage.setItem('sessions', parsed);
-            this.viewSession();
-        },
+             //this.axios.post('http://localhost:8000/api/degree/session', this.sessions)
+             let parsed = JSON.stringify(this.sessions);
+             localStorage.setItem('sessions', parsed);
+             this.viewSession();
+        }, 
         removeSession(deg) {
             this.sessions.splice(deg, 1);
             this.storeSession();
@@ -183,29 +178,32 @@ export default {
 
 <style scoped>
 
-.degree, .degree:hover {
+.degree, .degree:hover{
     color: black;
     text-decoration: none;
 }
 
-#grow {
-    transition: all .2s ease-in-out;
+#grow { 
+    transition: all .2s ease-in-out; 
 }
-
-#grow:hover {
-    transform: scale(1.03);
-}
+#grow:hover { 
+    transform: scale(1.03); 
+} 
 
 #paginationNav {
     background: white;
 }
-
 .btn-toolbar {
     position: absolute;
-    right: 20px;
-    top: 30px;
+    right: 20px; 
+    top: 12px; 
     text-align: right;
 
+}
+
+#goSesstionBtn {
+    top: 12px; 
+    text-align: right;
 }
 
 
